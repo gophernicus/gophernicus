@@ -61,9 +61,11 @@ deb: ChangeLog
 	dpkg-buildpackage -rfakeroot -uc -us
 
 ChangeLog:
-	./git2changelog > .ChangeLog
-	sed -ne '/2012-12-02/,$$p' ChangeLog >> .ChangeLog
-	mv .ChangeLog ChangeLog
+	if [ -d .git ]; then \
+		(./git2changelog > .ChangeLog; \
+		sed -ne '/2012-12-02/,$$p' ChangeLog >> .ChangeLog; \
+		mv .ChangeLog ChangeLog); \
+	else true; fi
 
 .PHONY: ChangeLog
 
