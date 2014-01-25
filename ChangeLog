@@ -1,3 +1,8 @@
+2013-08-05  Kim Holviala  <kim@holviala.com>
+
+	* Fixed a (non-security) bug in strcut()
+
+
 2012-12-02  Kim Holviala  <kim@holviala.com>
 
 	* Released version 1.4

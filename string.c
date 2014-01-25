@@ -51,7 +51,7 @@ void strreplace(char *str, char from, char to)
 /*
  * Cut string to width, return resulting width (UTF-8 aware)
  */
-int strcut(char *str, size_t width)
+size_t strcut(char *str, size_t width)
 {
 	unsigned char c;
 	int w = 0;
@@ -71,7 +71,7 @@ int strcut(char *str, size_t width)
 		w++;
 	}
 
-	*str = '\0';
+	if (c) *str = '\0';
 	return w;
 }
 
