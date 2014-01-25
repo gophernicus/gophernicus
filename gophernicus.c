@@ -547,12 +547,12 @@ int main(int argc, char *argv[])
 #endif
 		platform(&st);
 
-	/* Read selector, remove CRLF & encodings */
+	/* Read selector */
 	if (fgets(selector, sizeof(selector) - 1, stdin) == NULL)
 		selector[0] = '\0';
 
+	/* Remove trailing CRLF */
 	chomp(selector);
-	strndecode(selector, selector, sizeof(selector));
 
 	if (st.debug) syslog(LOG_INFO, "client sent us \"%s\"", selector);
 
@@ -625,6 +625,9 @@ int main(int argc, char *argv[])
 		*dest++ = *c++;
 	}
 	*dest = '\0';
+
+	/* Remove encodings from selector */
+	strndecode(st.req_selector, st.req_selector, sizeof(st.req_selector));
 
 	/* Deny requests for Slashdot and /../ hackers */
 	if (strstr(st.req_selector, "/."))
