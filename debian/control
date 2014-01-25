@@ -1,0 +1,16 @@
+Source: gophernicus
+Section: net
+Priority: extra
+Maintainer: Kim Holviala <kim@holviala.com>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.3
+Homepage: gopher://gophernicus.org/1/software/gophernicus/server/
+
+Package: gophernicus
+Architecture: any
+Depends: ${shlibs:Depends}, debconf, netbase, openbsd-inetd | inet-superserver
+Recommends: lsb-release
+Suggests: lynx, php5-cli
+Description: Modern full-featured gopher server for inetd
+ Gophernicus is a modern full-featured (and hopefully) secure
+ gopher daemon for inetd.

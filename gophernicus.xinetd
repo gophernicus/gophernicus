@@ -1,0 +1,11 @@
+# default: on
+# description: Gophernicus - Modern full-featured gopher server
+service gopher
+{
+	socket_type	= stream        
+	wait		= no
+	user		= nobody
+	server		= /usr/sbin/in.gophernicus
+	server_args	= -r/var/gopher -h@HOSTNAME@
+	disable		= no
+}

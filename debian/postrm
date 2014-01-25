@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ "$1" = "purge" ]; then
+	update-inetd --remove "#<off># gopher"
+fi
+
+#DEBHELPER#
+

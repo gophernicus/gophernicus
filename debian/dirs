@@ -1,0 +1,4 @@
+usr/sbin
+var/gopher
+var/log/gophernicus
+usr/lib/gophernicus/filters

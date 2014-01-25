@@ -1,0 +1,113 @@
+Compiling and installing Gophernicus
+====================================
+
+Gophernicus requires a C compiler but no extra libraries aside
+from standard LIBC ones. Care has been taken to use only
+standard POSIX syscalls so that it should work pretty much on
+any *nix system. Compiling has only been tested with GCC, but
+it will most likely work with others too.
+
+To compile and install run:
+
+$ gzip -cd gophernicus-*.tar.gz | tar xvf -
+$ cd gophernicus-*
+$ make
+$ sudo make install
+
+Then add the below line to your /etc/inetd.conf and restart
+inetd. If your system comes with something else than standard
+inetd "make install" should have done the right thing already.
+
+gopher  stream  tcp  nowait  nobody  /usr/sbin/in.gophernicus  in.gophernicus -h <hostname>
+
+The -h <hostname> parameter is mandatory for a properly working
+Gophernicus. Other parameters can also be added, see the full
+list by running "/usr/sbin/in.gophernicus -?"
+
+By default Gophernicus serves gopher documents from /var/gopher
+although that can be changed by using the -r <root> parameter.
+To enable virtual hosting create hostname directories under
+the gopher root and make sure you have at least the primary
+hostname (the one set with -h <hostname>) directory available
+(mkdir /var/gopher/$HOSTNAME).
+
+
+Compiling on Debian Linux (and Ubuntu)
+======================================
+
+The above commands work on Debian just fine, but if you prefer
+having everything installed as packages run "make deb" instead
+of plain "make". If all the dependencies were in place you'll
+end up with an offical-looking deb package in the parent
+directory (don't ask - that's just how it works). And instead
+of "sudo make install" you should just install the deb with
+"dpkg -i ../gophernicus_*.deb" after which It Should Just
+Work(tm).
+
+
+Compiling on Mac OS X
+=====================
+
+When you run "make install" on OSX-like system with launchd
+the install routine also installs a plist file and tells launchd
+to start the server up. In other words, It Just Works(tm).
+
+
+Cross-compiling
+===============
+
+Cross-compiling to a different target architecture can be done
+by defining HOSTCC and CC to be different compilers. HOSTCC
+must point to a local arch compiler, and CC to the target
+arch one.
+
+$ make HOSTCC=gcc CC=target-arch-gcc
+
+
+Shared memory issues
+====================
+
+Gophernicus uses SYSV shared memory for session tracking and
+statistics. It creates the shared memory block using mode 600
+and a predefined key which means that a shared memory block
+created with one user cannot be used by another user. Simply
+said, running in.gophernicus as yourself will allocate that
+memory, and then running the binary through inetd as another
+user (nobody) will be denied access to that memory.
+
+If that happens you can simply delete the memory block and
+let Gophernicus recreate it - no harm done.
+
+$ su -
+# ipcs -m | grep beeb
+# ipcrm -M <key from the above command>
+
+
+Porting to different platforms
+==============================
+
+If you need to port Gophernicus to a new platform, please take
+a look at gophernicus.h which has a bunch of HAVE_* #defines.
+Fiddling with those usually makes it possible to compile a working
+server. If you succeed in compiling Gophernicus to a new
+platform please send the patches to kim@holviala.com so I can 
+include them into the next release.
+
+Tested (and semi-supported) platforms include:
+
+  OS            Arch          Compiler
+ +-------------+-------------+-------------+
+  AIX 5.1       POWER3        gcc 4
+  AIX 6.1       POWER4        gcc 4
+  AIX 7.1       POWER5        gcc 4
+  CentOS 5.5    x86_64        gcc 4
+  Debian Linux  x86_64        gcc 4
+  Debian Linux  armv5tel      gcc 4
+  MacOSX 10.5   i386          gcc 4
+  MacOSX 10.7   x86_64        llvm-gcc 4
+  MacOSX 10.8   x86_64        clang 3
+  NetBSD 5.0    x86_64        gcc 4
+  Haiku R1      i386          gcc 2
+
+
+

@@ -1,0 +1,37 @@
+gophernicus (1.4) unstable; urgency=low
+
+  * New upstream release
+
+ -- Kim Holviala <kim@holviala.com>  Sun, 02 Dec 2012 09:54:55 +0200
+
+gophernicus (1.3) unstable; urgency=low
+
+  * New upstream release
+  * Fixed one off-by-one
+
+ -- Kim Holviala <kim@holviala.com>  Tue, 12 Jun 2012 13:07:46 +0300
+
+gophernicus (1.2) unstable; urgency=low
+
+  * New upstream release
+
+ -- Kim Holviala <kim@holviala.com>  Fri, 04 May 2012 22:05:01 +0300
+
+gophernicus (1.1) unstable; urgency=low
+
+  * New upstream release
+  * Security update, so upgrading is recommended
+
+ -- Kim Holviala <kim@holviala.com>  Sat, 16 Oct 2010 08:54:13 +0300
+
+gophernicus (1.0) unstable; urgency=low
+
+  * Initial debianized release
+  * File logging by default, installs logrotate config
+  * Pre-configures php support but only suggests php5-cli
+  * Create a default gopher root
+  * Installs an @reboot cron entry to snoop system type
+    using a dmidecode script (which must be run as root)
+
+ -- Kim Holviala <kim@holviala.com>  Mon, 27 Sep 2010 08:11:12 +0300
+
