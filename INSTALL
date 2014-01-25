@@ -97,16 +97,17 @@ Tested (and semi-supported) platforms include:
 
   OS            Arch          Compiler
  +-------------+-------------+-------------+
-  AIX 5.1       POWER3        gcc 4
-  AIX 6.1       POWER4        gcc 4
-  AIX 7.1       POWER5        gcc 4
-  CentOS 5.5    x86_64        gcc 4
-  Debian Linux  x86_64        gcc 4
+  AIX 5         POWER3        gcc 4
+  AIX 6         POWER4        gcc 4
+  AIX 7         POWER5        gcc 4
+  CentOS 5      x86_64        gcc 4
+  Debian Linux  i386          gcc 4
   Debian Linux  armv5tel      gcc 4
+  Maemo 5       armv7l        gcc 4
   MacOSX 10.5   i386          gcc 4
   MacOSX 10.7   x86_64        llvm-gcc 4
   MacOSX 10.8   x86_64        clang 3
-  NetBSD 5.0    x86_64        gcc 4
+  NetBSD 5      x86_64        gcc 4
   Haiku R1      i386          gcc 2
 
 
