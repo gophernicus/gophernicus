@@ -8,7 +8,7 @@
 NAME    = gophernicus
 PACKAGE = $(NAME)
 BINARY  = in.$(NAME)
-VERSION = 1.5-rc1
+VERSION = 1.5
 
 SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
 HEADERS = functions.h files.h
@@ -33,7 +33,7 @@ NET_SRV = /boot/common/settings/network/services
 
 DIST    = $(PACKAGE)-$(VERSION)
 TGZ     = $(DIST).tar.gz
-RELDIR  = /var/gopher/gophernicus.org/software/gophernicus/server/
+RELDIR  = /var/gopher/gophernicus.org/software/gophernicus/
 
 CC      = gcc
 HOSTCC	= $(CC)

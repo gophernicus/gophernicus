@@ -1,0 +1,20 @@
+#!/bin/sh
+
+##
+## Generate ChangeLog from git log
+##
+
+PREVIOUS=
+IFS=/
+
+echo "[ Automatically generated from git log ]"
+
+git log --pretty=tformat:"%ad  %an  <%ae>/%s" --date=short | \
+while read AUTHOR COMMENT; do
+	[ "$AUTHOR" != "$PREVIOUS" ] && printf "\n$AUTHOR\n\n"
+	printf "\t* $COMMENT\n"
+	PREVIOUS="$AUTHOR"
+done
+
+echo
+echo
