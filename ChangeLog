@@ -1,6 +1,15 @@
-2013-08-05  Kim Holviala  <kim@holviala.com>
+[ Automatically generated from git log ]
 
+2014-01-25  Kim Holviala  <kim@holviala.com>
+
+	* Up Debian package version to 1.5
+	* Added .gitignore
+	* Clean up supported platforms list
+	* Up version number to 1.5-rc1 (I mean really, this time)
+	* Up version number to 1.5-rc1 & update copyright years to 2014
+	* Search strings were being urldecoded against the specs (bugreport from Kacper Gutowski)
 	* Fixed a (non-security) bug in strcut()
+	* Initial git commit with version 1.4
 
 
 2012-12-02  Kim Holviala  <kim@holviala.com>
