@@ -247,6 +247,7 @@ dist: clean functions.h ChangeLog
 
 release: dist
 	cp $(TGZ) $(RELDIR)
+	cp README INSTALL $(RELDIR)
 
 
 #

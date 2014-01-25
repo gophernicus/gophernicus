@@ -2,6 +2,8 @@
 
 2014-01-25  Kim Holviala  <kim@holviala.com>
 
+	* Add deb packaging leftovers to .gitignore
+	* Up version number to 1.5 + include forgotten file git2changelog
 	* Don't update ChangeLog unless the source tree is a git repo
 	* Make ChangeLog update itself automatically from git log
 	* Up Debian package version to 1.5
