@@ -1,0 +1,7 @@
+*.o
+files.h
+functions.h
+README.options
+bin2c
+*.gz
+in.gophernicus
