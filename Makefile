@@ -8,7 +8,7 @@
 NAME    = gophernicus
 PACKAGE = $(NAME)
 BINARY  = in.$(NAME)
-VERSION = 1.4
+VERSION = 1.5
 
 SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
 HEADERS = functions.h files.h
@@ -245,4 +245,12 @@ release: dist
 #
 defines:
 	$(CC) -dM -E $(NAME).c
+
+
+#
+# LOC
+#
+loc:
+	@wc -l *.c
+
 

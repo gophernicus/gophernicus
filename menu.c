@@ -1,5 +1,5 @@
 /*
- * Gophernicus - Copyright (c) 2009-2012 Kim Holviala <kim@holviala.com>
+ * Gophernicus - Copyright (c) 2009-2014 Kim Holviala <kim@holviala.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -307,6 +307,7 @@ int gophermap(state *st, char *mapfile, int depth)
 
 	/* Read lines one by one */
 	while (fgets(line, sizeof(line) - 1, fp)) {
+
 		/* Parse type & name */
 		chomp(line);
 		type = line[0];
