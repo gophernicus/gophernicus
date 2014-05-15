@@ -1,10 +1,15 @@
+Things I should work on:
+
+	* Replace SHM with mmap()
+	* Support for systemd (yech!)
+	* Support for upstart (slightly less yech!)
+
+
 Things I might work on:
 
-	* Fix vhost part of README
 	* Support for config files
 	* Standalone pre-forked (threaded?) version
 	* Password-protected resources
 	* Allow/Deny per IP/host
 	* Automated feature testing script
 	* SSL/TLS
-
