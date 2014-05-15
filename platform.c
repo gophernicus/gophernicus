@@ -69,7 +69,6 @@ void platform(state *st)
 		pclose(fp);
 
 		strreplace(machine, ' ', '_');
-		chomp(machine);
 	}
 
 	/* Get hardware name using shell uname */
@@ -94,7 +93,6 @@ void platform(state *st)
 	/* Get OS X version */
 	if ((fp = popen("/usr/bin/sw_vers -productVersion", "r"))) {
 		fgets(release, sizeof(release), fp);
-		chomp(release);
 		pclose(fp);
 	}
 
@@ -166,13 +164,11 @@ void platform(state *st)
 
 		if (!*sysname && (fp = popen("/usr/bin/lsb_release -i -s", "r"))) {
 			fgets(sysname, sizeof(sysname), fp);
-			chomp(sysname);
 			pclose(fp);
 		}
 
 		if (!*release && (fp = popen("/usr/bin/lsb_release -r -s", "r"))) {
 			fgets(release, sizeof(release), fp);
-			chomp(release);
 			pclose(fp);
 		}
 	}
@@ -184,7 +180,6 @@ void platform(state *st)
 
 		if ((c = strchr(sysname, ' '))) *c = '\0';
 		if ((c = strchr(sysname, '\\'))) *c = '\0';
-		chomp(sysname);
 	}
 
 	/* Debian version should be in /etc/debian_version */
@@ -193,7 +188,6 @@ void platform(state *st)
 		fclose(fp);
 
 		if ((c = strchr(release, '/'))) *c = '\0';
-		chomp(release);
 	}
 #endif
 
@@ -208,6 +202,11 @@ void platform(state *st)
 	if (!*sysname) sstrlcpy(sysname, name.sysname);
 	if (!*release) sstrlcpy(release, name.release);
 	if (!*machine) sstrlcpy(machine, name.machine);
+
+	/* I always liked weird Perl-only functions */
+	chomp(sysname);
+	chomp(release);
+	chomp(machine);
 
 	/* We're only interested in major.minor version */
 	if ((c = strchr(release, '.'))) if ((c = strchr(c + 1, '.'))) *c = '\0';

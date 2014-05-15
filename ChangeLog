@@ -1,5 +1,10 @@
 [ Automatically generated from git log ]
 
+2014-02-01  Kim Holviala  <kim@holviala.com>
+
+	* Add license header to bin2c.c
+	* Up version number to 1.6-whatever
+
 2014-01-25  Kim Holviala  <kim@holviala.com>
 
 	* Remove 'only tested with GCC' from INSTALL
