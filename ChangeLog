@@ -1,7 +1,12 @@
 [ Automatically generated from git log ]
 
+2014-11-10  Kim Holviala  <kim@holviala.com>
+
+	* Fix compiling for MacOS X Yosemite
+
 2014-05-15  Kim Holviala  <kim@holviala.com>
 
+	* Updated TODO for systemd/upstart
 	* Fix platform detection for Slackware (and possibly others)
 
 2014-02-01  Kim Holviala  <kim@holviala.com>
