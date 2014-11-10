@@ -88,7 +88,10 @@ headers: $(HEADERS)
 functions.h:
 	echo "/* Automatically generated function definitions */" > $@
 	echo >> $@
-	grep -h "^[a-z]" $(SOURCES) | grep -v "int main" | sed -e "s/ =.*$$//" -e "s/ *$$/;/" >> $@
+	grep -h "^[a-z]" $(SOURCES) | \
+		grep -v "int main" | \
+		grep -v "strlc" | \
+		sed -e "s/ =.*$$//" -e "s/ *$$/;/" >> $@
 	@echo
 
 bin2c: bin2c.c

@@ -58,7 +58,6 @@
 
 /* Embedded Linux with uClibc */
 #ifdef __UCLIBC__
-lskdjf
 #undef HAVE_SHMEM
 #undef HAVE_PASSWD
 #endif
@@ -72,6 +71,13 @@ lskdjf
 /* OpenBSD */
 #ifdef __OpenBSD__
 #define HAVE_STRLCPY
+#endif
+
+/* MacOS */
+#if defined(__APPLE__)
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_10
+#define HAVE_STRLCPY
+#endif
 #endif
 
 /* Add other OS-specific defines here */
@@ -119,6 +125,10 @@ lskdjf
 #include <sys/utsname.h>
 #endif
 
+#if !defined(HAVE_STRLCPY)
+size_t strlcpy(char *dst, const char *src, size_t siz);
+size_t strlcat(char *dst, const char *src, size_t siz);
+#endif
 
 /*
  * Compile-time configuration
