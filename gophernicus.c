@@ -490,6 +490,7 @@ int main(int argc, char *argv[])
 	setlocale(LC_TIME, DATE_LOCALE);
 #endif
 	init_state(&st);
+	srand(time(NULL) / (getpid() + getppid()));
 
 	/* Handle command line arguments */
 	parse_args(&st, argc, argv);

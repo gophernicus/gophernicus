@@ -318,6 +318,7 @@ typedef struct {
 	int session_timeout;
 	int session_max_kbytes;
 	int session_max_hits;
+	int session_id;
 
 	/* Feature options */
 	char opt_parent;
@@ -338,7 +339,7 @@ typedef struct {
 /* Shared memory for session & accounting data */
 #ifdef HAVE_SHMEM
 
-#define SHM_KEY		0xbeeb0006	/* Unique identifier + struct version */
+#define SHM_KEY		0xbeeb0007	/* Unique identifier + struct version */
 #define SHM_MODE	0600		/* Access mode for the shared memory */
 #define SHM_SESSIONS	256		/* Max amount of user sessions to track */
 
@@ -350,6 +351,7 @@ typedef struct {
 	char req_selector[128];
 	char req_remote_addr[64];
 	char req_filetype;
+	int session_id;
 
 	char server_host[64];
 	int  server_port;

@@ -8,7 +8,7 @@
 NAME    = gophernicus
 PACKAGE = $(NAME)
 BINARY  = in.$(NAME)
-VERSION = 1.6
+VERSION = 1.7-alpha
 
 SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
 HEADERS = functions.h files.h

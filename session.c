@@ -97,6 +97,7 @@ void update_shm_session(state *st, shm_state *shm)
 				sstrlcpy(shm->session[i].req_remote_addr, st->req_remote_addr);
 				shm->session[i].hits = 0;
 				shm->session[i].kbytes = 0;
+				shm->session[i].session_id = rand();
 				break;
 			}
 		}
@@ -114,6 +115,9 @@ void update_shm_session(state *st, shm_state *shm)
 			shm->session[i].req_selector);
 		sstrlcpy(st->req_referrer, buf);
 	}
+
+	/* Get public session id */
+	st->session_id = shm->session[i].session_id;
 
 	/* Update session data */
 	sstrlcpy(shm->session[i].server_host, st->server_host);

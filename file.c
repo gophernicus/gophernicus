@@ -312,6 +312,10 @@ void setenv_cgi(state *st, char *script)
 	setenv("LOCAL_ADDR", st->req_local_addr, 1);
 	setenv("REMOTE_ADDR", st->req_remote_addr, 1);
 	setenv("HTTP_REFERER", st->req_referrer, 1);
+#ifdef HAVE_SHMEM
+	snprintf(buf, sizeof(buf), "%x", st->session_id);
+	setenv("SESSION_ID", buf, 1);
+#endif
 	setenv("HTTP_ACCEPT_CHARSET", strcharset(st->out_charset), 1);
 
 	/* Gophernicus extras */
