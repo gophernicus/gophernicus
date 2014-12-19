@@ -1,5 +1,9 @@
 [ Automatically generated from git log ]
 
+2014-12-19  Kim Holviala  <kim@holviala.com>
+
+	* Added $SESSION_ID environment variable for CGI scripts
+
 2014-11-10  Kim Holviala  <kim@holviala.com>
 
 	* Added MacOSX 10.10 to the list of supported systems in INSTALL

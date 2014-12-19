@@ -35,13 +35,11 @@ void platform(state *st)
 #if defined(_AIX) || defined(__linux) || defined(__APPLE__)
 	FILE *fp;
 #endif
-#if defined(__arm__) || defined(__mips__) || defined(__APPLE__)
-	char buf[BUFSIZE];
-#endif
 #ifdef __linux
 	struct stat file;
 #endif
 	struct utsname name;
+	char buf[BUFSIZE];
 	char sysname[64];
 	char release[64];
 	char machine[64];
@@ -158,6 +156,21 @@ void platform(state *st)
 			*c = '\0';
 		}
 	}
+
+	/* Identify CRUX */
+	if (!*sysname && stat("/usr/bin/crux", &file) == OK && (file.st_mode & S_IXOTH)) {
+
+		sstrlcpy(sysname, "CRUX");
+
+		if ((fp = popen("/usr/bin/crux", "r"))) {
+			fgets(buf, sizeof(buf), fp);
+			pclose(fp);
+
+			if ((c = strchr(buf, ' ')) && (c = strchr(c + 1, ' ')))
+				sstrlcpy(release, c + 1);
+		}
+	}
+
 
 	/* Uh-oh.... how about a standard Linux with lsb_release? */
 	if (stat("/usr/bin/lsb_release", &file) == OK && (file.st_mode & S_IXOTH)) {
