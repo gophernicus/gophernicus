@@ -112,7 +112,7 @@ void platform(state *st)
 	}
 #endif
 
-	/* Linux uname() just says Linux/2.6 - let's dig deeper... */
+	/* Linux uname() just says Linux/kernelversion - let's dig deeper... */
 #ifdef __linux
 
 	/* Most Linux ARM/MIPS boards have hardware name in /proc/cpuinfo */
@@ -170,7 +170,6 @@ void platform(state *st)
 				sstrlcpy(release, c + 1);
 		}
 	}
-
 
 	/* Uh-oh.... how about a standard Linux with lsb_release? */
 	if (stat("/usr/bin/lsb_release", &file) == OK && (file.st_mode & S_IXOTH)) {

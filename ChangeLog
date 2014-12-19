@@ -2,6 +2,7 @@
 
 2014-12-19  Kim Holviala  <kim@holviala.com>
 
+	* Added detection for CRUX Linux
 	* Added $SESSION_ID environment variable for CGI scripts
 
 2014-11-10  Kim Holviala  <kim@holviala.com>
