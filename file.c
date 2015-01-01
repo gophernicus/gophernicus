@@ -259,6 +259,7 @@ void caps_txt(state *st, shm_state *shm)
 		"PathParent=.." CRLF
 		"PathParentDouble=FALSE" CRLF
 		"PathKeepPreDelimeter=FALSE" CRLF
+		"ServerSupportsStdinScripts=TRUE" CRLF
 		CRLF
 		"ServerSoftware=" SERVER_SOFTWARE CRLF
 		"ServerSoftwareVersion=" VERSION CRLF
