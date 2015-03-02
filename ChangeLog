@@ -1,5 +1,13 @@
 [ Automatically generated from git log ]
 
+2015-01-04  Kim Holviala  <kim@holviala.com>
+
+	* Added ServerDefaultEncoding to automatic caps.txt
+
+2015-01-01  Kim Holviala  <kim@holviala.com>
+
+	* Added ServerSupportsStdinScripts to automatic caps.txt
+
 2014-12-19  Kim Holviala  <kim@holviala.com>
 
 	* Fixed a comment & formatting
