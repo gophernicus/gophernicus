@@ -299,11 +299,11 @@ int gophermap(state *st, char *mapfile, int depth)
 #ifdef HAVE_POPEN
 	if (exe) {
 		setenv_cgi(st, mapfile);
-		if ((fp = popen(mapfile , "r")) == NULL) return OK;
+		if ((fp = popen(mapfile, "r")) == NULL) return OK;
 	}
 	else
 #endif
-		if ((fp = fopen(mapfile , "r")) == NULL) return OK;
+		if ((fp = fopen(mapfile, "r")) == NULL) return OK;
 
 	/* Read lines one by one */
 	while (fgets(line, sizeof(line) - 1, fp)) {
