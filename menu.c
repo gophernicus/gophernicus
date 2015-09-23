@@ -269,6 +269,9 @@ int gophermap(state *st, char *mapfile, int depth)
 	FILE *fp;
 	struct stat file;
 	char line[BUFSIZE];
+#ifdef HAVE_POPEN
+	char buf[BUFSIZE];
+#endif
 	char *selector;
 	char *name;
 	char *host;
@@ -299,7 +302,9 @@ int gophermap(state *st, char *mapfile, int depth)
 #ifdef HAVE_POPEN
 	if (exe) {
 		setenv_cgi(st, mapfile);
-		if ((fp = popen(mapfile, "r")) == NULL) return OK;
+		snprintf(buf, sizeof(buf), "'%s'", mapfile);
+
+		if ((fp = popen(buf, "r")) == NULL) return OK;
 	}
 	else
 #endif
