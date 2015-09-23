@@ -1,7 +1,13 @@
 [ Automatically generated from git log ]
 
+2015-09-23  Kim Holviala  <kim@holviala.com>
+
+	* Fix for executable gophermaps in directories with spaces (bugreport from Black Rider)
+	* Fixed whitespace formatting
+
 2015-03-02  Kim Holviala  <kim@holviala.com>
 
+	* Changed copyright years include 2015
 	* Released version 1.7
 
 2015-01-04  Kim Holviala  <kim@holviala.com>
