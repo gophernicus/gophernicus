@@ -1,3 +1,9 @@
+gophernicus (1.8.1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Kim Holviala <kim@holviala.com>  Fri, 16 Oct 2015 13:18:01 +0200
+
 gophernicus (1.8) unstable; urgency=low
 
   * New upstream release
