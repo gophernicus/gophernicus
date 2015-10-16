@@ -270,7 +270,7 @@ int gophermap(state *st, char *mapfile, int depth)
 	struct stat file;
 	char line[BUFSIZE];
 #ifdef HAVE_POPEN
-	char buf[BUFSIZE];
+	char command[BUFSIZE];
 #endif
 	char *selector;
 	char *name;
@@ -285,12 +285,24 @@ int gophermap(state *st, char *mapfile, int depth)
 
 	/* Try to figure out whether the map is executable */
 	if (stat(mapfile, &file) == OK) {
-		if ((file.st_mode & S_IXOTH)) exe = TRUE;
+		if ((file.st_mode & S_IXOTH)) {
+#ifdef HAVE_POPEN
+			/* Quote the command in case path has spaces */
+			snprintf(command, sizeof(command), "'%s'", mapfile);
+#endif
+			exe = TRUE;
+		}
 		else exe = FALSE;
 	}
 
-	/* As a fallback let's just feed everything to shell.. */
-	else exe = TRUE;
+	/* This must be a shell include */
+	else {
+#ifdef HAVE_POPEN
+		/* Let's assume the shell command runs as is without quoting */
+		sstrlcpy(command, mapfile);
+#endif
+		exe = TRUE;
+	}
 
 	/* Debug output */
 	if (st->debug) {
@@ -302,9 +314,7 @@ int gophermap(state *st, char *mapfile, int depth)
 #ifdef HAVE_POPEN
 	if (exe) {
 		setenv_cgi(st, mapfile);
-		snprintf(buf, sizeof(buf), "'%s'", mapfile);
-
-		if ((fp = popen(buf, "r")) == NULL) return OK;
+		if ((fp = popen(command, "r")) == NULL) return OK;
 	}
 	else
 #endif
