@@ -1,5 +1,10 @@
 [ Automatically generated from git log ]
 
+2015-10-16  Kim Holviala  <kim@holviala.com>
+
+	* Released version 1.8.1 (1.8 had broken gophermap support)
+	* Fix for executing shell commands inside gophermaps (previous commit broke this)
+
 2015-09-23  Kim Holviala  <kim@holviala.com>
 
 	* Released version 1.8
