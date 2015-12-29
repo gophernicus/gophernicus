@@ -13,15 +13,11 @@ $ cd gophernicus-*
 $ make
 $ sudo make install
 
-Then add the below line to your /etc/inetd.conf and restart
-inetd. If your system comes with something else than standard
-inetd "make install" should have done the right thing already.
-
-gopher  stream  tcp  nowait  nobody  /usr/sbin/in.gophernicus  in.gophernicus -h <hostname>
-
-The -h <hostname> parameter is mandatory for a properly working
-Gophernicus. Other parameters can also be added, see the full
-list by running "/usr/sbin/in.gophernicus -?"
+That's it - Gophernicus should now be installed, preconfigured
+and running under gopher://<HOSTNAME>/. And more often than not,
+It Just Works(tm). If gopher links don't seem to work you may
+need to configure your public hostname explicitly in whatever
+config file Gophernicus is using.
 
 By default Gophernicus serves gopher documents from /var/gopher
 although that can be changed by using the -r <root> parameter.
@@ -29,6 +25,16 @@ To enable virtual hosting create hostname directories under
 the gopher root and make sure you have at least the primary
 hostname (the one set with -h <hostname>) directory available
 (mkdir /var/gopher/$HOSTNAME).
+
+
+Running with traditional inetd superserver
+==========================================
+
+If you want to run Gophernicus under the traditional Unix
+inetd, add the below line to your /etc/inetd.conf and restart
+the inetd process.
+
+gopher  stream  tcp  nowait  nobody  /usr/sbin/in.gophernicus  in.gophernicus -h <hostname>
 
 
 Compiling on Debian Linux (and Ubuntu)
@@ -42,14 +48,6 @@ directory (don't ask - that's just how it works). And instead
 of "sudo make install" you should just install the deb with
 "dpkg -i ../gophernicus_*.deb" after which It Should Just
 Work(tm).
-
-
-Compiling on Mac OS X
-=====================
-
-When you run "make install" on OSX-like system with launchd
-the install routine also installs a plist file and tells launchd
-to start the server up. In other words, It Just Works(tm).
 
 
 Cross-compiling
@@ -100,9 +98,10 @@ Tested (and semi-supported) platforms include:
   AIX 6           POWER4        gcc 4
   AIX 7           POWER5        gcc 4
   CentOS 5        x86_64        gcc 4
+  Debian Squeeze  armv5tel      gcc 4
   Debian Wheezy   i386          gcc 4
   Debian Wheezy   x86_64        gcc 4
-  Debian Squeeze  armv5tel      gcc 4
+  Debian Jessie   x86_64        gcc 4
   Maemo 5         armv7l        gcc 4
   MacOSX 10.5     i386          gcc 4
   MacOSX 10.7     x86_64        llvm-gcc 4

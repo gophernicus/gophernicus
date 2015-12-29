@@ -26,7 +26,7 @@ Generic information:
 =echo "    description....: $SERVER_DESCRIPTION"
 
 Server configuration:
-=echo "    config file....: `for FILE in /Library/LaunchDaemons/org.gophernicus.server.plist /boot/common/settings/network/services /etc/xinetd.d/gophernicus /etc/inetd.conf; do if [ -f $FILE ]; then echo $FILE; break; fi; done`"
+=echo "    config file....: `for FILE in /Library/LaunchDaemons/org.gophernicus.server.plist /boot/common/settings/network/services /lib/systemd/system/gophernicus\@.service /etc/xinetd.d/gophernicus /etc/inetd.conf; do if [ -f $FILE ]; then echo $FILE; break; fi; done`"
 =echo "    server hostname: $SERVER_HOST"
 =echo "    root directory.: $DOCUMENT_ROOT"
 =echo "    running as user: `whoami`"

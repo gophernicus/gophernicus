@@ -1,0 +1,9 @@
+[Unit]
+Description=Gophernicus gopher server
+
+[Socket]
+ListenStream=70
+Accept=yes
+
+[Install]
+WantedBy=sockets.target

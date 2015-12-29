@@ -1,0 +1,7 @@
+[Unit]
+Description=Gophernicus gopher server
+
+[Service]
+ExecStart=/usr/sbin/in.gophernicus -h %H
+StandardInput=socket
+User=nobody
