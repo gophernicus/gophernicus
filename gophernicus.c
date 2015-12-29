@@ -507,7 +507,7 @@ int main(int argc, char *argv[])
 	/* Refuse to run as root */
 #ifdef HAVE_PASSWD
 	if (st.opt_root && getuid() == 0)
-		die(&st, ERR_ACCESS, "Refusing to run as root");
+		die(&st, ERR_ACCESS, "Cowardly refusing to run as root");
 #endif
 
 	/* Try to get shared memory */
