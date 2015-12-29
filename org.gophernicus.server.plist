@@ -6,7 +6,7 @@
 	<string>org.gophernicus.server</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/usr/sbin/in.gophernicus</string>
+		<string>/usr/local/sbin/in.gophernicus</string>
 		<string>-h@HOSTNAME@</string>
 		<string>-r/Library/GopherServer</string>
 	</array>

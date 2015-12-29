@@ -17,6 +17,7 @@ DOCS    = LICENSE README INSTALL TODO ChangeLog README.Gophermap gophertag
 
 INSTALL = PATH=$$PATH:/usr/sbin ./install-sh -o 0 -g 0
 DESTDIR = /usr
+OSXDEST = /usr/local
 SBINDIR = $(DESTDIR)/sbin
 DOCDIR  = $(DESTDIR)/share/doc/$(PACKAGE)
 
@@ -46,7 +47,7 @@ LDFLAGS =
 #
 all:
 	@case `uname` in \
-		Darwin)  $(MAKE) ROOT="$(OSXROOT)" $(BINARY); ;; \
+		Darwin)  $(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDEST)" $(BINARY); ;; \
 		Haiku)   $(MAKE) EXTRA_LDFLAGS="-lnetwork" $(BINARY); ;; \
 		*)       $(MAKE) $(BINARY); ;; \
 	esac
@@ -123,7 +124,7 @@ clean-deb:
 #
 install: ChangeLog
 	@case `uname` in \
-		Darwin)  $(MAKE) ROOT="$(OSXROOT)" install-files install-docs install-root install-osx install-done; ;; \
+		Darwin)  $(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDEST)" install-files install-docs install-root install-osx install-done; ;; \
 		Haiku)   $(MAKE) SBINDIR=/boot/common/bin DOCDIR=/boot/common/share/doc/$(PACKAGE) \
 		                 install-files install-docs install-root install-haiku install-done; ;; \
 		*)       $(MAKE) install-files install-docs install-root; ;; \
