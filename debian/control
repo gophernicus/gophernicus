@@ -11,6 +11,6 @@ Architecture: any
 Depends: ${shlibs:Depends}, debconf, netbase, openbsd-inetd | inet-superserver
 Recommends: lsb-release
 Suggests: lynx, php5-cli
-Description: Modern full-featured gopher server for inetd
+Description: Modern full-featured gopher server
  Gophernicus is a modern full-featured (and hopefully) secure
  gopher daemon.
