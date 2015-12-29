@@ -65,7 +65,7 @@ ChangeLog:
 	if [ -d .git ]; then \
 		(./git2changelog > .ChangeLog; \
 		sed -ne '/2012-12-02/,$$p' ChangeLog >> .ChangeLog; \
-		mv .ChangeLog ChangeLog); \
+		mv -f .ChangeLog ChangeLog); \
 	else true; fi
 
 .PHONY: ChangeLog
