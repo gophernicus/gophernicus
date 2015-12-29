@@ -134,6 +134,24 @@ void platform(state *st)
 	}
 #endif
 
+	/* Get hardware type from DMI data */
+	if (!*st->server_description && (fp = fopen("/sys/class/dmi/id/board_vendor" , "r"))) {
+		fgets(buf, sizeof(buf), fp);
+		fclose(fp);
+
+		sstrlcpy(st->server_description, buf);
+		chomp(st->server_description);
+
+		if ((fp = fopen("/sys/class/dmi/id/board_name" , "r"))) {
+			fgets(buf, sizeof(buf), fp);
+			fclose(fp);
+
+			if (*st->server_description) sstrlcat(st->server_description, " ");
+			sstrlcat(st->server_description, buf);
+			chomp(st->server_description);
+		}
+	}
+
 	/* Identify RedHat */
 	if (!*sysname && (fp = fopen("/etc/redhat-release", "r"))) {
 		fgets(sysname, sizeof(sysname), fp);
