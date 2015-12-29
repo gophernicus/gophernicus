@@ -1,7 +1,7 @@
 Gophernicus - Copyright (c) 2009-2016 Kim Holviala <kim@holviala.com>
 
 Gophernicus is a modern full-featured (and hopefully) secure gopher
-daemon for inetd. It is licensed under the BSD license.
+daemon. It is licensed under the BSD license.
 
 Command line options:
     -h hostname   Change server hostname (FQDN)      [$HOSTNAME]
@@ -54,13 +54,14 @@ After succesfully installing Gophernicus (see INSTALL) you need to set
 up the gopher root directory. By default Gophernicus serves documents
 from /var/gopher so start by creating that directory and making sure
 it's world-readable. Then, simply add files and directories under your
-root, fire up a gopher browser (Firefox, Lynx) and open up this URL:
+root, fire up a gopher browser (Firefox with the OverbiteFF extension,
+Lynx) and open up this URL:
 
-gopher://<HOSTNAME>/   (where <HOSTNAME> is your servers hostname)
+gopher://<HOSTNAME>/   (where <HOSTNAME> is your server hostname)
 
 That's it, your first gopher site is now up and running. If the links
-on the root menu don't work, make sure you are using the -h <HOSTNAME>
-parameter in your inetd.conf (with a valid resolveable hostname
+on the root menu don't work make sure you are using the -h <HOSTNAME>
+parameter in your configuration (with a valid resolveable hostname
 instead of <HOSTNAME> - see INSTALL).
 
 

@@ -13,4 +13,4 @@ Recommends: lsb-release
 Suggests: lynx, php5-cli
 Description: Modern full-featured gopher server for inetd
  Gophernicus is a modern full-featured (and hopefully) secure
- gopher daemon for inetd.
+ gopher daemon.
