@@ -396,7 +396,7 @@ typedef struct {
 	"mbox","M", \
 	"pdf","d","ps","d","doc","d","ppt","d","xls","d","xlsx","d","docx","d","pptx","d", \
 	"mp3","s","wav","s","mid","s","wma","s","flac","s","ogg","s","aiff","s","aac","s", \
-	"avi",";","mp4",";","mpg",";","mov",";","qt",";","asf",";","mpv",";","m4v",";", \
+	"avi",";","mp4",";","mpg",";","mov",";","qt",";","asf",";","mpv",";","m4v",";","webm",";","ogv",";", \
 	NULL, NULL
 
 /*
