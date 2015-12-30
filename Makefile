@@ -35,7 +35,7 @@ SYSTEMD = /lib/systemd/system
 
 DIST    = $(PACKAGE)-$(VERSION)
 TGZ     = $(DIST).tar.gz
-RELDIR  = /var/gopher/gophernicus.org/software/gophernicus/
+RELDIR  = $ROOT/gophernicus.org/software/gophernicus/
 
 CC      = gcc
 HOSTCC	= $(CC)
@@ -159,7 +159,7 @@ install-docs:
 	@echo
 
 install-root:
-	if [ ! -d "$(ROOT)" ]; then \
+	if [ ! -d "$(ROOT)" -o ! -f "$(ROOT)/$(MAP)" ]; then \
 		mkdir -p $(ROOT); \
 		$(INSTALL) -m 644 $(MAP) $(ROOT); \
 		ln -s $(DOCDIR) $(ROOT)/docs; \

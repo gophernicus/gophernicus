@@ -98,6 +98,7 @@ Tested (and semi-supported) platforms include:
   AIX 6           POWER4        gcc 4
   AIX 7           POWER5        gcc 4
   CentOS 5        x86_64        gcc 4
+  CentOS 7        x86_64        gcc 4
   Debian Squeeze  armv5tel      gcc 4
   Debian Wheezy   i386          gcc 4
   Debian Wheezy   x86_64        gcc 4
