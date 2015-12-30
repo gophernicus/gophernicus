@@ -189,7 +189,7 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define DEFAULT_CGI	"/cgi-bin/"
 #define DEFAULT_USERDIR	"public_gopher"
 #define DEFAULT_ADDR	"unknown"
-#define DEFAULT_WIDTH	70
+#define DEFAULT_WIDTH	76
 #define DEFAULT_CHARSET	US_ASCII
 #define MIN_WIDTH	33
 #define MAX_WIDTH	200
