@@ -152,6 +152,16 @@ void platform(state *st)
 		}
 	}
 
+	/* Identify Gentoo */
+	if (!*sysname && (fp = fopen("/etc/gentoo-release", "r"))) {
+		fgets(sysname, sizeof(sysname), fp);
+		fclose(fp);
+
+		if ((c = strstr(sysname, "release "))) sstrlcpy(release, c + 8);
+		if ((c = strchr(release, ' '))) *c = '\0';
+		if ((c = strchr(sysname, ' '))) *c = '\0';
+	}
+
 	/* Identify RedHat */
 	if (!*sysname && (fp = fopen("/etc/redhat-release", "r"))) {
 		fgets(sysname, sizeof(sysname), fp);
@@ -159,8 +169,8 @@ void platform(state *st)
 
 		if ((c = strstr(sysname, "release "))) sstrlcpy(release, c + 8);
 		if ((c = strchr(release, ' '))) *c = '\0';
-
 		if ((c = strchr(sysname, ' '))) *c = '\0';
+
 		if (strcmp(sysname, "Red") == MATCH) sstrlcpy(sysname, "RedHat");
 	}
 
