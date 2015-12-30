@@ -2,6 +2,8 @@
 Description=Gophernicus gopher server
 
 [Service]
-ExecStart=/usr/sbin/in.gophernicus -h %H
+EnvironmentFile=-/etc/default/gophernicus
+EnvironmentFile=-/etc/sysconfig/gophernicus
+ExecStart=/usr/sbin/in.gophernicus -h %H $OPTIONS
 StandardInput=socket
 User=nobody

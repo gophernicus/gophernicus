@@ -18,15 +18,15 @@ directory and replace this page.
 # Real-time configuration output (WOO!)
 #
 Generic information:
-=echo "    current time...: `date`"
 =echo "    your ip address: $REMOTE_ADDR"
-=echo "    server uptime..: `uptime | sed 's/.*up \([^,]*\), .*/\1/' `"
+=echo "    server time....: `date`"
+=echo "    server uptime..: `uptime | sed 's/.*up *\([^,]*\), .*/\1/'`"
 =echo "    server version.: $SERVER_VERSION"
 =echo "    server platform: $SERVER_ARCH"
 =echo "    description....: $SERVER_DESCRIPTION"
 
 Server configuration:
-=echo "    config file....: `for FILE in /Library/LaunchDaemons/org.gophernicus.server.plist /boot/common/settings/network/services /lib/systemd/system/gophernicus\@.service /etc/xinetd.d/gophernicus /etc/inetd.conf; do if [ -f $FILE ]; then echo $FILE; break; fi; done`"
+=echo "    config file....: `for FILE in /etc/sysconfig/gophernicus /etc/default/gophernicus /Library/LaunchDaemons/org.gophernicus.server.plist /boot/common/settings/network/services /lib/systemd/system/gophernicus\@.service /etc/xinetd.d/gophernicus /etc/inetd.conf; do if [ -f $FILE ]; then echo $FILE; break; fi; done`"
 =echo "    server hostname: $SERVER_HOST"
 =echo "    root directory.: $DOCUMENT_ROOT"
 =echo "    running as user: `whoami`"

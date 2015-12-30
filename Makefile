@@ -32,6 +32,8 @@ LAUNCHD = /Library/LaunchDaemons
 PLIST   = org.$(NAME).server.plist
 NET_SRV = /boot/common/settings/network/services
 SYSTEMD = /lib/systemd/system
+SYSCONF = /etc/sysconfig
+DEFAULT = /etc/default
 
 DIST    = $(PACKAGE)-$(VERSION)
 TGZ     = $(DIST).tar.gz
@@ -216,6 +218,12 @@ install-haiku:
 
 install-systemd:
 	if [ -d "$(SYSTEMD)" -a ! -f "$(SYSTEMD)/$(NAME).socket" ]; then \
+		if [ -d "$(SYSCONF)" -a ! -f "$(SYSCONF)/$(NAME)" ]; then \
+			$(INSTALL) -m 644 $(NAME).env $(SYSCONF)/$(NAME); \
+		fi; \
+		if [ ! -d "$(SYSCONF)" -a -d "$(DEFAULT)" -a ! -f $(DEFAULT)/$(NAME) ]; then \
+			$(INSTALL) -m 644 $(NAME).env $(DEFAULT)/$(NAME); \
+		fi; \
 		$(INSTALL) -m 644 $(NAME).socket $(NAME)\@.service $(SYSTEMD); \
 		systemctl daemon-reload; \
 		systemctl enable $(NAME).socket; \
@@ -253,7 +261,7 @@ uninstall-systemd:
 	if [ -d "$(SYSTEMD)" -a -f "$(SYSTEMD)/$(NAME).socket" ]; then \
 		systemctl stop $(NAME).socket; \
 		systemctl disable $(NAME).socket; \
-		rm -f $(SYSTEMD)/$(NAME).socket $(SYSTEMD)/$(NAME)\@.service; \
+		rm -f $(SYSTEMD)/$(NAME).socket $(SYSTEMD)/$(NAME)\@.service $(SYSCONF)/$(NAME) $(DEFAULT)/$(NAME); \
 	fi
 	@echo
 
