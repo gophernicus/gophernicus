@@ -1,15 +1,8 @@
-Things I should work on:
+Possible future development:
 
-	* Replace SHM with mmap()
-	* Support for systemd (yech!)
-	* Support for upstart (slightly less yech!)
-
-
-Things I might work on:
-
-	* Support for config files
-	* Standalone pre-forked (threaded?) version
+	* Add support for mmap() in addition to SHM (for Haiku/R1)
 	* Password-protected resources
-	* Allow/Deny per IP/host
+	* Allow/Deny per IP
 	* Automated feature testing script
 	* SSL/TLS
+
