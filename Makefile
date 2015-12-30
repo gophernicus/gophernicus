@@ -143,9 +143,17 @@ install-done:
 	@echo "======================================================================"
 	@echo
 	@echo "Gophernicus has now been succesfully installed. To try it out, launch"
-	@echo "your favorite gopher browser and navigate to this URL:"
+	@echo "your favorite gopher browser and navigate to your gopher root."
 	@echo
-	@echo "              gopher://`hostname`/"
+	@echo "Gopher URL...: gopher://`hostname`/"
+	@for CONFFILE in /etc/sysconfig/gophernicus \
+		/etc/default/gophernicus \
+		/Library/LaunchDaemons/org.gophernicus.server.plist \
+		/boot/common/settings/network/services \
+		/lib/systemd/system/gophernicus\@.service \
+		/etc/xinetd.d/gophernicus \
+		/etc/inetd.conf; do \
+			if [ -f $$CONFFILE ]; then echo "Configuration: $$CONFFILE"; break; fi; done;
 	@echo
 	@echo "======================================================================"
 	@echo
