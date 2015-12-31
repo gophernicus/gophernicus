@@ -44,6 +44,8 @@ HOSTCC	= $(CC)
 CFLAGS  = -O2 -Wall
 LDFLAGS = 
 
+IPCRM   = /usr/bin/ipcrm
+
 
 #
 # Platform support, compatible with both BSD and GNU make
@@ -121,11 +123,14 @@ clean-build:
 clean-deb:
 	if [ -d debian/$(PACKAGE) ]; then fakeroot debian/rules clean; fi
 
+clean-shm:
+	if [ -x $(IPCRM) ]; then $(IPCRM) -M `awk '/SHM_KEY/ { print $$3 }' $(NAME).h` || true; fi
+
 
 #
 # Install targets
 #
-install: ChangeLog
+install: ChangeLog clean-shm
 	@case `uname` in \
 		Darwin)  $(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDEST)" install-files install-docs install-root install-osx install-done; ;; \
 		Haiku)   $(MAKE) SBINDIR=/boot/common/bin DOCDIR=/boot/common/share/doc/$(PACKAGE) \

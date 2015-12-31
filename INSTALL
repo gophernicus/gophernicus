@@ -68,16 +68,14 @@ Gophernicus uses SYSV shared memory for session tracking and
 statistics. It creates the shared memory block using mode 600
 and a predefined key which means that a shared memory block
 created with one user cannot be used by another user. Simply
-said, running in.gophernicus as yourself will allocate that
-memory, and then running the binary through inetd as another
-user (nobody) will be denied access to that memory.
+said, running in.gophernicus under various different user
+accounts may create a situation where the memory block is locked
+to the wrong user.
 
 If that happens you can simply delete the memory block and
-let Gophernicus recreate it - no harm done.
+let Gophernicus recreate it - no harm done:
 
-$ su -
-# ipcs -m | grep beeb
-# ipcrm -M <key from the above command>
+$ sudo make clean-shm
 
 
 Porting to different platforms
