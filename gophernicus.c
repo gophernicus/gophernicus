@@ -329,7 +329,7 @@ char *get_local_address(void)
 #endif
 
 	/* Nothing works... I'm out of ideas */
-	return DEFAULT_ADDR;
+	return UNKNOWN_ADDR;
 }
 
 
@@ -374,7 +374,7 @@ char *get_peer_address(void)
 #endif
 
 	/* Nothing works... I'm out of ideas */
-	return DEFAULT_ADDR;
+	return UNKNOWN_ADDR;
 }
 
 
@@ -497,6 +497,13 @@ int main(int argc, char *argv[])
 
 	/* Open syslog() */
 	if (st.opt_syslog) openlog(self, LOG_PID, LOG_DAEMON);
+
+	/* Check if TCP wrappers have something to say about this connection */
+#ifdef HAVE_LIBWRAP
+	if (sstrncmp(st.req_remote_addr, UNKNOWN_ADDR) != MATCH &&
+	    hosts_ctl(self, STRING_UNKNOWN, st.req_remote_addr, STRING_UNKNOWN) == WRAP_DENIED)
+		die(&st, ERR_ACCESS, "Refused connection");
+#endif
 
 	/* Make sure the computer is turned on */
 #ifdef __HAIKU__

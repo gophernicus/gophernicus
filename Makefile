@@ -52,19 +52,25 @@ IPCRM   = /usr/bin/ipcrm
 #
 all:
 	@case `uname` in \
-		Darwin)  $(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDEST)" $(BINARY); ;; \
-		Haiku)   $(MAKE) EXTRA_LDFLAGS="-lnetwork" $(BINARY); ;; \
-		*)       $(MAKE) $(BINARY); ;; \
+		Darwin)	$(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDEST)" $(BINARY); ;; \
+		Haiku)	$(MAKE) EXTRA_LDFLAGS="-lnetwork" $(BINARY); ;; \
+		*)	if [ -f "/usr/include/tcpd.h" ]; then $(MAKE) withwrap; else $(MAKE) $(BINARY); fi; ;; \
 	esac
 
 generic: $(BINARY)
+
+withwrap:
+	$(MAKE) EXTRA_CFLAGS="-DHAVE_LIBWRAP" EXTRA_LDFLAGS="-lwrap" $(BINARY)
 
 
 #
 # Special targets
 #
 deb: ChangeLog
-	dpkg-buildpackage -rfakeroot -uc -us
+	@echo
+	@echo "Debian package building can haz borken, plz wait some moar..."
+	@echo
+	@#dpkg-buildpackage -rfakeroot -uc -us
 
 ChangeLog:
 	if [ -d .git ]; then \

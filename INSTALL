@@ -27,6 +27,23 @@ hostname (the one set with -h <hostname>) directory available
 (mkdir /var/gopher/$HOSTNAME).
 
 
+Compiling with TCP wrappers
+===========================
+
+Gophernicus uses no extra libraries... well... except libwrap
+(TCP wrappers) if it is installed with headers in default Unix
+directories at the time of compiling. If you have the headers
+installed and don't want wrapper support, run 'make generic'
+instead of just 'make', and if you have wrappers installed in
+non-standard place and want to force compile with wrappers
+just run 'make withwrap'.
+
+For configuring IP access lists with TCP wrappers, take a look
+at the files /etc/hosts.allow and /etc/hosts.deny (because the
+manual pages suck). Use the daemon name 'in.gophernicus' to
+make your access lists.
+
+
 Running with traditional inetd superserver
 ==========================================
 
@@ -48,6 +65,9 @@ directory (don't ask - that's just how it works). And instead
 of "sudo make install" you should just install the deb with
 "dpkg -i ../gophernicus_*.deb" after which It Should Just
 Work(tm).
+
+If you need TCP wrappers support on Debian/Ubuntu, please
+install libwrap0-dev before compiling.
 
 
 Cross-compiling

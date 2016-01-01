@@ -48,6 +48,7 @@
 #define HAVE_POPEN		/* popen() */
 #undef  HAVE_STRLCPY		/* strlcpy() from OpenBSD */
 #undef  HAVE_SENDFILE		/* sendfile() in Linux & others */
+/* #undef  HAVE_LIBWRAP		   autodetected, don't enable here */
 
 /* Linux */
 #ifdef __linux
@@ -130,6 +131,10 @@ size_t strlcpy(char *dst, const char *src, size_t siz);
 size_t strlcat(char *dst, const char *src, size_t siz);
 #endif
 
+#ifdef HAVE_LIBWRAP
+#include <tcpd.h>
+#endif
+
 /*
  * Compile-time configuration
  */
@@ -148,6 +153,8 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define ERROR		-1
 
 #define MATCH		0
+#define WRAP_DENIED	0
+
 
 /* Gopher filetypes */
 #define TYPE_TEXT	'0'
@@ -188,11 +195,11 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define DEFAULT_TAG	"gophertag"
 #define DEFAULT_CGI	"/cgi-bin/"
 #define DEFAULT_USERDIR	"public_gopher"
-#define DEFAULT_ADDR	"unknown"
 #define DEFAULT_WIDTH	76
 #define DEFAULT_CHARSET	US_ASCII
 #define MIN_WIDTH	33
 #define MAX_WIDTH	200
+#define UNKNOWN_ADDR	"unknown"
 
 /* Session defaults */
 #define DEFAULT_SESSION_TIMEOUT		1800
