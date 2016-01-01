@@ -328,6 +328,8 @@ void setenv_cgi(state *st, char *script)
 	setenv("GOPHER_REFERER", st->req_referrer, 1);
 	snprintf(buf, sizeof(buf), "%i", st->out_width);
 	setenv("COLUMNS", buf, 1);
+	snprintf(buf, sizeof(buf), CODENAME);
+	setenv("SERVER_CODENAME", buf, 1);
 
 	/* Bucktooth extras */
 	if (*st->req_query_string) {

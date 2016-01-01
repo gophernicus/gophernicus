@@ -5,10 +5,11 @@
 #
 # Variables and default configuration
 #
-NAME    = gophernicus
-PACKAGE = $(NAME)
-BINARY  = in.$(NAME)
-VERSION = 1.8.1
+NAME     = gophernicus
+PACKAGE  = $(NAME)
+BINARY   = in.$(NAME)
+VERSION  = 2.0-beta
+CODENAME = for Workgroups
 
 SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
 HEADERS = functions.h files.h
@@ -92,7 +93,7 @@ $(BINARY): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(EXTRA_LDFLAGS) $(OBJECTS) -o $@
 
 .c.o:
-	$(CC) -c $(CFLAGS) $(EXTRA_CFLAGS) -DVERSION="\"$(VERSION)\"" -DDEFAULT_ROOT="\"$(ROOT)\"" $< -o $@
+	$(CC) -c $(CFLAGS) $(EXTRA_CFLAGS) -DVERSION="\"$(VERSION)\"" -DCODENAME="\"$(CODENAME)\"" -DDEFAULT_ROOT="\"$(ROOT)\"" $< -o $@
 
 
 headers: $(HEADERS)

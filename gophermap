@@ -21,7 +21,7 @@ Generic information:
 =echo "    your ip address: $REMOTE_ADDR"
 =echo "    server time....: `date`"
 =echo "    server uptime..: `uptime | sed 's/.*up *\([^,]*\), .*/\1/'`"
-=echo "    server version.: $SERVER_VERSION"
+=echo "    server version.: $SERVER_VERSION \"$SERVER_CODENAME\""
 =echo "    server platform: $SERVER_ARCH"
 =echo "    description....: $SERVER_DESCRIPTION"
 
