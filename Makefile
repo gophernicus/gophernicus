@@ -32,6 +32,7 @@ LAUNCHD = /Library/LaunchDaemons
 PLIST   = org.$(NAME).server.plist
 NET_SRV = /boot/common/settings/network/services
 SYSTEMD = /lib/systemd/system
+HAS_STD = /run/systemd/system
 SYSCONF = /etc/sysconfig
 DEFAULT = /etc/default
 
@@ -143,9 +144,9 @@ install: ChangeLog clean-shm
 		                 install-files install-docs install-root install-haiku install-done; ;; \
 		*)       $(MAKE) install-files install-docs install-root; ;; \
 	esac
-	@if [ -d "$(SYSTEMD)" ]; then $(MAKE) install-systemd install-done; \
+	@if [ -d "$(HAS_STD)" ]; then $(MAKE) install-systemd install-done; \
 	elif [ -d "$(XINETD)" ]; then $(MAKE) install-xinetd install-done; \
-	elif [ -f "$(INETD)" ]; then $(MAKE) install-inetd; fi
+	elif [ -f "$(INETD)"  ]; then $(MAKE) install-inetd; fi
 
 .PHONY: install
 
@@ -236,7 +237,7 @@ install-haiku:
 	@echo
 
 install-systemd:
-	if [ -d "$(SYSTEMD)" -a ! -f "$(SYSTEMD)/$(NAME).socket" ]; then \
+	if [ -d "$(HAS_STD)" -a ! -f "$(SYSTEMD)/$(NAME).socket" ]; then \
 		if [ -d "$(SYSCONF)" -a ! -f "$(SYSCONF)/$(NAME)" ]; then \
 			$(INSTALL) -m 644 $(NAME).env $(SYSCONF)/$(NAME); \
 		fi; \
@@ -277,7 +278,7 @@ uninstall-launchd:
 	@echo
 
 uninstall-systemd:
-	if [ -d "$(SYSTEMD)" -a -f "$(SYSTEMD)/$(NAME).socket" ]; then \
+	if [ -d "$(HAS_STD)" -a -f "$(SYSTEMD)/$(NAME).socket" ]; then \
 		systemctl stop $(NAME).socket; \
 		systemctl disable $(NAME).socket; \
 		rm -f $(SYSTEMD)/$(NAME).socket $(SYSTEMD)/$(NAME)\@.service $(SYSCONF)/$(NAME) $(DEFAULT)/$(NAME); \
