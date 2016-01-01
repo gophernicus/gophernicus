@@ -2,7 +2,6 @@ Possible future development:
 
 	* Add support for mmap() in addition to SHM (for Haiku/R1)
 	* Password-protected resources
-	* Allow/Deny per IP
 	* Automated feature testing script
-	* SSL/TLS
+	* SSL/TLS (instructions for stunnel)
 
