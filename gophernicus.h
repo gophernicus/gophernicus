@@ -99,6 +99,7 @@
 #include <errno.h>
 #include <pwd.h>
 #include <limits.h>
+#include <ctype.h>
 
 #ifdef HAVE_SENDFILE
 #include <sys/sendfile.h>

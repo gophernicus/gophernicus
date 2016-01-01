@@ -152,6 +152,17 @@ void platform(state *st)
 		}
 	}
 
+	/* No DMI? Get possible hypervisor name */
+	if (!*st->server_description && (fp = fopen("/sys/hypervisor/type" , "r"))) {
+		fgets(buf, sizeof(buf), fp);
+		fclose(fp);
+
+		chomp(buf);
+		ucfirst(buf);
+
+		if (*buf) snprintf(st->server_description, sizeof(st->server_description), "%s virtual machine", buf);
+	}
+
 	/* Identify Gentoo */
 	if (!*sysname && (fp = fopen("/etc/gentoo-release", "r"))) {
 		fgets(sysname, sizeof(sysname), fp);

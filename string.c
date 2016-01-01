@@ -27,6 +27,16 @@
 
 
 /*
+ * Make a string's first character uppercase
+ */
+void ucfirst(char *str)
+{
+	if (str == NULL || !*str) return;
+	*str = toupper(*str);
+}
+
+
+/*
  * Repeat a character num times and zero-terminate
  */
 void strrepeat(char *dest, char c, size_t num)
