@@ -43,6 +43,7 @@ Command line options:
     -nr           Disable root user checking (for debugging)
 
     -d            Debug to syslog (not for production use)
+    -v            Display version number and build date
     -b            Display the BSD license
     -?            Display this help
  
