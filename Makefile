@@ -8,7 +8,7 @@
 NAME     = gophernicus
 PACKAGE  = $(NAME)
 BINARY   = in.$(NAME)
-VERSION  = 2.0-alpha
+VERSION  = 2.0
 CODENAME = for Workgroups
 
 SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
@@ -39,7 +39,7 @@ DEFAULT = /etc/default
 
 DIST    = $(PACKAGE)-$(VERSION)
 TGZ     = $(DIST).tar.gz
-RELDIR  = $ROOT/gophernicus.org/software/gophernicus/
+RELDIR  = $(ROOT)/gophernicus.org/software/gophernicus/
 
 CC      = gcc
 HOSTCC	= $(CC)

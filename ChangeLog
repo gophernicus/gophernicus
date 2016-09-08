@@ -1,5 +1,40 @@
 [ Automatically generated from git log ]
 
+2016-01-01  Kim Holviala  <kim@holviala.com>
+
+	* Released version 2.0-alpha "for Workgroups"
+	* Added option -v to display version number and build date
+	* Updated TODO (removed tasks that were done)
+	* Added detection for non-DMI Linux hypervisors (Xen)
+	* Added support for release codenames
+	* Fixed make install for non-systemd systems
+	* Added optional support for TCP wrappers
+
+2015-12-31  Kim Holviala  <kim@holviala.com>
+
+	* Installing now explicitly clears the SHM block Gophernicus uses
+
+2015-12-30  Kim Holviala  <kim@holviala.com>
+
+	* Updated TODO (removed tasks that are now done)
+	* Installation now shows the current configuration file
+	* Move configuration from systemd unit file to separate enviroment file
+	* Increased default page width from 70 to 76 chars
+	* Added detection for Gentoo Linux version
+	* Fixed installation for CentOS 7
+
+2015-12-29  Kim Holviala  <kim@holviala.com>
+
+	* Added install/uninstall support for Linux systemd
+	* Get hardware vendor and type from DMI data on Linux
+	* Tiny fix for 'make ChangeLog' to force overwrite of old file
+	* Added filetype definition for webm and ogv movies
+	* Fixed installation for Mac OSX 10.11 El Capitan
+	* Removed last remaining 'for inetd' form docs
+	* Removed 'for inetd' from docs because it's not a requirement
+	* Code needed more cows
+	* Changed copyright years to 2009-2016
+
 2015-10-16  Kim Holviala  <kim@holviala.com>
 
 	* Released version 1.8.1 (1.8 had broken gophermap support)
