@@ -1,8 +1,15 @@
 #!/bin/sh
 
-if [ "$1" = "purge" ]; then
-	update-inetd --remove "#<off># gopher"
+if [ "$1" = "purge" -a -x "/usr/sbin/update-inetd" ]; then
+	/usr/sbin/update-inetd --remove "#<off># gopher"
+fi
+
+if [ -d "/run/systemd/system" ]; then
+	systemctl --system daemon-reload >/dev/null || true
+fi
+
+if [ -x "/usr/bin/deb-systemd-helper" ]; then
+	/usr/bin/deb-systemd-helper disable gophernicus.socket >/dev/null
 fi
 
 #DEBHELPER#
-

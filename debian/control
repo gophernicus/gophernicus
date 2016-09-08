@@ -8,7 +8,7 @@ Homepage: gopher://gophernicus.org/1/software/gophernicus/server/
 
 Package: gophernicus
 Architecture: any
-Depends: ${shlibs:Depends}, debconf, netbase, openbsd-inetd | inet-superserver
+Depends: ${shlibs:Depends}, debconf, netbase, openbsd-inetd | inet-superserver | systemd
 Recommends: lsb-release
 Suggests: lynx, php5-cli
 Description: Modern full-featured gopher server

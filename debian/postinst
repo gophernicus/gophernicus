@@ -20,9 +20,6 @@ if [ "$RET" ]; then
 	HOSTNAME="`echo $RET | tr -cd 'A-Za-z0-9.-'`"
 fi
 
-# Generate inetd service
-SERVICE="gopher\t\tstream\ttcp\tnowait\t$USER\t/usr/sbin/$BINARY\t$BINARY -h $HOSTNAME -l $LOGDIR/server.log -f /usr/lib/$PACKAGE/filters"
-
 # Configure gophernicus
 if [ "$1" = "configure" ]; then
 	if [ ! -f "$ROOT/gophermap" ]; then
@@ -32,6 +29,6 @@ if [ "$1" = "configure" ]; then
 	chown $USER.adm $LOGDIR
 	chmod 0750 $LOGDIR
 
-	update-inetd --add "$SERVICE"
+	#update-inetd --add "gopher\t\tstream\ttcp\tnowait\t$USER\t/usr/sbin/$BINARY\t$BINARY -h $HOSTNAME -l $LOGDIR/server.log -f /usr/lib/$PACKAGE/filters"
 fi
 
