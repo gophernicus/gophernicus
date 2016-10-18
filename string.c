@@ -63,7 +63,7 @@ void strreplace(char *str, char from, char to)
  */
 size_t strcut(char *str, size_t width)
 {
-	unsigned char c;
+	unsigned char c = '\0';
 	int w = 0;
 	int i;
 
