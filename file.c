@@ -263,7 +263,7 @@ void caps_txt(state *st, shm_state *shm)
 		"ServerDefaultEncoding=%s" CRLF
 		CRLF
 		"ServerSoftware=" SERVER_SOFTWARE CRLF
-		"ServerSoftwareVersion=" VERSION CRLF
+		"ServerSoftwareVersion=" VERSION " \"" CODENAME "\"" CRLF
 		"ServerArchitecture=%s" CRLF,
 			st->session_timeout,
 			strcharset(st->out_charset),
