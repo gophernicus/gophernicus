@@ -1,5 +1,8 @@
 # Options for Gophernicus for use with systemd
 #
+# If you are using Gophernicus with inetd this configuration file
+# is ignored and the real configuration is in /etc/inetd.conf
+#
 # See README or run "in.gophernicus -?" to see a full list of
 # configuration options.
 #

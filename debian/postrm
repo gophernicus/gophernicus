@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ "$1" = "purge" -a -f "/etc/inetd.conf" ]; then
+if [ "$1" = "purge" -a -f /etc/inetd.conf -a -x /usr/sbin/update-inetd ]; then
 	/usr/sbin/update-inetd --remove "#<off># gopher"
 fi
 

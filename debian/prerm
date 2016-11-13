@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -f "/etc/inetd.conf" ]; then
+if [ -f /etc/inetd.conf -a -x /usr/sbin/update-inetd ]; then
 	/usr/sbin/update-inetd --disable gopher 
 fi
 
