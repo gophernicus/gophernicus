@@ -1,3 +1,4 @@
 ^\w{3} [ :0-9]{11} [._[:alnum:]-]+ in.gophernicus\[[0-9]+\]: request for "[^"]*" from [._[:alnum:]:-]+$
 ^\w{3} [ :0-9]{11} [._[:alnum:]-]+ in.gophernicus\[[0-9]+\]: error "No such file or directory" for request "[^"]*" from [._[:alnum:]:-]+$
 ^\w{3} [ :0-9]{11} [._[:alnum:]-]+ in.gophernicus\[[0-9]+\]: error "User not found" for request "/~[^"]*" from [._[:alnum:]:-]+$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ systemd\[1\]: Start(ing|ed) Gophernicus gopher server \([^[:space:]]+\)\.+$
