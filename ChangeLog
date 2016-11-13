@@ -2,6 +2,7 @@
 
 2016-11-13  Kim Holviala  <kim@holviala.com>
 
+	* Released version 2.1
 	* Added systemd support for Debian package
 	* Removed dependency for update-inetd in Debian package
 	* Fix Debian package building for inetd systems

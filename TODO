@@ -1,6 +1,5 @@
 Possible future development:
 
-	* Fix DEB package so that it works on both inetd and systemd
 	* RPM package
 	* Add support for mmap() in addition to SHM (for Haiku/R1)
 	* Password-protected resources
