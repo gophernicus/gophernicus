@@ -4,7 +4,7 @@ if [ "$1" = "purge" -a -f /etc/inetd.conf -a -x /usr/sbin/update-inetd ]; then
 	/usr/sbin/update-inetd --remove "#<off># gopher"
 fi
 
-if [ -d "/run/systemd/system" ]; then
+if [ -d /run/systemd/system ]; then
 	systemctl --system daemon-reload >/dev/null || true
 fi
 

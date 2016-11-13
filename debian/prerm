@@ -4,7 +4,7 @@ if [ -f /etc/inetd.conf -a -x /usr/sbin/update-inetd ]; then
 	/usr/sbin/update-inetd --disable gopher 
 fi
 
-if [ -x "/usr/bin/deb-systemd-helper" ]; then
+if [ -x /usr/bin/deb-systemd-helper ]; then
 	/usr/bin/deb-systemd-helper disable gophernicus.socket >/dev/null
 fi
 

@@ -34,8 +34,13 @@ if [ "$1" = "configure" ]; then
 	sed -i -e "s|__PACKAGE__|$PACKAGE|g" $DEFAULT
 	sed -i -e "s|__LOGDIR__|$LOGDIR|g" $DEFAULT
 
-	if [ -f /etc/inetd.conf -a -x /usr/sbin/update-inetd ]; then
-		/usr/sbin/update-inetd --add "gopher\t\tstream\ttcp\tnowait\t$USER\t/usr/sbin/$BINARY\t$BINARY -h $HOSTNAME -l $LOGDIR/server.log -f /usr/lib/$PACKAGE/filters"
+	if [ -x /usr/bin/deb-systemd-helper -a -d /run/systemd/system ]; then
+		/usr/bin/deb-systemd-helper enable gophernicus.socket
+		/usr/bin/deb-systemd-invoke start gophernicus.socket
+	else
+		if [ -f /etc/inetd.conf -a -x /usr/sbin/update-inetd ]; then
+			/usr/sbin/update-inetd --add "gopher\t\tstream\ttcp\tnowait\t$USER\t/usr/sbin/$BINARY\t$BINARY -h $HOSTNAME -l $LOGDIR/server.log -f /usr/lib/$PACKAGE/filters"
+		fi
 	fi
 fi
 
