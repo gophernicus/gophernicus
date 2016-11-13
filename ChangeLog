@@ -1,5 +1,9 @@
 [ Automatically generated from git log ]
 
+2016-11-13  Kim Holviala  <kim@holviala.com>
+
+	* Added systemd entries to Debian logcheck ignore file
+
 2016-10-18  Kim Holviala  <kim@holviala.com>
 
 	* Fixed a potentially uninitialized char in strcut()

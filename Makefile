@@ -69,10 +69,7 @@ withwrap:
 # Special targets
 #
 deb: ChangeLog
-	@echo
-	@echo "Debian package building can haz borken, plz wait some moar..."
-	@echo
-	@#dpkg-buildpackage -rfakeroot -uc -us
+	dpkg-buildpackage -rfakeroot -uc -us
 
 ChangeLog:
 	if [ -d .git ]; then \

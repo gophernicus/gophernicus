@@ -1,4 +1,4 @@
-# Options for Gophernicus
+# Options for Gophernicus for use with systemd
 #
 # See README or run "in.gophernicus -?" to see a full list of
 # configuration options.
@@ -6,5 +6,5 @@
 # Example:
 # OPTIONS="-h full.hostname -D \"I find your lack of gopher disturbing.\""
 #
-# Uncomment and add your options here:
-OPTIONS="-h $HOSTNAME -l $LOGDIR/server.log -f /usr/lib/$PACKAGE/filters"
+# Add your options here:
+OPTIONS="-h __HOSTNAME__ -l __LOGDIR__/server.log -f /usr/lib/__PACKAGE__/filters"
