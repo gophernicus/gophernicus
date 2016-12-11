@@ -8,7 +8,7 @@
 NAME     = gophernicus
 PACKAGE  = $(NAME)
 BINARY   = in.$(NAME)
-VERSION  = 2.1
+VERSION  = 2.2-beta
 CODENAME = for Workgroups
 
 SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
@@ -32,7 +32,7 @@ XINETD  = /etc/xinetd.d
 LAUNCHD = /Library/LaunchDaemons
 PLIST   = org.$(NAME).server.plist
 NET_SRV = /boot/common/settings/network/services
-SYSTEMD = /lib/systemd/system
+SYSTEMD = /lib/systemd/system /usr/lib/systemd/system
 HAS_STD = /run/systemd/system
 SYSCONF = /etc/sysconfig
 DEFAULT = /etc/default
@@ -235,14 +235,19 @@ install-haiku:
 	@echo
 
 install-systemd:
-	if [ -d "$(HAS_STD)" -a ! -f "$(SYSTEMD)/$(NAME).socket" ]; then \
+	if [ -d "$(HAS_STD)" ]; then \
 		if [ -d "$(SYSCONF)" -a ! -f "$(SYSCONF)/$(NAME)" ]; then \
 			$(INSTALL) -m 644 $(NAME).env $(SYSCONF)/$(NAME); \
 		fi; \
 		if [ ! -d "$(SYSCONF)" -a -d "$(DEFAULT)" -a ! -f $(DEFAULT)/$(NAME) ]; then \
 			$(INSTALL) -m 644 $(NAME).env $(DEFAULT)/$(NAME); \
 		fi; \
-		$(INSTALL) -m 644 $(NAME).socket $(NAME)\@.service $(SYSTEMD); \
+		for DIR in $(SYSTEMD); do \
+			if [ -d "$$DIR" ]; then \
+				$(INSTALL) -m 644 $(NAME).socket $(NAME)\@.service $$DIR; \
+				break; \
+			fi; \
+		done; \
 		systemctl daemon-reload; \
 		systemctl enable $(NAME).socket; \
 		systemctl start $(NAME).socket; \
@@ -276,10 +281,16 @@ uninstall-launchd:
 	@echo
 
 uninstall-systemd:
-	if [ -d "$(HAS_STD)" -a -f "$(SYSTEMD)/$(NAME).socket" ]; then \
-		systemctl stop $(NAME).socket; \
-		systemctl disable $(NAME).socket; \
-		rm -f $(SYSTEMD)/$(NAME).socket $(SYSTEMD)/$(NAME)\@.service $(SYSCONF)/$(NAME) $(DEFAULT)/$(NAME); \
+	if [ -d "$(HAS_STD)" ]; then \
+		for DIR in $(SYSTEMD); do \
+			if [ -f "$$DIR/$(NAME).socket" ]; then \
+				systemctl stop $(NAME).socket; \
+				systemctl disable $(NAME).socket; \
+				rm -f $$DIR/$(NAME).socket $$DIR/$(NAME)\@.service $(SYSCONF)/$(NAME) $(DEFAULT)/$(NAME); \
+				systemctl daemon-reload; \
+				break; \
+			fi; \
+		done; \
 	fi
 	@echo
 
