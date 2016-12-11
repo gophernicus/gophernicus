@@ -5,14 +5,14 @@
 ##
 
 PREVIOUS=
-IFS=/
+IFS=\;
 
 echo "[ Automatically generated from git log ]"
 
-git log --pretty=tformat:"%ad  %an  <%ae>/%s" --date=short | \
-while read AUTHOR COMMENT; do
+git log --pretty=tformat:"%ad  %an  <%ae>;%s" --date=short | \
+while read -r AUTHOR COMMENT; do
 	[ "$AUTHOR" != "$PREVIOUS" ] && printf "\n$AUTHOR\n\n"
-	printf "\t* $COMMENT\n"
+	printf "\t* %s\n" "$COMMENT"
 	PREVIOUS="$AUTHOR"
 done
 
