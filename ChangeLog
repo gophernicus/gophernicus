@@ -1,7 +1,13 @@
 [ Automatically generated from git log ]
 
+2016-12-11  Kim Holviala  <kim@holviala.com>
+
+	* Small fix for git2changelog so that it keeps \ and / in comments
+	* Fixed systemd-based installation for openSUSE and RedHat
+
 2016-11-14  Kim Holviala  <kim@holviala.com>
 
+	* Re-released version 2.1 \m/
 	* Ignore exit errors in systemd configuration
 
 2016-11-13  Kim Holviala  <kim@holviala.com>
