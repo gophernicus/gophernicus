@@ -2,6 +2,7 @@
 
 2016-12-11  Kim Holviala  <kim@holviala.com>
 
+	* Released version 2.2
 	* Small fix for git2changelog so that it keeps \ and / in comments
 	* Fixed systemd-based installation for openSUSE and RedHat
 
