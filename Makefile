@@ -8,7 +8,7 @@
 NAME     = gophernicus
 PACKAGE  = $(NAME)
 BINARY   = in.$(NAME)
-VERSION  = 2.2
+VERSION  = 2.3-alpha
 CODENAME = for Workgroups
 
 SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
@@ -123,7 +123,7 @@ files.h: bin2c
 clean: clean-build clean-deb
 
 clean-build:
-	rm -f $(BINARY) $(OBJECTS) $(TGZ) $(HEADERS) README.options bin2c .ChangeLog
+	rm -f $(BINARY) $(OBJECTS) $(PACKAGE)-*.tar.gz $(HEADERS) README.options bin2c .ChangeLog
 
 clean-deb:
 	if [ -d debian/$(PACKAGE) ]; then fakeroot debian/rules clean; fi
