@@ -54,6 +54,7 @@
 #ifdef __linux
 #undef  PASSWD_MIN_UID
 #define PASSWD_MIN_UID 500
+#define _FILE_OFFSET_BITS 64
 #endif
 
 /* Embedded Linux with uClibc */
@@ -80,8 +81,12 @@
 #endif
 #endif
 
-/* Add other OS-specific defines here */
+/* AIX */
+#if defined(_AIX)
+#define _LARGE_FILES 1
+#endif
 
+/* Add other OS-specific defines here */
 
 /*
  * Include headers
