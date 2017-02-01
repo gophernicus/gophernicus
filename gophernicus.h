@@ -54,7 +54,6 @@
 #ifdef __linux
 #undef  PASSWD_MIN_UID
 #define PASSWD_MIN_UID 500
-#define HAVE_SENDFILE
 #endif
 
 /* Embedded Linux with uClibc */
@@ -82,6 +81,7 @@
 #endif
 
 /* Add other OS-specific defines here */
+
 
 /*
  * Include headers
