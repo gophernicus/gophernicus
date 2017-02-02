@@ -31,6 +31,7 @@
  */
 #undef  ENABLE_STRICT_RFC1436	/* Follow RFC1436 to the letter */
 #undef  ENABLE_AUTOHIDING	/* Hide manually listed resources from generated menus */
+#define ENABLE_HAPROXY1		/* Autodetect HAproxy/Stunnel proxy protocol v1 */
 
 
 /*

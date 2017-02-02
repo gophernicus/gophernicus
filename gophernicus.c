@@ -480,6 +480,11 @@ int main(int argc, char *argv[])
 	shm_state *shm;
 	int shmid;
 #endif
+#ifdef ENABLE_HAPROXY1
+	char remote[BUFSIZE];
+	char local[BUFSIZE];
+	int dummy;
+#endif
 
 	/* Get the name of this binary */
 	if ((c = strrchr(argv[0], '/'))) sstrlcpy(self, c + 1);
@@ -556,6 +561,7 @@ int main(int argc, char *argv[])
 		platform(&st);
 
 	/* Read selector */
+get_selector:
 	if (fgets(selector, sizeof(selector) - 1, stdin) == NULL)
 		selector[0] = '\0';
 
@@ -563,6 +569,23 @@ int main(int argc, char *argv[])
 	chomp(selector);
 
 	if (st.debug) syslog(LOG_INFO, "client sent us \"%s\"", selector);
+
+	/* Handle HAproxy/Stunnel proxy protocol v1 */
+#ifdef ENABLE_HAPROXY1
+	if (sstrncmp(selector, "PROXY TCP") == MATCH) {
+		if (st.debug) syslog(LOG_INFO, "got proxy protocol header \"%s\"", selector);
+
+		sscanf(selector, "PROXY TCP%d %s %s %d %d",
+			&dummy, remote, local, &dummy, &st.server_port);
+
+		/* Strip ::ffff: IPv4-in-IPv6 prefix and override old addresses */
+		sstrlcpy(st.req_local_addr, local + ((sstrncmp(local, "::ffff:") == MATCH) ? 7 : 0));
+		sstrlcpy(st.req_remote_addr, remote + ((sstrncmp(remote, "::ffff:") == MATCH) ? 7 : 0));
+
+		/* My precious \o/ */
+		goto get_selector;
+	}
+#endif
 
 	/* Handle hURL: redirect page */
 	if (sstrncmp(selector, "URL:") == MATCH) {
