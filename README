@@ -241,15 +241,15 @@ TLS/SSL and proxy support
 =========================
 
 As of version 2.3 Gophernicus supports the HAproxy proxy protocol
-version 1. This makes it possible to build a cluster of gopher
-servers and use HAproxy in front of them all handling client
-routing to different backend servers.
+version 1. This makes it possible to build a cluster of gopher servers
+and use HAproxy in front of them all handling client routing to different
+backend servers.
 
-More useful is putting Gophernicus behind Stunnel4 for TLS/SSL
-support and use the same proxy protocol to tell Gophernicus the
-correct remote IP address. The below sample stunnel configuration
-is all you need to TLS-enable your gopher server. Well, you'll
-need a certificate too and for that I recommend Let's Encrypt.
+More useful is putting Gophernicus behind Stunnel4 for TLS/SSL support
+and use the same proxy protocol to tell Gophernicus the correct remote IP
+address. The below sample stunnel configuration is all you need to
+TLS-enable your gopher server. Well, you'll need a certificate too and for
+that I recommend Let's Encrypt.
 
 
 ;
