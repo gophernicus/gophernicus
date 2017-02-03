@@ -237,3 +237,47 @@ supports HTTP requests of the server-status page using an URL like
 http://<HOSTNAME>:70/server-status?auto
 
 
+TLS/SSL and proxy support
+=========================
+
+As of version 2.3 Gophernicus supports the HAproxy proxy protocol
+version 1. This makes it possible to build a cluster of gopher
+servers and use HAproxy in front of them all handling client
+routing to different backend servers.
+
+More useful is putting Gophernicus behind Stunnel4 for TLS/SSL
+support and use the same proxy protocol to tell Gophernicus the
+correct remote IP address. The below sample stunnel configuration
+is all you need to TLS-enable your gopher server. Well, you'll
+need a certificate too and for that I recommend Let's Encrypt.
+
+
+;
+; Gophernicus behind Stunnel4 for gopher over TLS
+;
+
+; User/group for stunnel daemon
+setuid = stunnel4
+setgid = stunnel4
+
+; PID file location
+pid = /var/run/stunnel4/gophernicus.pid
+
+; Log to file, not syslog
+output = /var/log/stunnel4/gophernicus.log
+syslog = no
+
+; Certificate in pem format is needed for TLS
+cert = /etc/ssl/private/gophernicus.pem
+
+; Enable TCP wrappers
+libwrap = yes
+service = in.gophernicus-tls
+
+; Gopher over TLS service
+[gophernicus]
+accept  = :::7070
+connect = 127.0.0.1:70
+protocol = proxy
+
+
