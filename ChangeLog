@@ -1,7 +1,18 @@
 [ Automatically generated from git log ]
 
+2017-02-03  Kim Holviala  <kim@holviala.com>
+
+	* Document the use of Stunnel4 for gopher over TLS
+	* Don't get TCP port number from user session data
+
+2017-02-02  Kim Holviala  <kim@holviala.com>
+
+	* Initial support for HAproxy/Stunnel proxy protocol v1
+	* Skip goto labels when generating functions.h
+
 2017-02-01  Kim Holviala  <kim@holviala.com>
 
+	* Fixed make clean to remove all old gophernicus-VERSION.tar.gz files
 	* Enabled large file support on 32-bit Linux and AIX
 	* Remove sendfile() support from Linux
 

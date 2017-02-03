@@ -8,7 +8,7 @@
 NAME     = gophernicus
 PACKAGE  = $(NAME)
 BINARY   = in.$(NAME)
-VERSION  = 2.3-alpha
+VERSION  = 2.3
 CODENAME = for Workgroups
 
 SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
