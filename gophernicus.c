@@ -740,7 +740,8 @@ get_selector:
 
 	/* Log the request */
 	if (st.opt_syslog) {
-		syslog(LOG_INFO, "request for \"gopher://%s:%i/%c%s\" from %s",
+		syslog(LOG_INFO, "request for \"gopher%s://%s:%i/%c%s\" from %s",
+			(st.server_port == st.server_tls_port ? "s" : ""),
 			st.server_host,
 			st.server_port,
 			st.req_filetype,

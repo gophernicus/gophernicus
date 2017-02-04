@@ -107,7 +107,8 @@ void update_shm_session(state *st, shm_state *shm)
 
 	/* Get referrer from old session data */
 	if (*shm->session[i].server_host) {
-		snprintf(buf, sizeof(buf), "gopher://%s:%i/%c%s",
+		snprintf(buf, sizeof(buf), "gopher%s://%s:%i/%c%s",
+			(shm->session[i].server_port == st->server_tls_port ? "s" : ""),
 			shm->session[i].server_host,
 			shm->session[i].server_port,
 			shm->session[i].req_filetype,

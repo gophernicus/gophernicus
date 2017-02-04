@@ -118,7 +118,8 @@ void url_redirect(state *st)
 
 	/* Log the redirect */
 	if (st->opt_syslog) {
-		syslog(LOG_INFO, "request for \"gopher://%s:%i/h%s\" from %s",
+		syslog(LOG_INFO, "request for \"gopher%s://%s:%i/h%s\" from %s",
+			(st->server_port == st->server_tls_port ? "s" : ""),
 			st->server_host,
 			st->server_port,
 			st->req_selector,
@@ -154,7 +155,8 @@ void server_status(state *st, shm_state *shm, int shmid)
 
 	/* Log the request */
 	if (st->opt_syslog) {
-		syslog(LOG_INFO, "request for \"gopher://%s:%i/0" SERVER_STATUS "\" from %s",
+		syslog(LOG_INFO, "request for \"gopher%s://%s:%i/0" SERVER_STATUS "\" from %s",
+			(st->server_port == st->server_tls_port ? "s" : ""),
 			st->server_host,
 			st->server_port,
 			st->req_remote_addr);
@@ -201,11 +203,12 @@ void server_status(state *st, shm_state *shm, int shmid)
 		if ((now - shm->session[i].req_atime) < st->session_timeout) {
 			sessions++;
 
-			printf("Session: %-4i %-40s %-4li %-7li gopher://%s:%i/%c%s" CRLF,
+			printf("Session: %-4i %-40s %-4li %-7li gopher%s://%s:%i/%c%s" CRLF,
 				(int) (now - shm->session[i].req_atime),
 				shm->session[i].req_remote_addr,
 				shm->session[i].hits,
 				shm->session[i].kbytes,
+				(shm->session[i].server_port == st->server_tls_port ? "s" : ""),
 				shm->session[i].server_host,
 				shm->session[i].server_port,
 				shm->session[i].req_filetype,
@@ -225,7 +228,8 @@ void caps_txt(state *st, shm_state *shm)
 {
 	/* Log the request */
 	if (st->opt_syslog) {
-		syslog(LOG_INFO, "request for \"gopher://%s:%i/0" CAPS_TXT "\" from %s",
+		syslog(LOG_INFO, "request for \"gopher%s://%s:%i/0" CAPS_TXT "\" from %s",
+			(st->server_port == st->server_tls_port ? "s" : ""),
 			st->server_host,
 			st->server_port,
 			st->req_remote_addr);
