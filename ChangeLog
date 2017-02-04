@@ -1,7 +1,14 @@
 [ Automatically generated from git log ]
 
+2017-02-04  Kim Holviala  <kim@holviala.com>
+
+	* Fixed logging of TLS connections (using gophers:// protocol)
+	* Add TLS support for CGI apps and caps.txt via -T <tls port> option
+	* Fixed line wrapping in README
+
 2017-02-03  Kim Holviala  <kim@holviala.com>
 
+	* Released version 2.3
 	* Document the use of Stunnel4 for gopher over TLS
 	* Don't get TCP port number from user session data
 
