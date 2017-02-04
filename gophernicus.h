@@ -195,18 +195,19 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define HTTP_USERAGENT	"Unknown gopher client"
 
 /* Defaults for settings */
-#define DEFAULT_HOST	"localhost"
-#define DEFAULT_PORT	70
-#define DEFAULT_TYPE	TYPE_TEXT
-#define DEFAULT_MAP	"gophermap"
-#define DEFAULT_TAG	"gophertag"
-#define DEFAULT_CGI	"/cgi-bin/"
-#define DEFAULT_USERDIR	"public_gopher"
-#define DEFAULT_WIDTH	76
-#define DEFAULT_CHARSET	US_ASCII
-#define MIN_WIDTH	33
-#define MAX_WIDTH	200
-#define UNKNOWN_ADDR	"unknown"
+#define DEFAULT_HOST		"localhost"
+#define DEFAULT_PORT		70
+#define DEFAULT_TLS_PORT	0
+#define DEFAULT_TYPE		TYPE_TEXT
+#define DEFAULT_MAP		"gophermap"
+#define DEFAULT_TAG		"gophertag"
+#define DEFAULT_CGI		"/cgi-bin/"
+#define DEFAULT_USERDIR		"public_gopher"
+#define DEFAULT_WIDTH		76
+#define DEFAULT_CHARSET		US_ASCII
+#define MIN_WIDTH		33
+#define MAX_WIDTH		200
+#define UNKNOWN_ADDR		"unknown"
 
 /* Session defaults */
 #define DEFAULT_SESSION_TIMEOUT		1800
@@ -310,6 +311,7 @@ typedef struct {
 	char server_host_default[64];
 	char server_host[64];
 	int  server_port;
+	int  server_tls_port;
 
 	char default_filetype;
 	char map_file[64];

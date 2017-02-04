@@ -414,6 +414,7 @@ void init_state(state *st)
 		sstrlcpy(st->server_host, buf);
 
 	st->server_port = DEFAULT_PORT;
+	st->server_tls_port = DEFAULT_TLS_PORT;
 
 	st->default_filetype = DEFAULT_TYPE;
 	sstrlcpy(st->map_file, DEFAULT_MAP);

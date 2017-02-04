@@ -261,12 +261,14 @@ void caps_txt(state *st, shm_state *shm)
 		"PathKeepPreDelimeter=FALSE" CRLF
 		"ServerSupportsStdinScripts=TRUE" CRLF
 		"ServerDefaultEncoding=%s" CRLF
+		"ServerTLSPort=%i" CRLF
 		CRLF
 		"ServerSoftware=" SERVER_SOFTWARE CRLF
 		"ServerSoftwareVersion=" VERSION " \"" CODENAME "\"" CRLF
 		"ServerArchitecture=%s" CRLF,
 			st->session_timeout,
 			strcharset(st->out_charset),
+			st->server_tls_port,
 			st->server_platform);
 
 	/* Optional keys */
@@ -305,9 +307,16 @@ void setenv_cgi(state *st, char *script)
 	else
 		setenv("SERVER_PROTOCOL", "RFC1436", 1);
 
+	if (st->server_port == st->server_tls_port) {
+		setenv("HTTPS", "on", 1);
+		setenv("TLS", "on", 1);
+	}
+
 	setenv("SERVER_NAME", st->server_host, 1);
 	snprintf(buf, sizeof(buf), "%i", st->server_port);
 	setenv("SERVER_PORT", buf, 1);
+	snprintf(buf, sizeof(buf), "%i", st->server_tls_port);
+	setenv("SERVER_TLS_PORT", buf, 1);
 	setenv("REQUEST_METHOD", "GET", 1);
 	setenv("DOCUMENT_ROOT", st->server_root, 1);
 	setenv("SCRIPT_NAME", st->req_selector, 1);

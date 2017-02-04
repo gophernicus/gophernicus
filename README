@@ -6,6 +6,7 @@ daemon. It is licensed under the BSD license.
 Command line options:
     -h hostname   Change server hostname (FQDN)      [$HOSTNAME]
     -p port       Change server port                 [70]
+    -T port       Change TLS/SSL port                [0 = disabled]
     -r root       Change gopher root                 [/var/gopher]
     -t type       Change default gopher filetype     [0]
     -g mapfile    Change gophermap file              [gophermap]
@@ -250,6 +251,12 @@ and use the same proxy protocol to tell Gophernicus the correct remote IP
 address. The below sample stunnel configuration is all you need to
 TLS-enable your gopher server. Well, you'll need a certificate too and for
 that I recommend Let's Encrypt.
+
+In addition to configuring Stunnel for TLS you should add -T <TLS port>
+to Gophernicus options so that it knows which connetions are coming in
+encrypted and which are not. Using proper -T also makes it possible for
+CGI programs to use the $TLS environment variable to know whether the
+current request was encrypted or not.
 
 
 ;
