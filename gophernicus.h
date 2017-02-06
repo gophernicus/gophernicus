@@ -349,6 +349,7 @@ typedef struct {
 	char opt_caps;
 	char opt_shm;
 	char opt_root;
+	char opt_proxy;
 	char debug;
 } state;
 

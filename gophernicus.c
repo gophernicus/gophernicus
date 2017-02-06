@@ -451,6 +451,7 @@ void init_state(state *st)
 	st->opt_caps = TRUE;
 	st->opt_shm = TRUE;
 	st->opt_root = TRUE;
+	st->opt_proxy = TRUE;
 	st->debug = FALSE;
 
 	/* Load default suffix -> filetype mappings */
@@ -573,7 +574,7 @@ get_selector:
 
 	/* Handle HAproxy/Stunnel proxy protocol v1 */
 #ifdef ENABLE_HAPROXY1
-	if (sstrncmp(selector, "PROXY TCP") == MATCH) {
+	if (sstrncmp(selector, "PROXY TCP") == MATCH && st.opt_proxy) {
 		if (st.debug) syslog(LOG_INFO, "got proxy protocol header \"%s\"", selector);
 
 		sscanf(selector, "PROXY TCP%d %s %s %d %d",
