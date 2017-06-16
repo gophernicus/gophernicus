@@ -12,6 +12,7 @@ in.gophernicus
 # Release files
 #
 *.gz
+ChangeLog
 
 #
 # Debian packaging leftovers

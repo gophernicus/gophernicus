@@ -20,6 +20,7 @@ build-stamp:
 	dh_testdir
 
 	$(MAKE)
+	$(MAKE) ChangeLog
 
 	touch $@
 

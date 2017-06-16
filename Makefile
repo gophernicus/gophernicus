@@ -8,7 +8,7 @@
 NAME     = gophernicus
 PACKAGE  = $(NAME)
 BINARY   = in.$(NAME)
-VERSION  = 2.4
+VERSION  = 2.5-beta
 CODENAME = Millennium Edition
 
 SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
@@ -68,14 +68,13 @@ withwrap:
 #
 # Special targets
 #
-deb: ChangeLog
+deb:
 	dpkg-buildpackage -rfakeroot -uc -us
 
 ChangeLog:
 	if [ -d .git ]; then \
-		(./git2changelog > .ChangeLog; \
-		sed -ne '/2012-12-02/,$$p' ChangeLog >> .ChangeLog; \
-		mv -f .ChangeLog ChangeLog); \
+		(./git2changelog > ChangeLog; \
+		cat changelog.old >> ChangeLog); \
 	else true; fi
 
 .PHONY: ChangeLog
@@ -124,7 +123,7 @@ files.h: bin2c
 clean: clean-build clean-deb
 
 clean-build:
-	rm -f $(BINARY) $(OBJECTS) $(PACKAGE)-*.tar.gz $(HEADERS) README.options bin2c .ChangeLog
+	rm -f $(BINARY) $(OBJECTS) $(PACKAGE)-*.tar.gz $(HEADERS) README.options bin2c
 
 clean-deb:
 	if [ -d debian/$(PACKAGE) ]; then fakeroot debian/rules clean; fi
@@ -312,7 +311,7 @@ release: dist
 #
 # List all C defines
 #
-defines:
+defines: functions.h files.h
 	$(CC) -dM -E $(NAME).c
 
 
