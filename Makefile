@@ -306,7 +306,7 @@ dist: clean functions.h ChangeLog
 
 release: dist
 	cp $(TGZ) $(RELDIR)
-	cp README INSTALL ChangeLog $(RELDIR)
+	cp README README.Gophermap INSTALL ChangeLog $(RELDIR)
 
 
 #
