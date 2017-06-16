@@ -109,6 +109,7 @@ void url_redirect(state *st)
 	sstrlcpy(dest, st->req_selector + 4);
 
 	if (sstrncmp(dest, "http://") != MATCH &&
+	    sstrncmp(dest, "https://") != MATCH &&
 	    sstrncmp(dest, "ftp://") != MATCH &&
 	    sstrncmp(dest, "mailto:") != MATCH)
 		die(st, ERR_ACCESS, "Refusing to HTTP redirect unsafe protocols");
