@@ -8,7 +8,7 @@
 NAME     = gophernicus
 PACKAGE  = $(NAME)
 BINARY   = in.$(NAME)
-VERSION  = 2.5-beta
+VERSION  = 2.5
 CODENAME = Millennium Edition
 
 SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
