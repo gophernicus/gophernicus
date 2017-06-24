@@ -392,6 +392,7 @@ void init_state(state *st)
 	strclear(st->req_selector);
 	strclear(st->req_realpath);
 	strclear(st->req_query_string);
+	strclear(st->req_search);
 	strclear(st->req_referrer);
 	sstrlcpy(st->req_local_addr, get_local_address());
 	sstrlcpy(st->req_remote_addr, get_peer_address());
@@ -628,6 +629,25 @@ get_selector:
 	if (shm) get_shm_session(&st, shm);
 #endif
 
+
+	/* Parse <tab>search from selector */
+	if ((c = strchr(selector, '\t'))) {
+		sstrlcpy(st.req_search, c + 1);
+		*c = '\0';
+	}
+
+	/* Parse ?query from selector */
+	if (st.opt_query && (c = strchr(selector, '?'))) {
+		sstrlcpy(st.req_query_string, c + 1);
+		*c = '\0';
+	}
+
+	/* Parse ;vhost from selector */
+	if (st.opt_vhost && (c = strchr(selector, ';'))) {
+		sstrlcpy(st.server_host, c + 1);
+		*c = '\0';
+	}
+
 	/* Loop through the selector, fix it & separate query_string */
 	dest = st.req_selector;
 	if (selector[0] != '/') *dest++ = '/';
@@ -638,26 +658,14 @@ get_selector:
 		while (*c == '/' && *(c + 1) == '/') c++;
 		if (*c == '/' && *(c + 1) == '.' && *(c + 2) == '/') c += 2;
 
-		/* Start of a query string (either type 7 or HTTP-style)? */
-		if (*c == '\t' || (st.opt_query && *c == '?')) {
-			sstrlcpy(st.req_query_string, c + 1);
-			if ((c = strchr(st.req_query_string, '\t'))) *c = '\0';
-			break;
-		}
-
-		/* Start of virtual host hint? */
-		if (*c == ';') {
-			if (st.opt_vhost) sstrlcpy(st.server_host, c + 1);
-
-			/* Skip vhost on selector */
-			while (*c && *c != '\t') c++;
-			continue;
-		}
-
 		/* Copy valid char */
 		*dest++ = *c++;
 	}
 	*dest = '\0';
+
+	/* Main query parameters compatibility with older versions of Gophernicus */
+	if (*st.req_query_string && !*st.req_search) sstrlcpy(st.req_search, st.req_query_string);
+	if (!*st.req_query_string && *st.req_search) sstrlcpy(st.req_query_string, st.req_search);
 
 	/* Remove encodings from selector */
 	strndecode(st.req_selector, st.req_selector, sizeof(st.req_selector));

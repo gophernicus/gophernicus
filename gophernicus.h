@@ -291,6 +291,7 @@ typedef struct {
 	char req_selector[BUFSIZE];
 	char req_realpath[BUFSIZE];
 	char req_query_string[BUFSIZE];
+	char req_search[BUFSIZE];
 	char req_referrer[BUFSIZE];
 	char req_local_addr[64];
 	char req_remote_addr[64];
@@ -356,7 +357,7 @@ typedef struct {
 /* Shared memory for session & accounting data */
 #ifdef HAVE_SHMEM
 
-#define SHM_KEY		0xbeeb0007	/* Unique identifier + struct version */
+#define SHM_KEY		0xbeeb0008	/* Unique identifier + struct version */
 #define SHM_MODE	0600		/* Access mode for the shared memory */
 #define SHM_SESSIONS	256		/* Max amount of user sessions to track */
 

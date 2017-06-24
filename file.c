@@ -355,7 +355,7 @@ void setenv_cgi(state *st, char *script)
 
 	setenv("SERVER_HOST", st->server_host, 1);
 	setenv("REQUEST", st->req_selector, 1);
-	setenv("SEARCHREQUEST", st->req_query_string, 1);
+	setenv("SEARCHREQUEST", st->req_search, 1);
 }
 
 
