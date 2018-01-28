@@ -124,7 +124,7 @@ files.h: bin2c
 clean: clean-build clean-deb
 
 clean-build:
-	rm -f $(BINARY) $(OBJECTS) $(PACKAGE)-*.tar.gz $(HEADERS) README.options bin2c
+	rm -f $(BINARY) $(OBJECTS) $(HEADERS) README.options bin2c
 
 clean-deb:
 	if [ -d debian/$(PACKAGE) ]; then fakeroot debian/rules clean; fi
