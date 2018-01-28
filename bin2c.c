@@ -1,5 +1,5 @@
 /*
- * bin2c - Copyright (c) 2010 Kim Holviala <kim@holviala.com>
+ * bin2c - Copyright (c) 2009-2018 Kim Holviala <kimholviala@fastmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

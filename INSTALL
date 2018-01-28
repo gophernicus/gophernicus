@@ -105,8 +105,8 @@ If you need to port Gophernicus to a new platform, please take
 a look at gophernicus.h which has a bunch of HAVE_* #defines.
 Fiddling with those usually makes it possible to compile a working
 server. If you succeed in compiling Gophernicus to a new
-platform please send the patches to kim@holviala.com so I can 
-include them into the next release.
+platform please send the patches to me so I can include them into
+the next release.
 
 Tested (and semi-supported) platforms include:
 

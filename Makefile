@@ -12,6 +12,7 @@ VERSION  = `./version`
 CODENAME = Outta Prison
 AUTHOR   = Kim Holviala
 EMAIL    = kimholviala@fastmail.com
+STARTED  = 2009
 
 SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
 HEADERS = functions.h files.h
@@ -307,4 +308,13 @@ defines: functions.h files.h
 #
 loc:
 	@wc -l *.c
+
+
+#
+# Fix copyright notes
+#
+copyright:
+	sed -i .stupid -e "s/Copyright .c. 2.*$$/Copyright (c) $(STARTED)-`date +%Y` $(AUTHOR) <$(EMAIL)>/" *.c *.h LICENSE README debian/copyright
+	sed -i .stupid -e "s/Maintainer: .*$$/Maintainer: $(AUTHOR) <$(EMAIL)>/" debian/control
+	rm -f *.stupid debian/*.stupid
 
