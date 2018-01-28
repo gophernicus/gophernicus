@@ -140,6 +140,7 @@ void parse_args(state *st, int argc, char *argv[])
 				if (*optarg == 'q') { st->opt_query = FALSE; break; }
 				if (*optarg == 's') { st->opt_syslog = FALSE; break; }
 				if (*optarg == 'a') { st->opt_caps = FALSE; break; }
+				if (*optarg == 't') { st->opt_status = FALSE; break; }
 				if (*optarg == 'm') { st->opt_shm = FALSE; break; }
 				if (*optarg == 'r') { st->opt_root = FALSE; break; }
 				if (*optarg == 'p') { st->opt_proxy = FALSE; break; }

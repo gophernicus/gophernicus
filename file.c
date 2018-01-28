@@ -204,16 +204,18 @@ void server_status(state *st, shm_state *shm, int shmid)
 		if ((now - shm->session[i].req_atime) < st->session_timeout) {
 			sessions++;
 
-			printf("Session: %-4i %-40s %-4li %-7li gopher%s://%s:%i/%c%s" CRLF,
-				(int) (now - shm->session[i].req_atime),
-				shm->session[i].req_remote_addr,
-				shm->session[i].hits,
-				shm->session[i].kbytes,
-				(shm->session[i].server_port == st->server_tls_port ? "s" : ""),
-				shm->session[i].server_host,
-				shm->session[i].server_port,
-				shm->session[i].req_filetype,
-				shm->session[i].req_selector);
+			if (st->debug) {
+				printf("Session: %-4i %-40s %-4li %-7li gopher%s://%s:%i/%c%s" CRLF,
+					(int) (now - shm->session[i].req_atime),
+					shm->session[i].req_remote_addr,
+					shm->session[i].hits,
+					shm->session[i].kbytes,
+					(shm->session[i].server_port == st->server_tls_port ? "s" : ""),
+					shm->session[i].server_host,
+					shm->session[i].server_port,
+					shm->session[i].req_filetype,
+					shm->session[i].req_selector);
+			}
 		}
 	}
 

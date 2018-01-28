@@ -348,6 +348,7 @@ typedef struct {
 	char opt_vhost;
 	char opt_query;
 	char opt_caps;
+	char opt_status;
 	char opt_shm;
 	char opt_root;
 	char opt_proxy;

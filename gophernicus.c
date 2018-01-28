@@ -450,6 +450,7 @@ void init_state(state *st)
 	st->opt_iconv = TRUE;
 	st->opt_query = TRUE;
 	st->opt_caps = TRUE;
+	st->opt_status = TRUE;
 	st->opt_shm = TRUE;
 	st->opt_root = TRUE;
 	st->opt_proxy = TRUE;
@@ -676,7 +677,7 @@ get_selector:
 
 	/* Handle /server-status requests */
 #ifdef HAVE_SHMEM
-	if (sstrncmp(st.req_selector, SERVER_STATUS) == MATCH) {
+	if (st.opt_status && sstrncmp(st.req_selector, SERVER_STATUS) == MATCH) {
 		if (shm) server_status(&st, shm, shmid);
 		return OK;
 	}
