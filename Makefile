@@ -8,8 +8,10 @@
 NAME     = gophernicus
 PACKAGE  = $(NAME)
 BINARY   = in.$(NAME)
-VERSION  = 2.5
-CODENAME = Millennium Edition
+VERSION  = `./version`
+CODENAME = Outta Prison
+AUTHOR   = Kim Holviala
+EMAIL    = kimholviala@fastmail.com
 
 SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
 HEADERS = functions.h files.h
@@ -36,10 +38,6 @@ SYSTEMD = /lib/systemd/system /usr/lib/systemd/system
 HAS_STD = /run/systemd/system
 SYSCONF = /etc/sysconfig
 DEFAULT = /etc/default
-
-DIST    = $(PACKAGE)-$(VERSION)
-TGZ     = $(DIST).tar.gz
-RELDIR  = $(ROOT)/gophernicus.org/software/gophernicus/
 
 CC      = gcc
 HOSTCC	= $(CC)
@@ -69,6 +67,8 @@ withwrap:
 # Special targets
 #
 deb:
+	printf "$(PACKAGE) ($(VERSION)) unstable; urgency=low\n\n  * Automatically generated changelog\n\n" > debian/changelog
+	printf " -- $(AUTHOR) <$(EMAIL)>  %s\n" "`LC_ALL=POSIX date "+%a, %d %b %Y %H:%M:%S %z"`" >> debian/changelog
 	dpkg-buildpackage -rfakeroot -uc -us
 
 ChangeLog:
@@ -294,19 +294,6 @@ uninstall-systemd:
 	fi
 	@echo
 
-#
-# Release targets
-#
-dist: clean functions.h ChangeLog
-	mkdir -p /tmp/$(DIST)
-	tar -cf - ./ --exclude=./.git | (cd /tmp/$(DIST) && tar -xf -)
-	(cd /tmp/ && tar -cvf - $(DIST)) | gzip > $(TGZ)
-	rm -rf /tmp/$(DIST)
-
-release: dist
-	cp $(TGZ) $(RELDIR)
-	cp README README.Gophermap INSTALL LICENSE ChangeLog $(RELDIR)
-
 
 #
 # List all C defines
@@ -320,5 +307,4 @@ defines: functions.h files.h
 #
 loc:
 	@wc -l *.c
-
 

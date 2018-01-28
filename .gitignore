@@ -19,8 +19,8 @@ ChangeLog
 #
 build-stamp
 debian/files
+debian/changelog
 debian/gophernicus.debhelper.log
 debian/gophernicus.postrm.debhelper
 debian/gophernicus.substvars
 debian/gophernicus/
-
