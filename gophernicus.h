@@ -27,6 +27,14 @@
 
 
 /*
+ * Ignore useless snprintf() format truncation warnings on GCC 7+
+ */
+#if __GNUC__ >= 7
+#pragma GCC diagnostic ignored "-Wformat-truncation"
+#endif
+
+
+/*
  * Features
  */
 #undef  ENABLE_STRICT_RFC1436	/* Follow RFC1436 to the letter */
