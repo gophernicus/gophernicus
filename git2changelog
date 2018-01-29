@@ -4,6 +4,8 @@
 ## Generate ChangeLog from git log
 ##
 
+VERSION=`git log | grep -c "^commit"`
+FIRSTVER=93
 PREVIOUS=
 IFS=\;
 
@@ -12,8 +14,15 @@ echo "[ Automatically generated from git log ]"
 git log --pretty=tformat:"%ad  %an  <%ae>;%s" --date=short | \
 while read -r AUTHOR COMMENT; do
 	[ "$AUTHOR" != "$PREVIOUS" ] && printf "\n$AUTHOR\n\n"
-	printf "\t* %s\n" "$COMMENT"
+
+	if [ $VERSION -ge $FIRSTVER ]; then
+		printf "\t* (v%d) %s\n" $VERSION "$COMMENT"
+	else
+		printf "\t* %s\n" "$COMMENT"
+	fi
+
 	PREVIOUS="$AUTHOR"
+	VERSION=$(( VERSION - 1 ))
 done
 
 echo
