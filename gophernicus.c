@@ -567,7 +567,7 @@ int main(int argc, char *argv[])
 	/* Read selector */
 get_selector:
 	if (fgets(selector, sizeof(selector) - 1, stdin) == NULL)
-		selector[0] = '\0';
+		strclear(selector);
 
 	/* Remove trailing CRLF */
 	chomp(selector);

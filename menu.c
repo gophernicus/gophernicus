@@ -483,7 +483,7 @@ void gopher_menu(state *st)
 			/* Read & output gophertag */
 			if ((fp = fopen(pathname , "r"))) {
 
-				fgets(buf, sizeof(buf), fp);
+				if (fgets(buf, sizeof(buf), fp) == NULL) strclear(buf);
 				chomp(buf);
 
 				info(st, buf, TYPE_TITLE);
@@ -588,7 +588,7 @@ void gopher_menu(state *st)
 				/* Use the gophertag as displayname */
 				if ((fp = fopen(buf , "r"))) {
 
-					fgets(buf, sizeof(buf), fp);
+					if (fgets(buf, sizeof(buf), fp) == NULL) strclear(buf);
 					chomp(buf);
 					fclose(fp);
 

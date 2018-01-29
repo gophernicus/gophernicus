@@ -173,7 +173,9 @@ void parse_args(state *st, int argc, char *argv[])
 	if (*st->server_description == '/') {
 
 		if ((fp = fopen(st->server_description , "r"))) {
-			fgets(st->server_description, sizeof(st->server_description), fp);
+			if (fgets(st->server_description, sizeof(st->server_description), fp) == NULL)
+				strclear(st->server_description);
+
 			chomp(st->server_description);
 			fclose(fp);
 		}
@@ -184,7 +186,9 @@ void parse_args(state *st, int argc, char *argv[])
 	if (*st->server_location == '/') {
 
 		if ((fp = fopen(st->server_location , "r"))) {
-			fgets(st->server_location, sizeof(st->server_location), fp);
+			if (fgets(st->server_location, sizeof(st->server_location), fp) == NULL)
+				strclear(st->server_description);
+
 			chomp(st->server_location);
 			fclose(fp);
 		}
