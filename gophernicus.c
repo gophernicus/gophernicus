@@ -27,6 +27,15 @@
 
 
 /*
+ * Libwrap needs these defined
+ */
+#ifdef HAVE_LIBWRAP
+int allow_severity = LOG_DEBUG;
+int deny_severity = LOG_ERR;
+#endif
+
+
+/*
  * Print gopher menu line
  */
 void info(state *st, char *str, char type)

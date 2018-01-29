@@ -35,11 +35,13 @@ void platform(state *st)
 #if defined(_AIX) || defined(__linux) || defined(__APPLE__)
 	FILE *fp;
 #endif
+#if defined(__linux) || defined(__APPLE__)
+	char buf[BUFSIZE];
+#endif
 #ifdef __linux
 	struct stat file;
 #endif
 	struct utsname name;
-	char buf[BUFSIZE];
 	char sysname[64];
 	char release[64];
 	char machine[64];
@@ -154,13 +156,11 @@ void platform(state *st)
 
 	/* No DMI? Get possible hypervisor name */
 	if (!*st->server_description && (fp = fopen("/sys/hypervisor/type" , "r"))) {
-		if (fgets(buf, sizeof(buf), fp) == NULL) strclear(buf);
+		if (fgets(buf, sizeof(buf), fp) != NULL) {
+			chomp(buf);
+			if (*buf) snprintf(st->server_description, sizeof(st->server_description), "%s virtual machine", buf);
+		}
 		fclose(fp);
-
-		chomp(buf);
-		ucfirst(buf);
-
-		if (*buf) snprintf(st->server_description, sizeof(st->server_description), "%s virtual machine", buf);
 	}
 
 	/* Identify Gentoo */

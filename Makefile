@@ -54,14 +54,14 @@ IPCRM   = /usr/bin/ipcrm
 all:
 	@case `uname` in \
 		Darwin)	$(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDEST)" $(BINARY); ;; \
-		Haiku)	$(MAKE) EXTRA_LDFLAGS="-lnetwork" $(BINARY); ;; \
+		Haiku)	$(MAKE) EXTRA_LIBS="-lnetwork" $(BINARY); ;; \
 		*)	if [ -f "/usr/include/tcpd.h" ]; then $(MAKE) withwrap; else $(MAKE) $(BINARY); fi; ;; \
 	esac
 
 generic: $(BINARY)
 
 withwrap:
-	$(MAKE) EXTRA_CFLAGS="-DHAVE_LIBWRAP" EXTRA_LDFLAGS="-lwrap" $(BINARY)
+	$(MAKE) EXTRA_CFLAGS="-DHAVE_LIBWRAP" EXTRA_LIBS="-lwrap" $(BINARY)
 
 
 #
@@ -87,7 +87,7 @@ ChangeLog:
 $(NAME).c: $(NAME).h $(HEADERS)
 	
 $(BINARY): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(EXTRA_LDFLAGS) $(OBJECTS) -o $@
+	$(CC) $(LDFLAGS) $(EXTRA_LDFLAGS) $(OBJECTS) $(EXTRA_LIBS) -o $@
 
 .c.o:
 	$(CC) -c $(CFLAGS) $(EXTRA_CFLAGS) -DVERSION="\"$(VERSION)\"" -DCODENAME="\"$(CODENAME)\"" -DDEFAULT_ROOT="\"$(ROOT)\"" $< -o $@
