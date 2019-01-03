@@ -43,7 +43,7 @@ DEFAULT = /etc/default
 CC      = gcc
 HOSTCC	= $(CC)
 CFLAGS  = -O2 -Wall
-LDFLAGS = 
+LDFLAGS =
 
 IPCRM   = /usr/bin/ipcrm
 
@@ -85,7 +85,7 @@ ChangeLog:
 # Building
 #
 $(NAME).c: headers $(NAME).h
-	
+
 $(BINARY): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(EXTRA_LDFLAGS) $(OBJECTS) $(EXTRA_LIBS) -o $@
 
