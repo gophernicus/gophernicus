@@ -264,6 +264,16 @@ uninstall: uninstall-xinetd uninstall-launchd uninstall-systemd
 	rmdir -p $(SBINDIR) $(DOCDIR) 2>/dev/null || true
 	@echo
 
+uninstall-inetd:
+	if ( -f "$(INETD)" ]; then \
+		@echo "Please manually delete following line and restart or"
+		@echo "kill -HUP the inetd process."
+		@echo
+		@echo "
+		@echo "gopher  stream  tcp  nowait  nobody  $(SBINDIR)/$(BINARY)  $(BINARY) -h `hostname`"
+	fi
+	@echo
+
 uninstall-xinetd:
 	if grep -q $(BINARY) "$(XINETD)/gopher" 2>/dev/null; then \
 		rm -f $(XINETD)/gopher; \
