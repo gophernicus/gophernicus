@@ -145,7 +145,7 @@ install: ChangeLog clean-shm
 	esac
 	@if [ -d "$(HAS_STD)" ]; then $(MAKE) install-systemd install-done; \
 	elif [ -d "$(XINETD)" ]; then $(MAKE) install-xinetd install-done; \
-	elif [ -f "$(INETD)"  ]; then $(MAKE) install-inetd; fi
+	elif [ -f "$(INETD)"  ]; then $(MAKE) install-inetd install-done; fi
 
 .PHONY: install
 
@@ -187,7 +187,7 @@ install-root:
 	fi
 	@echo
 
-install-inetd:
+install-inetd: install-files install-docs install-root
 	@echo
 	@echo "======================================================================"
 	@echo
@@ -201,7 +201,7 @@ install-inetd:
 	@echo "======================================================================"
 	@echo
 
-install-xinetd:
+install-xinetd: install-files install-docs install-root
 	if [ -d "$(XINETD)" -a ! -f "$(XINETD)/$(NAME)" ]; then \
 		sed -e "s/@HOSTNAME@/`hostname`/g" $(NAME).xinetd > $(XINETD)/$(NAME); \
 		[ -x /sbin/service ] && /sbin/service xinetd reload; \
@@ -235,7 +235,7 @@ install-haiku:
 	nohup /boot/system/servers/net_server >/dev/null 2>/dev/null &
 	@echo
 
-install-systemd:
+install-systemd: install-files install-docs install-root
 	if [ -d "$(HAS_STD)" ]; then \
 		if [ -d "$(SYSCONF)" -a ! -f "$(SYSCONF)/$(NAME)" ]; then \
 			$(INSTALL) -m 644 $(NAME).env $(SYSCONF)/$(NAME); \
