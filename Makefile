@@ -51,7 +51,7 @@ IPCRM   = /usr/bin/ipcrm
 #
 # Platform support, compatible with both BSD and GNU make
 #
-all:
+all: headers
 	@case `uname` in \
 		Darwin)	$(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDEST)" $(BINARY); ;; \
 		Haiku)	$(MAKE) EXTRA_LIBS="-lnetwork" $(BINARY); ;; \
@@ -84,7 +84,7 @@ ChangeLog:
 #
 # Building
 #
-$(NAME).c: $(NAME).h $(HEADERS)
+$(NAME).c: headers $(NAME).h
 	
 $(BINARY): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(EXTRA_LDFLAGS) $(OBJECTS) $(EXTRA_LIBS) -o $@
