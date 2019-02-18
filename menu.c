@@ -306,13 +306,18 @@ int gophermap(state *st, char *mapfile, int depth)
 
 	/* Debug output */
 	if (st->debug) {
-		if (exe) syslog(LOG_INFO, "parsing executable gophermap \"%s\"", mapfile);
+		if (exe) {
+			if (st->opt_exec)
+			 syslog(LOG_INFO, "parsing executable gophermap \"%s\"", mapfile);
+			else
+			 syslog(LOG_INFO, "parsing executable gophermap \"%s\" forbidden by -nx", mapfile);
+		}
 		else syslog(LOG_INFO, "parsing static gophermap \"%s\"", mapfile);
 	}
 
 	/* Try to execute or open the mapfile */
 #ifdef HAVE_POPEN
-	if (exe) {
+	if (exe & st->opt_exec) {
 		setenv_cgi(st, mapfile);
 		if ((fp = popen(command, "r")) == NULL) return OK;
 	}
@@ -426,7 +431,7 @@ int gophermap(state *st, char *mapfile, int depth)
 
 	/* Clean up & return */
 #ifdef HAVE_POPEN
-	if (exe) pclose(fp);
+	if (exe & st->opt_exec) pclose(fp);
 	else
 #endif
 		fclose(fp);
