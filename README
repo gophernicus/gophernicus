@@ -1,5 +1,4 @@
-Gophernicus - Copyright (c) 2009-2018 Kim Holviala <kimholviala@fastmail.com>
- (added -nx option -- 2019 // Yargo Bonetti/HB9KNS)
+Gophernicus - Copyright (c) 2009-2019 Kim Holviala and others
 
 Gophernicus is a modern full-featured (and hopefully) secure gopher
 daemon. It is licensed under the BSD license.

@@ -10,8 +10,8 @@ PACKAGE  = $(NAME)
 BINARY   = in.$(NAME)
 VERSION  = `./version`
 CODENAME = Dungeon Edition
-AUTHOR   = Kim Holviala / Yargo Bonetti
-EMAIL    = kimholviala@fastmail.com / hb9kns@gmail.com
+AUTHOR   = Kim Holviala and others
+EMAIL    = hb9kns+gophernicus@gmail.com
 STARTED  = 2009
 
 SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
