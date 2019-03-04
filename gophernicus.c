@@ -463,6 +463,7 @@ void init_state(state *st)
 	st->opt_shm = TRUE;
 	st->opt_root = TRUE;
 	st->opt_proxy = TRUE;
+	st->opt_exec = TRUE;
 	st->debug = FALSE;
 
 	/* Load default suffix -> filetype mappings */

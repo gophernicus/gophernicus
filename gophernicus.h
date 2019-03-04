@@ -359,6 +359,7 @@ typedef struct {
 	char opt_shm;
 	char opt_root;
 	char opt_proxy;
+	char opt_exec;
 	char debug;
 } state;
 

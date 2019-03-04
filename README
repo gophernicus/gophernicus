@@ -1,4 +1,4 @@
-Gophernicus - Copyright (c) 2009-2018 Kim Holviala <kimholviala@fastmail.com>
+Gophernicus - Copyright (c) 2009-2019 Kim Holviala and others
 
 Gophernicus is a modern full-featured (and hopefully) secure gopher
 daemon. It is licensed under the BSD license.
@@ -44,6 +44,7 @@ Command line options:
     -nm           Disable shared memory use (for debugging)
     -nr           Disable root user checking (for debugging)
     -np           Disable HAproxy proxy protocol
+    -nx           Disable execution of gophermaps and scripts
 
     -d            Debug output in syslog and /server-status
     -v            Display version number and build date
@@ -288,5 +289,3 @@ service = in.gophernicus-tls
 accept  = :::7070
 connect = 127.0.0.1:70
 protocol = proxy
-
-
