@@ -228,7 +228,8 @@ void selector_to_path(state *st)
 
 #ifdef HAVE_PASSWD
 	/* Virtual userdir (~user -> /home/user/public_gopher)? */
-	if (*(st->user_dir) && sstrncmp(st->req_selector, "/~") == MATCH) {
+	if (st->opt_personal_spaces && *(st->user_dir) &&
+	    sstrncmp(st->req_selector, "/~") == MATCH) {
 
 		/* Parse userdir login name & path */;
 		sstrlcpy(buf, st->req_selector + 2);
@@ -464,6 +465,7 @@ void init_state(state *st)
 	st->opt_root = TRUE;
 	st->opt_proxy = TRUE;
 	st->opt_exec = TRUE;
+	st->opt_personal_spaces = TRUE;
 	st->debug = FALSE;
 
 	/* Load default suffix -> filetype mappings */
