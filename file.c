@@ -366,11 +366,15 @@ void setenv_cgi(state *st, char *script)
  */
 void run_cgi(state *st, char *script, char *arg)
 {
+	if (st->opt_exec) {
+
 	/* Setup environment & execute the binary */
 	if (st->debug) syslog(LOG_INFO, "executing script \"%s\"", script);
 
 	setenv_cgi(st, script);
 	execl(script, script, arg, NULL);
+	}
+	else if (st->debug) syslog(LOG_INFO, "script \"%s\" was blocked by -nx", script);
 
 	/* Didn't work - die */
 	die(st, ERR_ACCESS, NULL);

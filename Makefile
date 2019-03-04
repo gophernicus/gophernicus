@@ -9,9 +9,9 @@ NAME     = gophernicus
 PACKAGE  = $(NAME)
 BINARY   = in.$(NAME)
 VERSION  = `./version`
-CODENAME = Prison Edition
-AUTHOR   = Kim Holviala
-EMAIL    = kimholviala@fastmail.com
+CODENAME = Dungeon Edition
+AUTHOR   = Kim Holviala and others
+EMAIL    = hb9kns+gophernicus@gmail.com
 STARTED  = 2009
 
 SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
