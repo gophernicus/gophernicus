@@ -188,18 +188,7 @@ install-root:
 	@echo
 
 install-inetd: install-files install-docs install-root
-	@echo
-	@echo "======================================================================"
-	@echo
-	@echo "Looks like your system has the traditional internet superserver inetd."
-	@echo "Automatic installations aren't supported, so please add the following"
-	@echo "line to the end of your /etc/inetd.conf and restart or kill -HUP the"
-	@echo "inetd process."
-	@echo
-	@echo "gopher  stream  tcp  nowait  nobody  $(SBINDIR)/$(BINARY)  $(BINARY) -h `hostname`"
-	@echo
-	@echo "======================================================================"
-	@echo
+	update-inetd --add "gopher  stream  tcp  nowait  nobody  $(SBINDIR)/$(BINARY)  $(BINARY) -h `hostname`"
 
 install-xinetd: install-files install-docs install-root
 	if [ -d "$(XINETD)" -a ! -f "$(XINETD)/$(NAME)" ]; then \
@@ -265,14 +254,9 @@ uninstall: uninstall-xinetd uninstall-launchd uninstall-systemd
 	@echo
 
 uninstall-inetd:
-	if ( -f "$(INETD)" ]; then \
-		@echo "Please manually delete following line and restart or"
-		@echo "kill -HUP the inetd process."
-		@echo
-		@echo "
-		@echo "gopher  stream  tcp  nowait  nobody  $(SBINDIR)/$(BINARY)  $(BINARY) -h `hostname`"
+	if [ -f "$(INETD)" ]; then \
+		update-inetd --remove "^gopher.*gophernicus"
 	fi
-	@echo
 
 uninstall-xinetd:
 	if grep -q $(BINARY) "$(XINETD)/gopher" 2>/dev/null; then \
