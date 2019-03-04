@@ -316,13 +316,15 @@ int gophermap(state *st, char *mapfile, int depth)
 	}
 
 	/* Try to execute or open the mapfile */
-#ifdef HAVE_POPEN
 	if (exe & st->opt_exec) {
+#ifdef HAVE_POPEN
 		setenv_cgi(st, mapfile);
 		if ((fp = popen(command, "r")) == NULL) return OK;
+#else
+		return OK;
+#endif
 	}
 	else
-#endif
 		if ((fp = fopen(mapfile, "r")) == NULL) return OK;
 
 	/* Read lines one by one */
