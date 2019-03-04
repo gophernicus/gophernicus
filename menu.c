@@ -316,7 +316,7 @@ int gophermap(state *st, char *mapfile, int depth)
 		setenv_cgi(st, mapfile);
 		if ((fp = popen(command, "r")) == NULL) return OK;
 #else
-        return OK;
+		return OK;
 #endif
 	}
 	else
