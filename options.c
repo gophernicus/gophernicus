@@ -145,6 +145,7 @@ void parse_args(state *st, int argc, char *argv[])
 				if (*optarg == 'r') { st->opt_root = FALSE; break; }
 				if (*optarg == 'p') { st->opt_proxy = FALSE; break; }
 				if (*optarg == 'x') { st->opt_exec = FALSE; break; }
+				if (*optarg == 'u') { st->opt_personal_spaces = FALSE; break; }
 				break;
 
 			case 'd': st->debug = TRUE; break;

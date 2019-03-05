@@ -360,6 +360,7 @@ typedef struct {
 	char opt_root;
 	char opt_proxy;
 	char opt_exec;
+	char opt_personal_spaces;
 	char debug;
 } state;
 

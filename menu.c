@@ -343,7 +343,7 @@ int gophermap(state *st, char *mapfile, int depth)
 		if (type == '.') return QUIT;
 
 		/* Print a list of users with public_gopher */
-		if (type == '~') {
+		if (type == '~' && st->opt_personal_spaces) {
 #ifdef HAVE_PASSWD
 			userlist(st);
 #endif
