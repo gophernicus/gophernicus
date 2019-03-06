@@ -1,9 +1,12 @@
-Gophernicus - Copyright (c) 2009-2019 Kim Holviala and others
+# Gophernicus
+
+*Copyright (c) 2009-2019 Kim Holviala and others*
 
 Gophernicus is a modern full-featured (and hopefully) secure gopher
 daemon. It is licensed under the BSD license.
 
-Command line options:
+## Command line options
+
     -h hostname   Change server hostname (FQDN)      [$HOSTNAME]
     -p port       Change server port                 [70]
     -T port       Change TLS/SSL port                [0 = disabled]
@@ -51,28 +54,26 @@ Command line options:
     -v            Display version number and build date
     -b            Display the BSD license
     -?            Display this help
- 
 
-Setting up a gopher site
-========================
+(end of option list) -- keep this line for automatic extraction!
+
+## Setting up a gopher site
 
 After succesfully installing Gophernicus (see INSTALL) you need to set
 up the gopher root directory. By default Gophernicus serves documents
 from /var/gopher so start by creating that directory and making sure
 it's world-readable. Then, simply add files and directories under your
 root, fire up a gopher browser (Firefox with the OverbiteFF extension,
-Lynx) and open up this URL:
-
-gopher://<HOSTNAME>/   (where <HOSTNAME> is your server hostname)
+Lynx) and open up `gopher://HOSTNAME/`
+(where `HOSTNAME` is your server hostname).
 
 That's it, your first gopher site is now up and running. If the links
-on the root menu don't work make sure you are using the -h <HOSTNAME>
+on the root menu don't work make sure you are using the `-h HOSTNAME`
 parameter in your configuration (with a valid resolveable hostname
-instead of <HOSTNAME> - see INSTALL).
+instead of `HOSTNAME` - see INSTALL).
 
 
-Security
-========
+## Security
 
 Gophernicus has been written with high security in mind. There should
 be no buffer overflows or memory allocation problems so it should be
@@ -84,9 +85,12 @@ world-readable content. Being readable by the server process is not
 enough, all files and directories MUST be world-readable or they are
 simply hidden from all listings and denied if a client asks for them.
 
+The `-nx` option prevents execution of any script or external file,
+and the `-nu` option suppresses scanning for and serving of `~user`
+directories (which are normally at `~/public_html/` for each user).
 
-Gophermaps
-==========
+
+## Gophermaps
 
 By default all gopher menus are automatically generated from the
 content of the directory being viewed. If you want to have
@@ -95,8 +99,7 @@ replace the generated menu with your own you need to take a look at
 gophermaps. See the file README.gophermap for more information.
 
 
-Gophertags
-==========
+## Gophertags
 
 A gophertag file can be used to virtually rename a directory. Let's
 assume that you have a directory called "foo" somewhere - it will
@@ -107,17 +110,19 @@ useful for creating descriptive names for directories without
 littering the file system with spaces and weird characters.
 
 
-Personal gopherspaces
-=====================
+## Personal gopherspaces
 
 Gophernicus supports users personal gopherspaces. If a user has
 world-readable directory called public_gopher/ under his home, a
-request for gopher://<HOSTNAME>/1/~user/ will serve documents from
+request for `gopher://HOSTNAME/1/~user/` will serve documents from
 that directory.
 
+This is suppressed if the `-nu` option is given.
+In this case, any `~` entry which otherwise initiates listing
+of user directories will be displayed literally.
 
-Virtual hosting
-===============
+
+## Virtual hosting
 
 Gophernicus supports virtual hosting, or serving more than one logical
 domain using the same IP address. Since gopher (RFC1436) doesn't
@@ -126,7 +131,7 @@ hacks.
 
 To enable virtual hosting create one or more directories under your
 gopher root which are named after your domain names. The primary vhost
-directory (set with the -h <HOSTNAME> option) must exist or virtual
+directory (set with the `-h HOSTNAME` option) must exist or virtual
 hosting will be disabled. Then simply add content to the hostname
 directories and you're up and running.
 
@@ -141,29 +146,29 @@ they don't specifically tell the server which host they're trying to
 reach.
 
 
-CGI support
-===========
+## CGI support
 
 Gophernicus supports most parts of the CGI/1.1 standard. Most standard
 CGI variables are set, and some non-standard ones are added.
 
 By default all scripts and binaries under any directory called
-/cgi-bin/ are executed as CGI scripts (this includes cgi-bin
+`/cgi-bin/` are executed as CGI scripts (this includes cgi-bin
 directories under users personal gopherspaces). Also, if a gophermap
 is marked executable it is also processed as an CGI script.
 
 As with regular files, CGI scripts must be world-executable (and
 readable) or they will be ignored. Make sure your CGI script is safe
-with ANY user input as poorly coded CGI scripts are the number #1
-security problem with publicly open *nix servers.
+with ANY user input as poorly coded CGI scripts are the number 1
+security problem with publicly open Unix/Linux/BSD servers.
 
+The `-nx` option prevents execution of any script or external file.
+In this case, they will be simply ignored and no output is given.
 
-Output filtering and PHP support
-================================
+## Output filtering and PHP support
 
 In addition to CGI scripts Gophernicus supports output filtering
 scripts. By default output filtering is turned off, but you can turn
-it on by using the -f <FILTERDIR> option, creating that directory
+it on by using the `-f FILTERDIR` option, creating that directory
 and creating one or more scripts in there named by either the file
 suffix, or by the gopher filetype char.
 
@@ -177,7 +182,7 @@ For PHP support install the CLI version of the PHP interpreter and
 then symlink (or copy) that binary to the directory specified with
 -f option using the destination name "php".
 
-$ ln -s /usr/bin/php5-cli /usr/lib/gophernicus/filters/php
+    $ ln -s /usr/bin/php5-cli /usr/lib/gophernicus/filters/php
 
 After that all files with the php suffix will be "filtered" through
 the PHP command line interpreter. In other words, PHP starts working.
@@ -185,8 +190,7 @@ And don't use the CGI version of PHP as it outputs HTTP headers the
 gopher protocol doesn't have.
 
 
-Charset support and conversions
-===============================
+## Charset support and conversions
 
 Gophernicus supports three charsets: US-ASCII, ISO-8859-1 and UTF-8.
 All textual input is internally upconverted to UTF-8 and then
@@ -200,13 +204,12 @@ files WILL be converted to 7-bit US-ASCII. This means that all 8-bit
 charaters WILL BE LOST. This decision was made because no gopher
 client that I tested was reliably cabable of decoding anything else
 than pure US-ASCII. If you want to disable the conversion use the
-"-no" option, or if you'd like to change the default output charset to
-something else than US-ASCII just use for example the "-o ISO-8859-1"
+`-no` option, or if you'd like to change the default output charset to
+something else than US-ASCII just use for example the `-o ISO-8859-1`
 option.
 
 
-Selector rewriting
-==================
+## Selector rewriting
 
 Selector rewriting lets you rewrite parts of the selector on the fly.
 Well, not parts, but really just the start of it. And the rewrite
@@ -218,12 +221,11 @@ existing deeplinks still work.
 
 Examples:
 
-  -R "/~user=/~luser"
-  -R "/old-dir=/new-dir"
+    -R "/~user=/~luser"
+    -R "/old-dir=/new-dir"
 
 
-Session tracking and statistics
-===============================
+## Session tracking and statistics
 
 To enable virtual hosting with gopher (RFC1436) clients Gophernicus
 tracks users and their session. As a side effect of that session
@@ -234,16 +236,15 @@ human users will never hit the limits, but it's possible (and mostly
 preferrable) that a badly behaving crawling agent will be throttled.
 
 The current sessions and other real-time status data can be viewed
-by opening the URL gopher://<HOSTNAME>/0/server-status . This status
+by opening the URL `gopher://HOSTNAME/0/server-status` . This status
 view has been modeled after the Apache server-status which means
 that it's possible to integrate Gophernicus into existing server
 monitoring systems. To ease up such integrations, Gophernicus
 supports HTTP requests of the server-status page using an URL like
-http://<HOSTNAME>:70/server-status?auto
+`http://HOSTNAME:70/server-status?auto` .
 
 
-TLS/SSL and proxy support
-=========================
+## TLS/SSL and proxy support
 
 As of version 2.3 Gophernicus supports the HAproxy proxy protocol
 version 1. This makes it possible to build a cluster of gopher servers
@@ -256,37 +257,38 @@ address. The below sample stunnel configuration is all you need to
 TLS-enable your gopher server. Well, you'll need a certificate too and for
 that I recommend Let's Encrypt.
 
-In addition to configuring Stunnel for TLS you should add -T <TLS port>
+In addition to configuring Stunnel for TLS you should add `-T TLSPORT`
 to Gophernicus options so that it knows which connetions are coming in
-encrypted and which are not. Using proper -T also makes it possible for
-CGI programs to use the $TLS environment variable to know whether the
+encrypted and which are not. Using proper `-T` also makes it possible for
+CGI programs to use the `$TLS` environment variable to know whether the
 current request was encrypted or not.
 
+Example:
 
-;
-; Gophernicus behind Stunnel4 for gopher over TLS
-;
-
-; User/group for stunnel daemon
-setuid = stunnel4
-setgid = stunnel4
-
-; PID file location
-pid = /var/run/stunnel4/gophernicus.pid
-
-; Log to file, not syslog
-output = /var/log/stunnel4/gophernicus.log
-syslog = no
-
-; Certificate in pem format is needed for TLS
-cert = /etc/ssl/private/gophernicus.pem
-
-; Enable TCP wrappers
-libwrap = yes
-service = in.gophernicus-tls
-
-; Gopher over TLS service
-[gophernicus]
-accept  = :::7070
-connect = 127.0.0.1:70
-protocol = proxy
+    ;
+    ; Gophernicus behind Stunnel4 for gopher over TLS
+    ;
+    
+    ; User/group for stunnel daemon
+    setuid = stunnel4
+    setgid = stunnel4
+    
+    ; PID file location
+    pid = /var/run/stunnel4/gophernicus.pid
+    
+    ; Log to file, not syslog
+    output = /var/log/stunnel4/gophernicus.log
+    syslog = no
+    
+    ; Certificate in pem format is needed for TLS
+    cert = /etc/ssl/private/gophernicus.pem
+    
+    ; Enable TCP wrappers
+    libwrap = yes
+    service = in.gophernicus-tls
+    
+    ; Gopher over TLS service
+    [gophernicus]
+    accept  = :::7070
+    connect = 127.0.0.1:70
+    protocol = proxy
