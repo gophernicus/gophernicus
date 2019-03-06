@@ -23,6 +23,7 @@ DOCS    = LICENSE README INSTALL TODO ChangeLog README.Gophermap gophertag
 INSTALL = PATH=$$PATH:/usr/sbin ./install-sh -o 0 -g 0
 DESTDIR = /usr
 OSXDEST = /usr/local
+DESTDIR = /usr/local
 SBINDIR = $(DESTDIR)/sbin
 DOCDIR  = $(DESTDIR)/share/doc/$(PACKAGE)
 
