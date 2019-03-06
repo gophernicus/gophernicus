@@ -11,12 +11,13 @@ BINARY   = in.$(NAME)
 VERSION  = `./version`
 CODENAME = Dungeon Edition
 AUTHOR   = Kim Holviala and others
-EMAIL    = hb9kns+gophernicus@gmail.com
+EMAIL    = gophernicus@gophernicus.org
 STARTED  = 2009
 
 SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
 HEADERS = functions.h files.h
 OBJECTS = $(SOURCES:.c=.o)
+README  = README.md
 DOCS    = LICENSE README INSTALL TODO ChangeLog README.Gophermap gophertag
 
 INSTALL = PATH=$$PATH:/usr/sbin ./install-sh -o 0 -g 0
@@ -110,8 +111,11 @@ bin2c: bin2c.c
 	$(HOSTCC) bin2c.c -o $@
 	@echo
 
-files.h: bin2c
-	sed -n -e "1,/^ $$/p" README > README.options
+README: $(README)
+	cat $(README) > $@
+
+files.h: bin2c README
+	sed -e '/^(end of option list)/,$$d' README > README.options
 	./bin2c -0 -n README README.options > $@
 	./bin2c -0 LICENSE >> $@
 	./bin2c -n ERROR_GIF error.gif >> $@
@@ -124,7 +128,7 @@ files.h: bin2c
 clean: clean-build clean-deb
 
 clean-build:
-	rm -f $(BINARY) $(OBJECTS) $(HEADERS) README.options bin2c
+	rm -f $(BINARY) $(OBJECTS) $(HEADERS) README.options README bin2c
 
 clean-deb:
 	if [ -d debian/$(PACKAGE) ]; then fakeroot debian/rules clean; fi
@@ -313,8 +317,8 @@ loc:
 #
 # Fix copyright notes
 #
-copyright:
-	sed -i .stupid -e "s/Copyright .c. 2.*$$/Copyright (c) $(STARTED)-`date +%Y` $(AUTHOR) <$(EMAIL)>/" *.c *.h LICENSE README debian/copyright
+copyright: README
+	sed -i .stupid -e "s/Copyright .c. 2.*$$/Copyright (c) $(STARTED)-`date +%Y` $(AUTHOR) <$(EMAIL)>/" *.c *.h LICENSE $(README) debian/copyright
 	sed -i .stupid -e "s/Maintainer: .*$$/Maintainer: $(AUTHOR) <$(EMAIL)>/" debian/control
 	rm -f *.stupid debian/*.stupid
 
