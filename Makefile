@@ -33,6 +33,7 @@ MAP     = gophermap
 
 INETD   = /etc/inetd.conf
 XINETD  = /etc/xinetd.d
+INETLIN = "gopher	stream	tcp	nowait	nobody	$(SBINDIR)/$(BINARY)	$(BINARY) -h `hostname`"
 LAUNCHD = /Library/LaunchDaemons
 PLIST   = org.$(NAME).server.plist
 NET_SRV = /boot/common/settings/network/services
@@ -192,7 +193,17 @@ install-root:
 	@echo
 
 install-inetd: install-files install-docs install-root
-	update-inetd --add "gopher  stream  tcp  nowait  nobody  $(SBINDIR)/$(BINARY)  $(BINARY) -h `hostname`"
+	if update-inetd --add "$(INETLIN)"; then \
+		: update-inetd worked ; \
+	else if grep '^gopher' $(INETD) >/dev/null 2>&1 ; then \
+		echo "gopher entry in $(INETD) already present -- please check!"; \
+		else echo "trying to add gopher entry to $(INETD)" ; \
+			cat "$(INETLIN)" >> $(INETD) ; \
+			if [ -r $(INETPID) ] ; then kill -HUP $(INETPID) ; \
+				else echo "no PID for inetd found, not restarted -- please check!" ; fi ; \
+		fi ; \
+	fi
+	@echo
 
 install-xinetd: install-files install-docs install-root
 	if [ -d "$(XINETD)" -a ! -f "$(XINETD)/$(NAME)" ]; then \
