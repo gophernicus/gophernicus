@@ -196,7 +196,7 @@ install-root:
 
 install-inetd: install-files install-docs install-root
 	@if update-inetd --add "$(INETLIN)"; then \
-		echo update-inetd worked ; \
+		echo update-inetd install worked ; \
 	else if grep '^gopher' $(INETD) >/dev/null 2>&1 ; then \
 		echo "::::: gopher entry in $(INETD) already present -- please check! :::::"; \
 		else echo "trying to add gopher entry to $(INETD)" ; \
@@ -264,16 +264,23 @@ install-systemd: install-files install-docs install-root
 #
 # Uninstall targets
 #
-uninstall: uninstall-xinetd uninstall-launchd uninstall-systemd
+uninstall: uninstall-xinetd uninstall-launchd uninstall-systemd uninstall-inetd
 	rm -f $(SBINDIR)/$(BINARY)
 	for DOC in $(DOCS); do rm -f $(DOCDIR)/$$DOC; done
 	rmdir -p $(SBINDIR) $(DOCDIR) 2>/dev/null || true
 	@echo
 
 uninstall-inetd:
-	if [ -f "$(INETD)" ]; then \
-		update-inetd --remove "^gopher.*gophernicus"
+	@if [ -f "$(INETD)" ] && update-inetd --remove "^gopher.*gophernicus" ; then \
+		echo update-inetd remove worked ; \
+	else if grep '^gopher' $(INETD) >/dev/null 2>&1 && \
+		sed -i .bak -e 's/^gopher/#gopher/' $(INETD) ; then \
+			echo "commented out gopher entry in $(INETD), reloading inetd" ; \
+			[ -r $(INETPID) ] && kill -HUP `cat $(INETPID)` ; \
+		else echo "::::: could not find gopher entry in $(INETD) :::::" ; \
+		fi ; \
 	fi
+	@echo
 
 uninstall-xinetd:
 	if grep -q $(BINARY) "$(XINETD)/gopher" 2>/dev/null; then \
