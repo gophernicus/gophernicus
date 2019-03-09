@@ -34,6 +34,7 @@ MAP     = gophermap
 INETD   = /etc/inetd.conf
 XINETD  = /etc/xinetd.d
 INETLIN = "gopher	stream	tcp	nowait	nobody	$(SBINDIR)/$(BINARY)	$(BINARY) -h `hostname`"
+INETPID = /var/run/inetd.pid
 LAUNCHD = /Library/LaunchDaemons
 PLIST   = org.$(NAME).server.plist
 NET_SRV = /boot/common/settings/network/services
@@ -158,6 +159,7 @@ install-done:
 	@echo
 	@echo "======================================================================"
 	@echo
+	@echo "If there were no errors shown above,"
 	@echo "Gophernicus has now been succesfully installed. To try it out, launch"
 	@echo "your favorite gopher browser and navigate to your gopher root."
 	@echo
@@ -174,7 +176,7 @@ install-done:
 	@echo "======================================================================"
 	@echo
 
-install-files:
+install-files: $(BINARY)
 	mkdir -p $(SBINDIR)
 	$(INSTALL) -s -m 755 $(BINARY) $(SBINDIR)
 	@echo
@@ -193,14 +195,14 @@ install-root:
 	@echo
 
 install-inetd: install-files install-docs install-root
-	if update-inetd --add "$(INETLIN)"; then \
-		: update-inetd worked ; \
+	@if update-inetd --add "$(INETLIN)"; then \
+		echo update-inetd worked ; \
 	else if grep '^gopher' $(INETD) >/dev/null 2>&1 ; then \
-		echo "gopher entry in $(INETD) already present -- please check!"; \
+		echo "::::: gopher entry in $(INETD) already present -- please check! :::::"; \
 		else echo "trying to add gopher entry to $(INETD)" ; \
-			cat "$(INETLIN)" >> $(INETD) ; \
-			if [ -r $(INETPID) ] ; then kill -HUP $(INETPID) ; \
-				else echo "no PID for inetd found, not restarted -- please check!" ; fi ; \
+			echo "$(INETLIN)" >> $(INETD) ; \
+			if [ -r $(INETPID) ] ; then kill -HUP `cat $(INETPID)` ; \
+				else echo "::::: no PID for inetd found, not restarted -- please check! :::::" ; fi ; \
 		fi ; \
 	fi
 	@echo
