@@ -44,7 +44,7 @@ DEFAULT = /etc/default
 CC      = gcc
 HOSTCC	= $(CC)
 CFLAGS  = -O2 -Wall
-LDFLAGS = 
+LDFLAGS =
 
 IPCRM   = /usr/bin/ipcrm
 
@@ -52,7 +52,7 @@ IPCRM   = /usr/bin/ipcrm
 #
 # Platform support, compatible with both BSD and GNU make
 #
-all:
+all: headers
 	@case `uname` in \
 		Darwin)	$(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDEST)" $(BINARY); ;; \
 		Haiku)	$(MAKE) EXTRA_LIBS="-lnetwork" $(BINARY); ;; \
@@ -85,8 +85,8 @@ ChangeLog:
 #
 # Building
 #
-$(NAME).c: $(NAME).h $(HEADERS)
-	
+$(NAME).c: headers $(NAME).h
+
 $(BINARY): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(EXTRA_LDFLAGS) $(OBJECTS) $(EXTRA_LIBS) -o $@
 
@@ -149,7 +149,7 @@ install: ChangeLog clean-shm
 	esac
 	@if [ -d "$(HAS_STD)" ]; then $(MAKE) install-systemd install-done; \
 	elif [ -d "$(XINETD)" ]; then $(MAKE) install-xinetd install-done; \
-	elif [ -f "$(INETD)"  ]; then $(MAKE) install-inetd; fi
+	elif [ -f "$(INETD)"  ]; then $(MAKE) install-inetd install-done; fi
 
 .PHONY: install
 
@@ -191,21 +191,10 @@ install-root:
 	fi
 	@echo
 
-install-inetd:
-	@echo
-	@echo "======================================================================"
-	@echo
-	@echo "Looks like your system has the traditional internet superserver inetd."
-	@echo "Automatic installations aren't supported, so please add the following"
-	@echo "line to the end of your /etc/inetd.conf and restart or kill -HUP the"
-	@echo "inetd process."
-	@echo
-	@echo "gopher  stream  tcp  nowait  nobody  $(SBINDIR)/$(BINARY)  $(BINARY) -h `hostname`"
-	@echo
-	@echo "======================================================================"
-	@echo
+install-inetd: install-files install-docs install-root
+	update-inetd --add "gopher  stream  tcp  nowait  nobody  $(SBINDIR)/$(BINARY)  $(BINARY) -h `hostname`"
 
-install-xinetd:
+install-xinetd: install-files install-docs install-root
 	if [ -d "$(XINETD)" -a ! -f "$(XINETD)/$(NAME)" ]; then \
 		sed -e "s/@HOSTNAME@/`hostname`/g" $(NAME).xinetd > $(XINETD)/$(NAME); \
 		[ -x /sbin/service ] && /sbin/service xinetd reload; \
@@ -239,7 +228,7 @@ install-haiku:
 	nohup /boot/system/servers/net_server >/dev/null 2>/dev/null &
 	@echo
 
-install-systemd:
+install-systemd: install-files install-docs install-root
 	if [ -d "$(HAS_STD)" ]; then \
 		if [ -d "$(SYSCONF)" -a ! -f "$(SYSCONF)/$(NAME)" ]; then \
 			$(INSTALL) -m 644 $(NAME).env $(SYSCONF)/$(NAME); \
@@ -267,6 +256,11 @@ uninstall: uninstall-xinetd uninstall-launchd uninstall-systemd
 	for DOC in $(DOCS); do rm -f $(DOCDIR)/$$DOC; done
 	rmdir -p $(SBINDIR) $(DOCDIR) 2>/dev/null || true
 	@echo
+
+uninstall-inetd:
+	if [ -f "$(INETD)" ]; then \
+		update-inetd --remove "^gopher.*gophernicus"
+	fi
 
 uninstall-xinetd:
 	if grep -q $(BINARY) "$(XINETD)/gopher" 2>/dev/null; then \
