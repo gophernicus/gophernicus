@@ -195,7 +195,7 @@ install-root:
 	@echo
 
 install-inetd: install-files install-docs install-root
-	@if update-inetd --add "$(INETLIN)"; then \
+	@if update-inetd --add $(INETLIN); then \
 		echo update-inetd install worked ; \
 	else if grep '^gopher' $(INETD) >/dev/null 2>&1 ; then \
 		echo "::::: gopher entry in $(INETD) already present -- please check! :::::"; \
