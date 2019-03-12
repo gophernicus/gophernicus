@@ -198,11 +198,11 @@ install-inetd: install-files install-docs install-root
 	@if update-inetd --add $(INETLIN); then \
 		echo update-inetd install worked ; \
 	else if grep '^gopher' $(INETD) >/dev/null 2>&1 ; then \
-		echo "::::: gopher entry in $(INETD) already present -- please check! :::::"; \
+		echo "::::: Gopher entry in $(INETD) already present -- please check! :::::"; \
 		else echo "Trying to add gopher entry to $(INETD)" ; \
 			echo "$(INETLIN)" >> $(INETD) ; \
 			if [ -r $(INETPID) ] ; then kill -HUP `cat $(INETPID)` ; \
-				else echo "::::: no PID for inetd found, not restarted -- please check! :::::" ; fi ; \
+				else echo "::::: No PID for inetd found, not restarted -- please check! :::::" ; fi ; \
 		fi ; \
 	fi
 	@echo
