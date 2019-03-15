@@ -34,6 +34,8 @@ MAP     = gophermap
 
 INETD   = /etc/inetd.conf
 XINETD  = /etc/xinetd.d
+INETLIN = "gopher	stream	tcp	nowait	nobody	$(SBINDIR)/$(BINARY)	$(BINARY) -h `hostname`"
+INETPID = /var/run/inetd.pid
 LAUNCHD = /Library/LaunchDaemons
 PLIST   = org.$(NAME).server.plist
 NET_SRV = /boot/common/settings/network/services
@@ -45,7 +47,7 @@ DEFAULT = /etc/default
 CC      = gcc
 HOSTCC	= $(CC)
 CFLAGS  = -O2 -Wall
-LDFLAGS = 
+LDFLAGS =
 
 IPCRM   = /usr/bin/ipcrm
 
@@ -53,7 +55,7 @@ IPCRM   = /usr/bin/ipcrm
 #
 # Platform support, compatible with both BSD and GNU make
 #
-all:
+all: headers
 	@case `uname` in \
 		Darwin)	$(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDEST)" $(BINARY); ;; \
 		Haiku)	$(MAKE) EXTRA_LIBS="-lnetwork" $(BINARY); ;; \
@@ -86,8 +88,8 @@ ChangeLog:
 #
 # Building
 #
-$(NAME).c: $(NAME).h $(HEADERS)
-	
+$(NAME).c: headers $(NAME).h
+
 $(BINARY): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(EXTRA_LDFLAGS) $(OBJECTS) $(EXTRA_LIBS) -o $@
 
@@ -150,7 +152,7 @@ install: ChangeLog clean-shm
 	esac
 	@if [ -d "$(HAS_STD)" ]; then $(MAKE) install-systemd install-done; \
 	elif [ -d "$(XINETD)" ]; then $(MAKE) install-xinetd install-done; \
-	elif [ -f "$(INETD)"  ]; then $(MAKE) install-inetd; fi
+	elif [ -f "$(INETD)"  ]; then $(MAKE) install-inetd install-done; fi
 
 .PHONY: install
 
@@ -158,6 +160,7 @@ install-done:
 	@echo
 	@echo "======================================================================"
 	@echo
+	@echo "If there were no errors shown above,"
 	@echo "Gophernicus has now been succesfully installed. To try it out, launch"
 	@echo "your favorite gopher browser and navigate to your gopher root."
 	@echo
@@ -174,7 +177,7 @@ install-done:
 	@echo "======================================================================"
 	@echo
 
-install-files:
+install-files: $(BINARY)
 	mkdir -p $(SBINDIR)
 	$(INSTALL) -s -m 755 $(BINARY) $(SBINDIR)
 	@echo
@@ -192,21 +195,20 @@ install-root:
 	fi
 	@echo
 
-install-inetd:
-	@echo
-	@echo "======================================================================"
-	@echo
-	@echo "Looks like your system has the traditional internet superserver inetd."
-	@echo "Automatic installations aren't supported, so please add the following"
-	@echo "line to the end of your /etc/inetd.conf and restart or kill -HUP the"
-	@echo "inetd process."
-	@echo
-	@echo "gopher  stream  tcp  nowait  nobody  $(SBINDIR)/$(BINARY)  $(BINARY) -h `hostname`"
-	@echo
-	@echo "======================================================================"
+install-inetd: install-files install-docs install-root
+	@if update-inetd --add $(INETLIN); then \
+		echo update-inetd install worked ; \
+	else if grep '^gopher' $(INETD) >/dev/null 2>&1 ; then \
+		echo "::::: Gopher entry in $(INETD) already present -- please check! :::::"; \
+		else echo "Trying to add gopher entry to $(INETD)" ; \
+			echo "$(INETLIN)" >> $(INETD) ; \
+			if [ -r $(INETPID) ] ; then kill -HUP `cat $(INETPID)` ; \
+				else echo "::::: No PID for inetd found, not restarted -- please check! :::::" ; fi ; \
+		fi ; \
+	fi
 	@echo
 
-install-xinetd:
+install-xinetd: install-files install-docs install-root
 	if [ -d "$(XINETD)" -a ! -f "$(XINETD)/$(NAME)" ]; then \
 		sed -e "s/@HOSTNAME@/`hostname`/g" $(NAME).xinetd > $(XINETD)/$(NAME); \
 		[ -x /sbin/service ] && /sbin/service xinetd reload; \
@@ -240,7 +242,7 @@ install-haiku:
 	nohup /boot/system/servers/net_server >/dev/null 2>/dev/null &
 	@echo
 
-install-systemd:
+install-systemd: install-files install-docs install-root
 	if [ -d "$(HAS_STD)" ]; then \
 		if [ -d "$(SYSCONF)" -a ! -f "$(SYSCONF)/$(NAME)" ]; then \
 			$(INSTALL) -m 644 $(NAME).env $(SYSCONF)/$(NAME); \
@@ -263,10 +265,22 @@ install-systemd:
 #
 # Uninstall targets
 #
-uninstall: uninstall-xinetd uninstall-launchd uninstall-systemd
+uninstall: uninstall-xinetd uninstall-launchd uninstall-systemd uninstall-inetd
 	rm -f $(SBINDIR)/$(BINARY)
 	for DOC in $(DOCS); do rm -f $(DOCDIR)/$$DOC; done
 	rmdir -p $(SBINDIR) $(DOCDIR) 2>/dev/null || true
+	@echo
+
+uninstall-inetd:
+	@if [ -f "$(INETD)" ] && update-inetd --remove "^gopher.*gophernicus" ; then \
+		echo update-inetd remove worked ; \
+	else if grep '^gopher' $(INETD) >/dev/null 2>&1 && \
+		sed -i .bak -e 's/^gopher/#gopher/' $(INETD) ; then \
+			echo "commented out gopher entry in $(INETD), reloading inetd" ; \
+			[ -r $(INETPID) ] && kill -HUP `cat $(INETPID)` ; \
+		else echo "::::: could not find gopher entry in $(INETD) :::::" ; \
+		fi ; \
+	fi
 	@echo
 
 uninstall-xinetd:
