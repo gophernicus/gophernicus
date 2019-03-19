@@ -34,7 +34,9 @@ MAP     = gophermap
 
 INETD   = /etc/inetd.conf
 XINETD  = /etc/xinetd.d
-INETLIN = "gopher	stream	tcp	nowait	nobody	$(SBINDIR)/$(BINARY)	$(BINARY) -h `hostname`"
+# get OPTIONS line from gophernicus.env and use that also for inetd
+INETOPT = `grep '^OPTIONS=' $(NAME).env | tail -n 1 | sed -e 's/OPTIONS="*//;s/"*$$//'`
+INETLIN = "gopher stream tcp nowait nobody $(SBINDIR)/$(BINARY) $(BINARY) $(INETOPT)"
 INETPID = /var/run/inetd.pid
 LAUNCHD = /Library/LaunchDaemons
 PLIST   = org.$(NAME).server.plist
