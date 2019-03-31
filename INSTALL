@@ -27,6 +27,15 @@ hostname (the one set with -h <hostname>) directory available
 (mkdir /var/gopher/$HOSTNAME).
 
 
+Other installation targets
+==========================
+
+Suppose your server runs systemd, but you'd rather have Gophernicus
+started with inetd or xinetd.  To do that, do "make install-inetd"
+or "make install-xinetd".  Likewise use "make uninstall-inetd" or
+"make uninstall-xinetd" to uninstall Gophernicus.
+
+
 Compiling with TCP wrappers
 ===========================
 
@@ -53,9 +62,8 @@ process restarted.
 
 gopher  stream  tcp  nowait  nobody  /usr/sbin/in.gophernicus  in.gophernicus -h <hostname>
 
-The Makefile will automatically do this for you if you have the 
-update(1) script installed, which is the usual case in most current 
-flavors of Linux and BSD.
+The Makefile will automatically do this for you and remove it when
+uninstalling.
 
 
 Compiling on Debian Linux (and Ubuntu)
