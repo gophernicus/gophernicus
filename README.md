@@ -53,6 +53,9 @@ are made.
     -L text|file  Set or load server location for caps.txt
     -A admin      Set admin email for caps.txt
 
+    -U paths      Specify a colon-separated list of extra unveil(2) paths
+                  (OpenBSD only).
+
     -nv           Disable virtual hosting
     -nl           Disable parent directory links
     -nh           Disable menu header (title)
@@ -107,6 +110,32 @@ simply hidden from all listings and denied if a client asks for them.
 The `-nx` option prevents execution of any script or external file,
 and the `-nu` option suppresses scanning for and serving of `~user`
 directories (which are normally at `~/public_html/` for each user).
+
+### OpenBSD-specific Security
+
+If you are running Gophernicus on OpenBSD, you may (depending on what features
+you want to use) be able to take advantage of unveil(2) and pledge(2).
+
+If you run without executable map support (i.e. you run with `-nx`) then
+unveil(2) will be enabled and the server root will automatically be unveiled.
+If run with personal gopherspaces enabled (i.e. you run without `-nu`), then
+the password database (`/etc/pwd.db`) will automatically be unveiled, but you
+will have to manually unveil the filesystem path(s) from which to serve
+personal gopherspaces (see `-U`).
+
+Running with `-nm -nu -nx` results in the strictest set of pledge(2) promises.
+If you have executable maps enabled (i.e. you run without `-nx`), then the
+promises are relaxed to allow `exec`. If you have personal gopherspaces enabled
+(i.e. you run without `-nu`), then the promises are relaxed to allow `getpw`.
+If you have shared memory enabled (i.e. you run without `-nm`), then pledge(2)
+support cannot be used at all.
+
+In short, you probably want to  run Gophernicus with `-nm -nu -nx` and then
+remove the flags that would otherwise disable the features you want.
+
+To see what is going on with regards to pledge(2) and unveil(2), run
+Gophernicus with `-d` (to turn on debug logging) and look in your system logs.
+
 
 ## Gophermaps
 
