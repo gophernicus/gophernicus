@@ -1,0 +1,11 @@
+services:
+    - docker
+
+jobs:
+    include:
+          - script:
+              - docker pull ubuntu:18.04
+              - docker run ubuntu:18.04 /bin/sh -c "apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential && make && make install"
+          - script:
+              - docker pull ubuntu:18.04
+              - docker run ubuntu:18.04 /bin/sh -c "apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential dpkg-dev && make deb && dpkg -i ../gophernicus*.deb"
