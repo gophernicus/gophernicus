@@ -27,6 +27,43 @@ hostname (the one set with -h <hostname>) directory available
 (mkdir /var/gopher/$HOSTNAME).
 
 
+Dependencies
+============
+
+These were obtained from a base docker installation, what we
+(will) be using on Travis.
+
+# Ubuntu 18.04, 16.04, Debian Sid, Buster, Stretch, Jessie #
+- build-essential
+- git
+- libwrap0-dev for tcp
+
+# Centos 6, 7 #
+- the group 'Development Tools'. less is probably required, but
+  I know this works and couldn't be bothered to find out what was
+  actually required.
+
+# Fedora 29, 30, rawhide #
+- the group 'Development Tools'. less is probably required, but
+  I know this works and couldn't be bothered to find out what was
+  actually required.
+- net-tools
+
+# OpenSuse Leap, Tumbleweed #
+- the pattern devel_C_C++
+- the pattern devel_basis
+- git
+
+# archlinux #
+- base-devel
+- git
+
+# Gentoo #
+- git
+
+# Alpine Linux #
+- alpine-sdk. once again, less is probably required.. blah blah.
+
 Other installation targets
 ==========================
 
@@ -120,3 +157,17 @@ server. If you succeed in compiling Gophernicus to a new
 platform please send the patches to 
 <gophernicus at gophernicus dot org> so we can include them into
 the next release.
+
+Supported Platforms
+===================
+
+| Platform     | Versions                     |
+| ------------ | ---------------------------- |
+| Ubuntu       | 18.04, 16.04                 |
+| Debian       | Sid, Buster, Stretch, Jessie |
+| Centos       | 7, 6                         |
+| Fedora       | 29, 30, Rawhide              |
+| Opensuse     | Leap, Tumbleweed             |
+| Arch Linux   | up to date                   |
+| Gentoo       | up to date                   |
+| Alpine Linux | Edge, 3.9                    |
