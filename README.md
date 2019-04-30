@@ -59,7 +59,7 @@ daemon. It is licensed under the BSD license.
 
 ## Setting up a gopher site
 
-After succesfully installing Gophernicus (see INSTALL) you need to set
+After succesfully installing Gophernicus (see [INSTALL](./INSTALL.md)) you need to set
 up the gopher root directory. By default Gophernicus serves documents
 from /var/gopher so start by creating that directory and making sure
 it's world-readable. Then, simply add files and directories under your
@@ -96,7 +96,7 @@ By default all gopher menus are automatically generated from the
 content of the directory being viewed. If you want to have
 informational text along with the files, or if you want to completely
 replace the generated menu with your own you need to take a look at
-gophermaps. See the file README.gophermap for more information.
+gophermaps. See the [README.gophermap](./README.gophermap) for more information.
 
 
 ## Gophertags
@@ -113,7 +113,7 @@ littering the file system with spaces and weird characters.
 ## Personal gopherspaces
 
 Gophernicus supports users personal gopherspaces. If a user has
-world-readable directory called public_gopher/ under his home, a
+world-readable directory called `public_gopher` under his home, a
 request for `gopher://HOSTNAME/1/~user/` will serve documents from
 that directory.
 
@@ -292,3 +292,4 @@ Example:
     accept  = :::7070
     connect = 127.0.0.1:70
     protocol = proxy
+
