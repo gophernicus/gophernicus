@@ -4,14 +4,16 @@ services:
 jobs:
     include:
           # ubuntu 18.04
-          - script:
+          - stage: quick
+            script:
               - docker pull ubuntu:18.04
               - docker run ubuntu:18.04 /bin/sh -c "cd && apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
           - script:
               - docker pull ubuntu:18.04
               - docker run ubuntu:18.04 /bin/sh -c "cd && apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
           # ubuntu 16.04
-          - script:
+          - stage: full
+            script:
               - docker pull ubuntu:16.04
               - docker run ubuntu:16.04 /bin/sh -c "cd && apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
           - script:
@@ -77,30 +79,30 @@ jobs:
           - script:
               - docker pull archlinux/base
               - docker run archlinux/base /bin/sh -c "cd && yes | pacman -Syu && yes '' | pacman -S base-devel git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
-          # gentoo amd64
-          - script:
-              - docker pull gentoo/stage3-amd64
-              - docker run gentoo/stage3-amd64 /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
-          # gentoo amd64 nomultilib
-          - script:
-              - docker pull gentoo/stage3-amd64-nomultilib
-              - docker run gentoo/stage3-amd64-nomultilib /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
-          # gentoo amd64 hardened nomultilib
-          - script:
-              - docker pull gentoo/stage3-amd64-hardened-nomultilib
-              - docker run gentoo/stage3-amd64-hardened-nomultilib /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
-          # gentoo amd64 hardened
-          - script:
-              - docker pull gentoo/stage3-amd64-hardened
-              - docker run gentoo/stage3-amd64-hardened /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
-          # gentoo x86
-          - script:
-              - docker pull gentoo/stage3-x86
-              - docker run gentoo/stage3-x86 /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
-          # gentoo x86 hardened
-          - script:
-              - docker pull gentoo/stage3-x86-hardened
-              - docker run gentoo/stage3-x86-hardened /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # gentoo amd64
+#          - script:
+#              - docker pull gentoo/stage3-amd64
+#              - docker run gentoo/stage3-amd64 /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # gentoo amd64 nomultilib
+#          - script:
+#              - docker pull gentoo/stage3-amd64-nomultilib
+#              - docker run gentoo/stage3-amd64-nomultilib /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # gentoo amd64 hardened nomultilib
+#          - script:
+#              - docker pull gentoo/stage3-amd64-hardened-nomultilib
+#              - docker run gentoo/stage3-amd64-hardened-nomultilib /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # gentoo amd64 hardened
+#          - script:
+#              - docker pull gentoo/stage3-amd64-hardened
+#              - docker run gentoo/stage3-amd64-hardened /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # gentoo x86
+#          - script:
+#              - docker pull gentoo/stage3-x86
+#              - docker run gentoo/stage3-x86 /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # gentoo x86 hardened
+#          - script:
+#              - docker pull gentoo/stage3-x86-hardened
+#              - docker run gentoo/stage3-x86-hardened /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
           # alpine edge
           - script:
               - docker pull alpine:edge
