@@ -103,7 +103,6 @@ void send_text_file(state *st)
 void url_redirect(state *st)
 {
 	char dest[BUFSIZE];
-	char *c;
 
 	/* Basic security checking */
 	sstrlcpy(dest, st->req_selector + 4);
@@ -113,9 +112,6 @@ void url_redirect(state *st)
 	    sstrncmp(dest, "ftp://") != MATCH &&
 	    sstrncmp(dest, "mailto:") != MATCH)
 		die(st, ERR_ACCESS, "Refusing to HTTP redirect unsafe protocols");
-
-	if ((c = strchr(dest, '"'))) *c = '\0';
-	if ((c = strchr(dest, '?'))) *c = '\0';
 
 	/* Log the redirect */
 	if (st->opt_syslog) {
