@@ -110,6 +110,7 @@ void url_redirect(state *st)
 	if (sstrncmp(dest, "http://") != MATCH &&
 	    sstrncmp(dest, "https://") != MATCH &&
 	    sstrncmp(dest, "ftp://") != MATCH &&
+	    sstrncmp(dest, "irc://") != MATCH &&
 	    sstrncmp(dest, "mailto:") != MATCH)
 		die(st, ERR_ACCESS, "Refusing to HTTP redirect unsafe protocols");
 
