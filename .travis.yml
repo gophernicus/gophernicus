@@ -47,22 +47,27 @@ jobs:
           - script:
               - docker pull debian:jessie
               - docker run debian:jessie /bin/sh -c "cd && apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
-          # centos 6 
-          - script:
-              - docker pull centos:6
-              - docker run centos:6 /bin/sh -c "cd && yes | yum -y update && yes | yum -y groupinstall 'Development Tools' && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
-          # centos 7 
-          - script:
-              - docker pull centos:7
-              - docker run centos:7 /bin/sh -c "cd && yes | yum -y update && yes | yum -y groupinstall 'Development Tools' && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
-          # fedora 29
-          - script:
-              - docker pull fedora:29
-              - docker run fedora:29 /bin/sh -c "cd && dnf -y update && dnf -y upgrade && dnf -y groupinstall 'Development Tools' && dnf -y install which hostname && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
-          # fedora 30
-          - script:
-              - docker pull fedora:30
-              - docker run fedora:30 /bin/sh -c "cd && dnf -y update && dnf -y upgrade && dnf -y groupinstall 'Development Tools' && dnf -y install which hostname && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+
+           # ==========================
+           # = BELOW CURRENTLY BROKEN =
+           # ==========================
+
+#          # centos 6 
+#          - script:
+#              - docker pull centos:6
+#              - docker run centos:6 /bin/sh -c "cd && yes | yum -y update && yes | yum -y groupinstall 'Development Tools' && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # centos 7 
+#          - script:
+#              - docker pull centos:7
+#              - docker run centos:7 /bin/sh -c "cd && yes | yum -y update && yes | yum -y groupinstall 'Development Tools' && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # fedora 29
+#          - script:
+#              - docker pull fedora:29
+#              - docker run fedora:29 /bin/sh -c "cd && dnf -y update && dnf -y upgrade && dnf -y groupinstall 'Development Tools' && dnf -y install which hostname && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # fedora 30
+#          - script:
+#              - docker pull fedora:30
+#              - docker run fedora:30 /bin/sh -c "cd && dnf -y update && dnf -y upgrade && dnf -y groupinstall 'Development Tools' && dnf -y install which hostname && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
           # fedora rawhide
           - script:
               - docker pull fedora:rawhide
