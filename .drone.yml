@@ -1,0 +1,12 @@
+kind: pipeline
+name: default
+
+steps:
+- name: ubuntu 18.04
+  image: ubuntu:18.04
+  commands:
+  - apt-get -y update
+  - apt-get -y dist-upgrade
+  - apt-get install -y build-essential 
+  - make
+  - make install 
