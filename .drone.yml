@@ -2,12 +2,6 @@ kind: pipeline
 name: default
 
 steps:
-- name: centos-7
-  image: centos:7
-  commands:
-  - .drone/centos
-  - systemctl start dbus
-  - .drone/build
 - name: ubuntu-18.04
   image: ubuntu:18.04
   commands:
