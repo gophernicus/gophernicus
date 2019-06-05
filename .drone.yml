@@ -17,18 +17,18 @@ steps:
   commands:
   - .drone/debian
   - .drone/build
-- name: debian-8
-  image: debian:8
+- name: debian-jessie
+  image: debian:jessie
   commands:
   - .drone/debian
   - .drone/build
-- name: debian-9
-  image: debian:9
+- name: debian-stretch
+  image: debian:stretch
   commands:
   - .drone/debian
   - .drone/build
-- name: debian-10 
-  image: debian:10
+- name: debian-buster
+  image: debian:buster
   commands:
   - .drone/debian
   - .drone/build
