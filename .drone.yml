@@ -2,11 +2,6 @@ kind: pipeline
 name: default
 
 steps:
-- name: centos-6
-  image: centos:6
-  commands:
-  - .drone/centos
-  - .drone/build
 - name: ubuntu-18.04
   image: ubuntu:18.04
   commands:
@@ -41,6 +36,11 @@ steps:
   image: debian:sid
   commands:
   - .drone/debian
+  - .drone/build
+- name: centos-6
+  image: centos:6
+  commands:
+  - .drone/centos
   - .drone/build
 - name: centos-7
   image: centos:7
