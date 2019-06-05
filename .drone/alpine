@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+apk update
+apk upgrade
+apk add alpine-sdk

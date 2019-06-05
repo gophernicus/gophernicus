@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+zypper -n refresh
+zypper -n update
+zypper -n install --type pattern devel_C_C++
+zypper -n install --type pattern devel_basis
+zypper -n install git which

@@ -5,8 +5,120 @@ steps:
 - name: ubuntu 18.04
   image: ubuntu:18.04
   commands:
-  - apt-get -y update
-  - apt-get -y dist-upgrade
-  - apt-get install -y build-essential 
-  - make
-  - make install 
+  - .drone/debian
+  - .drone/build
+- name: ubuntu 16.04
+  image: ubuntu:16.04
+  commands:
+  - .drone/debian
+  - .drone/build
+- name: ubuntu 19.04
+  image: ubuntu:19.04
+  commands:
+  - .drone/debian
+  - .drone/build
+- name: debian 8
+  image: debian:8
+  commands:
+  - .drone/debian
+  - .drone/build
+- name: debian 9
+  image: debian:9
+  commands:
+  - .drone/debian
+  - .drone/build
+- name: debian 10 
+  image: debian:10
+  commands:
+  - .drone/debian
+  - .drone/build
+- name: debian sid
+  image: debian:sid
+  commands:
+  - .drone/debian
+  - .drone/build
+- name: centos 6
+  image: centos:6
+  commands:
+  - .drone/centos
+  - .drone/build
+- name: centos 7
+  image: centos:7
+  commands:
+  - .drone/centos
+  - .drone/build
+- name: fedora 28
+  image: fedora:28
+  commands:
+  - .drone/fedora
+  - .drone/build
+- name: fedora 29
+  image: fedora:29
+  commands:
+  - .drone/fedora
+  - .drone/build
+- name: fedora rawhide 
+  image: fedora:rawhide
+  commands:
+  - .drone/fedora
+  - .drone/build
+- name: opensuse leap
+  image: opensuse/leap
+  commands:
+  - .drone/opensuse
+  - .drone/build
+- name: opensuse tumbleweed
+  image: opensuse/tumbleweed
+  commands:
+  - .drone/opensuse
+  - .drone/build
+- name: gentoo amd64
+  image: gentoo/stage3-amd64
+  commands:
+  - .drone/gentoo
+  - .drone/build
+- name: gentoo amd64 nomultilib
+  image: gentoo/stage3-amd64-nomultilib
+  commands:
+  - .drone/gentoo
+  - .drone/build
+- name: gentoo amd64 hardened
+  image: gentoo/stage3-amd64-hardened
+  commands:
+  - .drone/gentoo
+  - .drone/build
+- name: gentoo amd64 hardened nomultilib
+  image: gentoo/stage3-amd64-hardened-nomultilib
+  commands:
+  - .drone/gentoo
+  - .drone/build
+- name: gentoo amd64 hardened
+  image: gentoo/stage3-amd64-nomultilib
+  commands:
+  - .drone/gentoo
+  - .drone/build
+- name: gentoo x86
+  image: gentoo/stage3-x86
+  commands:
+  - .drone/gentoo
+  - .drone/build
+- name: gentoo x86
+  image: gentoo/stage3-x86
+  commands:
+  - .drone/gentoo
+  - .drone/build
+- name: gentoo x86 hardened
+  image: gentoo/stage3-x86-hardened
+  commands:
+  - .drone/gentoo
+  - .drone/build
+- name: alpine 3.9
+  image: alpine:3.9
+  commands:
+  - .drone/alpine
+  - .drone/build
+- name: alpine edge
+  image: alpine:edge
+  commands:
+  - .drone/alpine
+  - .drone/build

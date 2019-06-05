@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+dnf -y update
+dnf -y upgrade
+dnf -y groupinstall 'Development Tools'
+dnf -y install which hostname

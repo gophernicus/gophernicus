@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+emerge-webrsync
+emerge -uDNq @world
+emerge dev-vcs/git

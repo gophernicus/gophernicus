@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+yes | yum -y update
+yes | yum -y groupinstall 'Development Tools'
