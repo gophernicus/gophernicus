@@ -5,3 +5,4 @@ dnf -y upgrade > /dev/null
 printf "installing dependencies...\\n"
 dnf -y groupinstall 'Development Tools' > /dev/null
 dnf -y install which hostname > /dev/null
+dnf -y install xinetd

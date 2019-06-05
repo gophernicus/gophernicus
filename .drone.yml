@@ -2,6 +2,11 @@ kind: pipeline
 name: default
 
 steps:
+- name: fedora-28
+  image: fedora:28
+  commands:
+  - .drone/fedora
+  - .drone/build
 - name: ubuntu-18.04
   image: ubuntu:18.04
   commands:
@@ -41,11 +46,6 @@ steps:
   image: centos:6
   commands:
   - .drone/centos
-  - .drone/build
-- name: fedora-28
-  image: fedora:28
-  commands:
-  - .drone/fedora
   - .drone/build
 - name: fedora-29
   image: fedora:29
