@@ -92,11 +92,6 @@ steps:
   commands:
   - .drone/gentoo
   - .drone/build
-- name: gentoo-amd64-hardened
-  image: gentoo/stage3-amd64-nomultilib
-  commands:
-  - .drone/gentoo
-  - .drone/build
 - name: gentoo-x86
   image: gentoo/stage3-x86
   commands:
