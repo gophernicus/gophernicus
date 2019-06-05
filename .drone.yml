@@ -102,11 +102,6 @@ steps:
   commands:
   - .drone/gentoo
   - .drone/build
-- name: gentoo x86
-  image: gentoo/stage3-x86
-  commands:
-  - .drone/gentoo
-  - .drone/build
 - name: gentoo x86 hardened
   image: gentoo/stage3-x86-hardened
   commands:
