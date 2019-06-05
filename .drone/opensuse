@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
-zypper -n refresh
-zypper -n update
-zypper -n install --type pattern devel_C_C++
-zypper -n install --type pattern devel_basis
-zypper -n install git which
+printf "updating system...\\n"
+zypper -n refresh > /dev/null
+zypper -n update > /dev/null
+printf "installing dependencies...\\n"
+zypper -n install --type pattern devel_C_C++ > /dev/null
+zypper -n install --type pattern devel_basis > /dev/null
+zypper -n install git which > /dev/null

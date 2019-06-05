@@ -1,3 +1,5 @@
 #!/usr/bin/env sh
-yes | pacman -Syu
-yes '' | pacman -S base-devel git
+printf "updating system...\\n"
+yes | pacman -Syu > /dev/null
+printf "installing dependencies...\\n"
+yes '' | pacman -S base-devel git > /dev/null

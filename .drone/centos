@@ -1,3 +1,5 @@
 #!/usr/bin/env sh
-yes | yum -y update
-yes | yum -y groupinstall 'Development Tools'
+printf "updating system...\\n"
+yes | yum -y update > /dev/null
+printf "installing dependencies...\\n"
+yes | yum -y groupinstall 'Development Tools' > /dev/null

@@ -1,4 +1,6 @@
 #!/usr/bin/env sh
-emerge-webrsync
-emerge -uDNq @world
-emerge dev-vcs/git
+printf "updating system...\\n"
+emerge-webrsync > /dev/null
+emerge -uDNq @world > /dev/null
+printf "installing dependencies...\\n"
+emerge dev-vcs/git > /dev/null
