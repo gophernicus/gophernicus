@@ -8,7 +8,7 @@ any \*nix system.
 To compile and install run:
 
 ```
-$ git clone https://github.com/kimholviala/gophernicus.git
+$ git clone https://github.com/gophernicus/gophernicus.git
 $ cd gophernicus
 $ make
 $ sudo make install
