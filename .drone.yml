@@ -12,6 +12,6 @@ steps:
   image: ubuntu:18.04
   commands:
   - .drone/deps
-  - apt-get -qq install debhelper git libwrap0-dev > /dev/null
+  - apt-get -qq install debhelper git libwrap0-dev openbsd-inetd > /dev/null
   - make deb
   - dpkg -i ../*.deb
