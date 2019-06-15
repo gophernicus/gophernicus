@@ -11,7 +11,7 @@ ROOT=/var/gopher
 PACKAGE=gophernicus
 LOGDIR=/var/log/$PACKAGE
 LIBDIR=/usr/lib/$PACKAGE
-BINARY=in.gophernicus
+BINARY=gophernicus
 DEFAULT=/etc/default/$PACKAGE
 USER=nobody
 
