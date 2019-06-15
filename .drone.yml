@@ -12,5 +12,6 @@ steps:
   image: ubuntu:18.04
   commands:
   - .drone/deps
+  - apt-get -qq install debhelper libwrap0-dev > /dev/null
   - make deb
   - dpkg -i *.deb
