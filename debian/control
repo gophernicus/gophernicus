@@ -1,10 +1,10 @@
 Source: gophernicus
 Section: net
 Priority: extra
-Maintainer: Kim Holviala <kimholviala@fastmail.com>
+Maintainer: gophernicus developers <gophernicus@gophernicus.org> 
 Build-Depends: debhelper (>= 5), libwrap0-dev
 Standards-Version: 3.7.3
-Homepage: gopher://gophernicus.org/1/software/gophernicus/server/
+Homepage: https://github.com/gophernicus/gophernicus
 
 Package: gophernicus
 Architecture: any

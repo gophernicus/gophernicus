@@ -1,5 +1,7 @@
 # Gophernicus
 
+Version 3.0
+
 *Copyright (c) 2009-2019 Kim Holviala and others*
 
 Gophernicus is a modern full-featured (and hopefully) secure gopher
