@@ -255,9 +255,11 @@ install-systemd: install-files install-docs install-root
 				break; \
 			fi; \
 		done; \
-		systemctl daemon-reload; \
-		systemctl enable $(NAME).socket; \
-		systemctl start $(NAME).socket; \
+		if pidof systemd ; then \
+			systemctl daemon-reload; \
+			systemctl enable $(NAME).socket; \
+			systemctl start $(NAME).socket; \
+		fi; \
 	fi
 	@echo
 
