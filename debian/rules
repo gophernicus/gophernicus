@@ -20,7 +20,6 @@ build-stamp:
 	dh_testdir
 
 	$(MAKE)
-	$(MAKE) ChangeLog
 
 	touch $@
 
@@ -55,7 +54,7 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir
 	dh_testroot
-	dh_installchangelogs ChangeLog
+	dh_installchangelogs changelog
 	dh_installdocs
 #	dh_install
 #	dh_installmenu
