@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-apt-get -qq update
-apt-get -qq dist-upgrade
-apt-get -qq install build-essential
+apt-get -qq update > /dev/null
+apt-get -qq dist-upgrade > /dev/null
+apt-get -qq install build-essential > /dev/null
