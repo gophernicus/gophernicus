@@ -7,10 +7,10 @@
 #
 NAME     = gophernicus
 PACKAGE  = $(NAME)
-BINARY   = in.$(NAME)
-VERSION  = `./version`
+BINARY   = $(NAME)
+VERSION  = 3.0 
 CODENAME = Dungeon Edition
-AUTHOR   = Kim Holviala and others
+AUTHOR   = h9bnks and fosslinux
 EMAIL    = gophernicus@gophernicus.org
 STARTED  = 2009
 
@@ -18,7 +18,7 @@ SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
 HEADERS = functions.h files.h
 OBJECTS = $(SOURCES:.c=.o)
 README  = README.md
-DOCS    = LICENSE README.md INSTALL.md TODO ChangeLog README.Gophermap gophertag
+DOCS    = LICENSE README.md INSTALL.md TODO changelog README.Gophermap gophertag
 
 INSTALL = PATH=$$PATH:/usr/sbin ./install-sh -o 0 -g 0
 DESTDIR = /usr
@@ -71,18 +71,7 @@ withwrap:
 # Special targets
 #
 deb:
-	printf "$(PACKAGE) ($(VERSION)) unstable; urgency=low\n\n  * Automatically generated changelog\n\n" > debian/changelog
-	printf " -- $(AUTHOR) <$(EMAIL)>  %s\n" "`LC_ALL=POSIX date "+%a, %d %b %Y %H:%M:%S %z"`" >> debian/changelog
 	dpkg-buildpackage -rfakeroot -uc -us
-
-ChangeLog:
-	if [ -d .git ]; then \
-		(./git2changelog > ChangeLog; \
-		cat changelog.old >> ChangeLog); \
-	else true; fi
-
-.PHONY: ChangeLog
-
 
 #
 # Building
@@ -142,7 +131,7 @@ clean-shm:
 #
 # Install targets
 #
-install: ChangeLog clean-shm
+install: clean-shm
 	@case `uname` in \
 		Darwin)  $(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDEST)" install-files install-docs install-root install-osx install-done; ;; \
 		Haiku)   $(MAKE) SBINDIR=/boot/common/bin DOCDIR=/boot/common/share/doc/$(PACKAGE) \

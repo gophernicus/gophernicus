@@ -6,20 +6,18 @@ files.h
 functions.h
 README.options
 bin2c
-in.gophernicus
+gophernicus
 
 #
 # Release files
 #
 *.gz
-ChangeLog
 
 #
 # Debian packaging leftovers
 #
 build-stamp
 debian/files
-debian/changelog
 debian/gophernicus.debhelper.log
 debian/gophernicus.postrm.debhelper
 debian/gophernicus.substvars

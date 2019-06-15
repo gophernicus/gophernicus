@@ -90,7 +90,7 @@ just run 'make withwrap'.
 
 For configuring IP access lists with TCP wrappers, take a look
 at the files `/etc/hosts.allow` and `/etc/hosts.deny` (because the
-manual pages suck). Use the daemon name 'in.gophernicus' to
+manual pages suck). Use the daemon name 'gophernicus' to
 make your access lists.
 
 
@@ -101,7 +101,7 @@ below line should be added to your `/etc/inetd.conf` and the inetd
 process restarted.
 
 ```
-gopher  stream  tcp  nowait  nobody  /usr/sbin/in.gophernicus  in.gophernicus -h <hostname>
+gopher  stream  tcp  nowait  nobody  /usr/sbin/gophernicus  gophernicus -h <hostname>
 ```
 
 The Makefile will automatically do this for you and remove it when
@@ -142,7 +142,7 @@ Gophernicus uses SYSV shared memory for session tracking and
 statistics. It creates the shared memory block using mode 600
 and a predefined key which means that a shared memory block
 created with one user cannot be used by another user. Simply
-said, running in.gophernicus under various different user
+said, running gophernicus under various different user
 accounts may create a situation where the memory block is locked
 to the wrong user.
 
