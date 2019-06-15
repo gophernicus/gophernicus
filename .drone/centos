@@ -1,6 +1,0 @@
-#!/usr/bin/env sh
-printf "updating system...\\n"
-yes | yum -y update > /dev/null
-printf "installing dependencies...\\n"
-yes | yum -y groupinstall 'Development Tools' > /dev/null
-yes | yum -y install xinetd > /dev/null

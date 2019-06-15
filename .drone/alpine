@@ -1,6 +1,0 @@
-#!/usr/bin/env sh
-printf "updating system...\\n"
-apk update > /dev/null
-apk upgrade > /dev/null
-printf "installing dependencies...\\n"
-apk add alpine-sdk > /dev/null

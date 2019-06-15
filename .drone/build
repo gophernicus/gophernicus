@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-printf "building...\\n"
-make
-printf "installing...\\n"
-make install

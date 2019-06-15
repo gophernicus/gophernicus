@@ -1,6 +1,0 @@
-#!/usr/bin/env sh
-printf "updating system...\\n"
-apt-get -qq update > /dev/null
-apt-get -qq dist-upgrade > /dev/null
-printf "installing dependencies...\\n"
-apt-get -qq install build-essential > /dev/null
