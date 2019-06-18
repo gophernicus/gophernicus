@@ -281,7 +281,7 @@ Example:
     
     ; Enable TCP wrappers
     libwrap = yes
-    service = in.gophernicus-tls
+    service = gophernicus-tls
     
     ; Gopher over TLS service
     [gophernicus]
