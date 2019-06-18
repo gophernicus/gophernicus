@@ -10,7 +10,7 @@ file. You can also have inline gophermaps - files with a ".gophermap"
 extension are parsed as gophermaps and displayed in between normal
 resources in alphabetical order.
 
-In a gophermap any line that doesn't contain a <TAB> character is 
+In a gophermap any line that doesn't contain a <TAB> character is
 automatically converted to an type "i" gopher resource which are
 displayed as plain text in the client. Lines which contain tabs are
 intepreted as gopher resource lines which the client will render as
@@ -63,7 +63,7 @@ Additional type characters supported by Gophernicus:
    :ext=type  change filetype (for this directory only)
    ~          include a list of users with valid ~/public_gopher
    %          include a list of available virtual hosts
-   =mapfile   include or execute other gophermap 
+   =mapfile   include or execute other gophermap
    *          stop processing gophermap, include file listing
    .          stop processing gophermap (default)
 

@@ -143,7 +143,7 @@ way to fix this.
 
 It is recommended to add '%' on a line by itself to the bottom of your root
 gophermaps. This will add "special" links of the format example.com/;example.com
-which forces the correct vhost. 
+which forces the correct vhost.
 
 ## CGI support
 
