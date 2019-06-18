@@ -14,11 +14,19 @@ $ make
 $ sudo make install
 ```
 
+after having set the correct public hostname in the `gophernicus.env`
+file. If this is wrong, selectors ("gopher links") won't work!
+
+On \*nix systems, `hostname` might give you an idea, but please
+note this might be completely wrong, especially on your personal
+machine at home or on some cheap virtual server. If you know you
+have a fixed numerical IP, you can also directly use that.
+For testing, just keep the default value of `localhost` which will
+result in selectors working only when you're connecting locally.
+
 That's it - Gophernicus should now be installed, preconfigured
 and running under gopher://<HOSTNAME>/. And more often than not,
-It Just Works(tm). If gopher links don't seem to work you may
-need to configure your public hostname explicitly in whatever
-config file Gophernicus is using.
+It Just Works(tm).
 
 By default Gophernicus serves gopher documents from `/var/gopher`
 although that can be changed by using the `-r <root>` parameter.
