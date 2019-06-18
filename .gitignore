@@ -3,6 +3,7 @@
 #
 *.o
 files.h
+filetypes.h
 functions.h
 README
 README.options

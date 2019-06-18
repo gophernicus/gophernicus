@@ -15,7 +15,7 @@ EMAIL    = gophernicus@gophernicus.org
 STARTED  = 2009
 
 SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
-HEADERS = functions.h files.h
+HEADERS = functions.h files.h filetypes.h
 OBJECTS = $(SOURCES:.c=.o)
 README  = README.md
 DOCS    = LICENSE README.md INSTALL.md TODO changelog README.Gophermap gophertag
@@ -99,6 +99,9 @@ functions.h:
 		grep -v "[a-z]:" | \
 		sed -e "s/ =.*$$//" -e "s/ *$$/;/" >> $@
 	@echo
+
+filetypes.h:
+	sh filetypes.sh
 
 bin2c: bin2c.c
 	$(HOSTCC) bin2c.c -o $@
