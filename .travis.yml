@@ -1,0 +1,118 @@
+services:
+    - docker
+
+jobs:
+    include:
+          # ubuntu 18.04
+          - stage: quick
+            script:
+              - docker pull ubuntu:18.04
+              - docker run ubuntu:18.04 /bin/sh -c "cd && apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+          - script:
+              - docker pull ubuntu:18.04
+              - docker run ubuntu:18.04 /bin/sh -c "cd && apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+          # ubuntu 16.04
+          - stage: full
+            script:
+              - docker pull ubuntu:16.04
+              - docker run ubuntu:16.04 /bin/sh -c "cd && apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+          - script:
+              - docker pull ubuntu:16.04
+              - docker run ubuntu:16.04 /bin/sh -c "cd && apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+          # debian sid
+          - script:
+              - docker pull debian:sid
+              - docker run debian:sid /bin/sh -c "cd && apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+          - script:
+              - docker pull debian:sid
+              - docker run debian:sid /bin/sh -c "cd && apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+          # debian buster
+          - script:
+              - docker pull debian:buster
+              - docker run debian:buster /bin/sh -c "cd && apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+          - script:
+              - docker pull debian:buster
+              - docker run debian:buster /bin/sh -c "cd && apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+          # debian stretch
+          - script:
+              - docker pull debian:stretch
+              - docker run debian:stretch /bin/sh -c "cd && apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+          - script:
+              - docker pull debian:stretch
+              - docker run debian:stretch /bin/sh -c "cd && apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+          # debian jessie
+          - script:
+              - docker pull debian:jessie
+              - docker run debian:jessie /bin/sh -c "cd && apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+          - script:
+              - docker pull debian:jessie
+              - docker run debian:jessie /bin/sh -c "cd && apt-get update && apt-get dist-upgrade -y && apt-get install -y build-essential git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+
+           # ==========================
+           # = BELOW CURRENTLY BROKEN =
+           # ==========================
+
+#          # centos 6 
+#          - script:
+#              - docker pull centos:6
+#              - docker run centos:6 /bin/sh -c "cd && yes | yum -y update && yes | yum -y groupinstall 'Development Tools' && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # centos 7 
+#          - script:
+#              - docker pull centos:7
+#              - docker run centos:7 /bin/sh -c "cd && yes | yum -y update && yes | yum -y groupinstall 'Development Tools' && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # fedora 29
+#          - script:
+#              - docker pull fedora:29
+#              - docker run fedora:29 /bin/sh -c "cd && dnf -y update && dnf -y upgrade && dnf -y groupinstall 'Development Tools' && dnf -y install which hostname && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # fedora 30
+#          - script:
+#              - docker pull fedora:30
+#              - docker run fedora:30 /bin/sh -c "cd && dnf -y update && dnf -y upgrade && dnf -y groupinstall 'Development Tools' && dnf -y install which hostname && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+          # fedora rawhide
+          - script:
+              - docker pull fedora:rawhide
+              - docker run fedora:rawhide /bin/sh -c "cd && dnf -y update && dnf -y upgrade && dnf -y groupinstall 'Development Tools' && dnf -y install which hostname && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+          # opensuse leap
+          - script:
+              - docker pull opensuse/leap
+              - docker run opensuse/leap /bin/sh -c "cd && zypper -n refresh && zypper -n update && zypper -n install --type pattern devel_C_C++ && zypper -n install --type pattern devel_basis && zypper -n install git which && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+          # opensuse tumbleweed
+          - script:
+              - docker pull opensuse/tumbleweed
+              - docker run opensuse/tumbleweed /bin/sh -c "cd && zypper -n refresh && zypper -n update && zypper -n install --type pattern devel_C_C++ && zypper -n install --type pattern devel_basis && zypper -n install git which && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+          # arch linux 
+          - script:
+              - docker pull archlinux/base
+              - docker run archlinux/base /bin/sh -c "cd && yes | pacman -Syu && yes '' | pacman -S base-devel git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # gentoo amd64
+#          - script:
+#              - docker pull gentoo/stage3-amd64
+#              - docker run gentoo/stage3-amd64 /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # gentoo amd64 nomultilib
+#          - script:
+#              - docker pull gentoo/stage3-amd64-nomultilib
+#              - docker run gentoo/stage3-amd64-nomultilib /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # gentoo amd64 hardened nomultilib
+#          - script:
+#              - docker pull gentoo/stage3-amd64-hardened-nomultilib
+#              - docker run gentoo/stage3-amd64-hardened-nomultilib /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # gentoo amd64 hardened
+#          - script:
+#              - docker pull gentoo/stage3-amd64-hardened
+#              - docker run gentoo/stage3-amd64-hardened /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # gentoo x86
+#          - script:
+#              - docker pull gentoo/stage3-x86
+#              - docker run gentoo/stage3-x86 /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+#          # gentoo x86 hardened
+#          - script:
+#              - docker pull gentoo/stage3-x86-hardened
+#              - docker run gentoo/stage3-x86-hardened /bin/sh -c "cd && emerge-webrsync && emerge -uDNq @world && emerge dev-vcs/git && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+          # alpine edge
+          - script:
+              - docker pull alpine:edge
+              - docker run alpine:edge /bin/sh -c "cd && apk update && apk upgrade && apk add alpine-sdk && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
+          # alpine 3.9
+          - script:
+              - docker pull alpine:3.9
+              - docker run alpine:3.9 /bin/sh -c "cd && apk update && apk upgrade && apk add alpine-sdk && git clone https://github.com/kimholviala/gophernicus && cd gophernicus && make && make install"
