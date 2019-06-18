@@ -1,7 +1,7 @@
 Source: gophernicus
 Section: net
 Priority: extra
-Maintainer: gophernicus developers <gophernicus@gophernicus.org> 
+Maintainer: gophernicus developers <gophernicus@gophernicus.org>
 Build-Depends: debhelper (>= 5), libwrap0-dev
 Standards-Version: 3.7.3
 Homepage: https://github.com/gophernicus/gophernicus

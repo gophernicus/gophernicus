@@ -177,7 +177,7 @@ void log_combined(state *st, int status)
 
 	/* Generate log entry */
 	fprintf(fp, "%s %s:%i - [%s] \"GET %c%s HTTP/1.0\" %i %li \"%s\" \"" HTTP_USERAGENT "\"\n",
-		st->req_remote_addr, 
+		st->req_remote_addr,
 		st->server_host,
 		st->server_port,
 		timestr,

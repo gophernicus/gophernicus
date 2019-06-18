@@ -179,7 +179,7 @@ void vhostlist(state *st)
 			strftime(timestr, sizeof(timestr), DATE_FORMAT, ltime);
 
 			printf("1%-*.*s   %s        -  \t/;%s\t%s\t%i" CRLF,
-				width, width, buf, timestr, dir[i].name, 
+				width, width, buf, timestr, dir[i].name,
 				dir[i].name, st->server_port);
 		}
 
@@ -226,7 +226,7 @@ char gopher_filetype(state *st, char *file, char magic)
 	fclose(fp);
 
 	/* GIF images */
-	if (sstrncmp(buf, "GIF89a") == MATCH || 
+	if (sstrncmp(buf, "GIF89a") == MATCH ||
 	    sstrncmp(buf, "GIF87a") == MATCH) return TYPE_GIF;
 
 	/* JPEG images */
@@ -405,7 +405,7 @@ int gophermap(state *st, char *mapfile, int depth)
 		/* Parse port */
 		port = st->server_port;
 		if ((c = strchr(host, '\t'))) {
-			*c = '\0'; 
+			*c = '\0';
 			port = atoi(c + 1);
 		}
 

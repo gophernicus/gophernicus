@@ -28,49 +28,43 @@ hostname (the one set with `-h <hostname>`) directory available
 (`mkdir /var/gopher/$HOSTNAME`).
 
 
-<<<<<<< HEAD:INSTALL
-Dependencies
-============
+## Dependencies
 
 These were obtained from a base docker installation, what we
 (will) be using on Travis.
 
-# Ubuntu 18.04, 16.04, Debian Sid, Buster, Stretch, Jessie #
+### Ubuntu 18.04, 16.04, Debian Sid, Buster, Stretch, Jessie
 - build-essential
 - git
 - libwrap0-dev for tcp
 
-# Centos 6, 7 #
+### Centos 6, 7
 - the group 'Development Tools'. less is probably required, but
   I know this works and couldn't be bothered to find out what was
   actually required.
 
-# Fedora 29, 30, rawhide #
+### Fedora 29, 30, rawhide
 - the group 'Development Tools'. less is probably required, but
   I know this works and couldn't be bothered to find out what was
   actually required.
 - net-tools
 
-# OpenSuse Leap, Tumbleweed #
+### OpenSuse Leap, Tumbleweed
 - the pattern devel_C_C++
 - the pattern devel_basis
 - git
 
-# archlinux #
+### archlinux
 - base-devel
 - git
 
-# Gentoo #
+### Gentoo
 - git
 
-# Alpine Linux #
+### Alpine Linux
 - alpine-sdk. once again, less is probably required.. blah blah.
 
-Other installation targets
-==========================
-=======
-## Other installation targets
->>>>>>> 82a1abebc4bfabc43ef6b27f0627f526984eaf30:INSTALL.md
+### Other installation targets
 
 Suppose your server runs systemd, but you'd rather have Gophernicus
 started with inetd or xinetd.  To do that, do `make install-inetd`
@@ -134,9 +128,7 @@ arch one.
 $ make HOSTCC=gcc CC=target-arch-gcc
 ```
 
-
 ## Shared memory issues
-====================
 
 Gophernicus uses SYSV shared memory for session tracking and
 statistics. It creates the shared memory block using mode 600
@@ -156,16 +148,14 @@ $ sudo make clean-shm
 
 ## Porting to different platforms
 
-If you need to port Gophernicus to a new platform, please take
-a look at gophernicus.h which has a bunch of `HAVE_*` `#defines`.
-Fiddling with those usually makes it possible to compile a working
-server. If you succeed in compiling Gophernicus to a new
-platform please send the patches to
-<gophernicus at gophernicus dot org> so we can include them into
-the next release.
+If you need to port Gophernicus to a new platform, please take a look at
+gophernicus.h which has a bunch of `#define HAVE_...` Fiddling with those
+usually makes it possible to compile a working server.
+If you succeed in compiling Gophernicus to a new platform please send
+the patches to <gophernicus at gophernicus dot org> so we can include
+them into the next release.
 
-Supported Platforms
-===================
+## Supported Platforms
 
 | Platform     | Versions                     |
 | ------------ | ---------------------------- |
