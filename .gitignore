@@ -4,15 +4,15 @@
 *.o
 files.h
 functions.h
+README
 README.options
 bin2c
-in.gophernicus
+gophernicus
 
 #
 # Release files
 #
 *.gz
-ChangeLog
 
 #
 # Debian packaging leftovers
