@@ -2,7 +2,7 @@
 # description: Gophernicus - Modern full-featured gopher server
 service gopher
 {
-	socket_type	= stream        
+	socket_type	= stream
 	wait		= no
 	user		= nobody
 	server		= /usr/sbin/in.gophernicus

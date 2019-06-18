@@ -274,7 +274,7 @@ void platform(state *st)
 #else
 	         release,
 	         machine);
-#endif 
+#endif
 
 	/* Debug */
 	if (st->debug) {
