@@ -1,9 +1,22 @@
 # Gophernicus
 
+Version 3.0
+
 *Copyright (c) 2009-2019 Kim Holviala and others*
 
 Gophernicus is a modern full-featured (and hopefully) secure gopher
 daemon. It is licensed under the BSD license.
+
+## Support/Contact
+
+Developers can be reached at <gophernicus AT gophernicus DOT org>.
+
+Our IRC channel is on irc.freenode.net #gophernicus.
+
+You most likely want to subscribe to the gophernicus mailing list at
+https://lists.tildeverse.org/postorius/lists/gophernicus.lists.tildeverse.org/,
+especially if you maintain a server. This is where all important announcements
+are made.
 
 ## Command line options
 
@@ -72,7 +85,6 @@ on the root menu don't work make sure you are using the `-h HOSTNAME`
 parameter in your configuration (with a valid resolveable hostname
 instead of `HOSTNAME` - see INSTALL).
 
-
 ## Security
 
 Gophernicus has been written with high security in mind. There should
@@ -89,7 +101,6 @@ The `-nx` option prevents execution of any script or external file,
 and the `-nu` option suppresses scanning for and serving of `~user`
 directories (which are normally at `~/public_html/` for each user).
 
-
 ## Gophermaps
 
 By default all gopher menus are automatically generated from the
@@ -97,7 +108,6 @@ content of the directory being viewed. If you want to have
 informational text along with the files, or if you want to completely
 replace the generated menu with your own you need to take a look at
 gophermaps. See the [README.gophermap](./README.gophermap) for more information.
-
 
 ## Gophertags
 
@@ -108,7 +118,6 @@ create a file foo/gophertag and put the text "bar" into it the menus
 will show "bar" but the links will still point to "foo". This is
 useful for creating descriptive names for directories without
 littering the file system with spaces and weird characters.
-
 
 ## Personal gopherspaces
 
@@ -121,30 +130,31 @@ This is suppressed if the `-nu` option is given.
 In this case, any `~` entry which otherwise initiates listing
 of user directories will be displayed literally.
 
-
 ## Virtual hosting
 
 Gophernicus supports virtual hosting, or serving more than one logical
 domain using the same IP address. Since gopher (RFC1436) doesn't
-support virtual hosting this requires some clever (but mostly invisble)
-hacks.
+support virtual hosting this requires some hacks.
 
 To enable virtual hosting create one or more directories under your
 gopher root which are named after your domain names. The primary vhost
 directory (set with the `-h HOSTNAME` option) must exist or virtual
 hosting will be disabled. Then simply add content to the hostname
-directories and you're up and running.
+directories and you're (kind of) up and running.
 
-Almost.
+There is a serious issue with virtual hosting.
 
-To make gopher clients work properly with virtual hosting, create a
-root gophermap for each of your domains and include the "%" type
-character to create a list of all available virtual hosts (see
-README.gophermap). The generated virtual host links will be created so
-that standard gopher clients will find the correct domain even when
-they don't specifically tell the server which host they're trying to
-reach.
+As stated previously, RFC1436 dosen't support virtual hosting. Clients won't
+like it.
 
+How the virtual hosting works, is that it loops through the vhosts looking for
+the selector. As you might think, the root gophermap exists on all of the
+vhosts, meaning it might not use the correct vhost. There is currently no easy
+way to fix this.
+
+It is recommended to add '%' on a line by itself to the bottom of your root
+gophermaps. This will add "special" links of the format example.com/;example.com
+which forces the correct vhost. 
 
 ## CGI support
 
@@ -189,7 +199,6 @@ the PHP command line interpreter. In other words, PHP starts working.
 And don't use the CGI version of PHP as it outputs HTTP headers the
 gopher protocol doesn't have.
 
-
 ## Charset support and conversions
 
 Gophernicus supports three charsets: US-ASCII, ISO-8859-1 and UTF-8.
@@ -207,7 +216,6 @@ than pure US-ASCII. If you want to disable the conversion use the
 `-no` option, or if you'd like to change the default output charset to
 something else than US-ASCII just use for example the `-o ISO-8859-1`
 option.
-
 
 ## Selector rewriting
 
@@ -242,7 +250,6 @@ that it's possible to integrate Gophernicus into existing server
 monitoring systems. To ease up such integrations, Gophernicus
 supports HTTP requests of the server-status page using an URL like
 `http://HOSTNAME:70/server-status?auto` .
-
 
 ## TLS/SSL and proxy support
 
@@ -285,11 +292,10 @@ Example:
     
     ; Enable TCP wrappers
     libwrap = yes
-    service = in.gophernicus-tls
+    service = gophernicus-tls
     
     ; Gopher over TLS service
     [gophernicus]
     accept  = :::7070
     connect = 127.0.0.1:70
     protocol = proxy
-
