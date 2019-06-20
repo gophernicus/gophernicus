@@ -5,13 +5,17 @@ from standard LIBC ones. Care has been taken to use only
 standard POSIX syscalls so that it should work pretty much on
 any \*nix system.
 
+Please make sure that you checkout to the correct version you want.
+Currently, you most likely want version 3.0.
+
 To compile and install run:
 
 ```
 $ git clone https://github.com/gophernicus/gophernicus.git
 $ cd gophernicus
+$ git checkout 3.0
 $ make
-$ sudo make install
+# make install
 ```
 
 That's it - Gophernicus should now be installed, preconfigured
@@ -27,10 +31,7 @@ the gopher root and make sure you have at least the primary
 hostname (the one set with `-h <hostname>`) directory available
 (`mkdir /var/gopher/$HOSTNAME`).
 
-
-<<<<<<< HEAD:INSTALL
-Dependencies
-============
+## Dependencies
 
 These were obtained from a base docker installation, what we
 (will) be using on Travis.
@@ -66,17 +67,12 @@ These were obtained from a base docker installation, what we
 # Alpine Linux #
 - alpine-sdk. once again, less is probably required.. blah blah.
 
-Other installation targets
-==========================
-=======
 ## Other installation targets
->>>>>>> 82a1abebc4bfabc43ef6b27f0627f526984eaf30:INSTALL.md
 
 Suppose your server runs systemd, but you'd rather have Gophernicus
 started with inetd or xinetd.  To do that, do `make install-inetd`
 or `make install-xinetd`.  Likewise use `make uninstall-inetd` or
 `make uninstall-xinetd` to uninstall Gophernicus.
-
 
 ## Compiling with TCP wrappers
 
@@ -93,7 +89,6 @@ at the files `/etc/hosts.allow` and `/etc/hosts.deny` (because the
 manual pages suck). Use the daemon name 'gophernicus' to
 make your access lists.
 
-
 ## Running with traditional inetd superserver
 
 If you want to run Gophernicus under the traditional Unix inetd, the 
@@ -106,7 +101,6 @@ gopher  stream  tcp  nowait  nobody  /usr/sbin/gophernicus  gophernicus -h <host
 
 The Makefile will automatically do this for you and remove it when
 uninstalling.
-
 
 ## Compiling on Debian Linux (and Ubuntu)
 
@@ -122,7 +116,6 @@ Work(tm).
 If you need TCP wrappers support on Debian/Ubuntu, please
 install libwrap0-dev before compiling.
 
-
 ## Cross-compiling
 
 Cross-compiling to a different target architecture can be done
@@ -134,9 +127,7 @@ arch one.
 $ make HOSTCC=gcc CC=target-arch-gcc
 ```
 
-
 ## Shared memory issues
-====================
 
 Gophernicus uses SYSV shared memory for session tracking and
 statistics. It creates the shared memory block using mode 600
@@ -153,7 +144,6 @@ let Gophernicus recreate it - no harm done:
 $ sudo make clean-shm
 ```
 
-
 ## Porting to different platforms
 
 If you need to port Gophernicus to a new platform, please take
@@ -164,9 +154,7 @@ platform please send the patches to
 <gophernicus at gophernicus dot org> so we can include them into
 the next release.
 
-<<<<<<< HEAD:INSTALL
-Supported Platforms
-===================
+# Supported Platforms
 
 | Platform     | Versions                     |
 | ------------ | ---------------------------- |
@@ -178,5 +166,3 @@ Supported Platforms
 | Arch Linux   | up to date                   |
 | Gentoo       | up to date                   |
 | Alpine Linux | Edge, 3.9                    |
-=======
->>>>>>> 82a1abebc4bfabc43ef6b27f0627f526984eaf30:INSTALL.md
