@@ -2,10 +2,15 @@
 
 ## Latest version
 
-3.0
+3.0.1
 
 ## Changelog
 <!--- this should be mirrored from Changelog -->
+
+### 3.0.1
+
+ * update documentation to `git checkout` before install
+ * fix typo in docs for debian packaging
 
 ### 3.0 (from 101):
 **N.B. this version has two important changes that may make it backwards-incompatible:**
