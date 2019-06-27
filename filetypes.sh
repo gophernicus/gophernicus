@@ -25,6 +25,6 @@ EOH
 	NULL, NULL
 EOF
 else
- echo "Warning: no file type config file '$inpt' found, please check!" >&2
- echo "($outp will be empty)" >&2
+ echo "Warning: no readable file type config file '$inpt' found, please check!"
+ exit 1
 fi

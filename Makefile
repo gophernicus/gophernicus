@@ -100,8 +100,11 @@ functions.h:
 		sed -e "s/ =.*$$//" -e "s/ *$$/;/" >> $@
 	@echo
 
-filetypes.h:
+filetypes.h: filetypes.conf
 	sh filetypes.sh
+
+filetypes.conf:
+	cat filetypes.orig >$@
 
 bin2c: bin2c.c
 	$(HOSTCC) bin2c.c -o $@
