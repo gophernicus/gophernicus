@@ -161,7 +161,8 @@ gophernicus.h which has a bunch of `#define HAVE_...` Fiddling with those
 usually makes it possible to compile a working server.
 If you succeed in compiling Gophernicus to a new platform please send
 the patches to <gophernicus at gophernicus dot org> so we can include
-them into the next release.
+them into the next release -- or even better, commit them to your fork
+on Github and make a pull request!
 
 ## Supported Platforms
 
