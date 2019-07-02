@@ -14,11 +14,19 @@ $ make
 $ sudo make install
 ```
 
+after having set the correct public hostname in the `gophernicus.env`
+file. If this is wrong, selectors ("gopher links") won't work!
+
+On \*nix systems, `hostname` might give you an idea, but please
+note this might be completely wrong, especially on your personal
+machine at home or on some cheap virtual server. If you know you
+have a fixed numerical IP, you can also directly use that.
+For testing, just keep the default value of `localhost` which will
+result in selectors working only when you're connecting locally.
+
 That's it - Gophernicus should now be installed, preconfigured
 and running under gopher://<HOSTNAME>/. And more often than not,
-It Just Works(tm). If gopher links don't seem to work you may
-need to configure your public hostname explicitly in whatever
-config file Gophernicus is using.
+It Just Works(tm).
 
 By default Gophernicus serves gopher documents from `/var/gopher`
 although that can be changed by using the `-r <root>` parameter.
@@ -28,49 +36,43 @@ hostname (the one set with `-h <hostname>`) directory available
 (`mkdir /var/gopher/$HOSTNAME`).
 
 
-<<<<<<< HEAD:INSTALL
-Dependencies
-============
+## Dependencies
 
 These were obtained from a base docker installation, what we
 (will) be using on Travis.
 
-# Ubuntu 18.04, 16.04, Debian Sid, Buster, Stretch, Jessie #
+### Ubuntu 18.04, 16.04, Debian Sid, Buster, Stretch, Jessie
 - build-essential
 - git
 - libwrap0-dev for tcp
 
-# Centos 6, 7 #
+### Centos 6, 7
 - the group 'Development Tools'. less is probably required, but
   I know this works and couldn't be bothered to find out what was
   actually required.
 
-# Fedora 29, 30, rawhide #
+### Fedora 29, 30, rawhide
 - the group 'Development Tools'. less is probably required, but
   I know this works and couldn't be bothered to find out what was
   actually required.
 - net-tools
 
-# OpenSuse Leap, Tumbleweed #
+### OpenSuse Leap, Tumbleweed
 - the pattern devel_C_C++
 - the pattern devel_basis
 - git
 
-# archlinux #
+### archlinux
 - base-devel
 - git
 
-# Gentoo #
+### Gentoo
 - git
 
-# Alpine Linux #
+### Alpine Linux
 - alpine-sdk. once again, less is probably required.. blah blah.
 
-Other installation targets
-==========================
-=======
-## Other installation targets
->>>>>>> 82a1abebc4bfabc43ef6b27f0627f526984eaf30:INSTALL.md
+### Other installation targets
 
 Suppose your server runs systemd, but you'd rather have Gophernicus
 started with inetd or xinetd.  To do that, do `make install-inetd`
@@ -90,14 +92,14 @@ just run 'make withwrap'.
 
 For configuring IP access lists with TCP wrappers, take a look
 at the files `/etc/hosts.allow` and `/etc/hosts.deny` (because the
-manual pages suck). Use the daemon name 'gophernicus' to
+manual pages suck). Use the daemon name "gophernicus" to
 make your access lists.
 
 
 ## Running with traditional inetd superserver
 
-If you want to run Gophernicus under the traditional Unix inetd, the 
-below line should be added to your `/etc/inetd.conf` and the inetd 
+If you want to run Gophernicus under the traditional Unix inetd, the
+below line should be added to your `/etc/inetd.conf` and the inetd
 process restarted.
 
 ```
@@ -134,9 +136,7 @@ arch one.
 $ make HOSTCC=gcc CC=target-arch-gcc
 ```
 
-
 ## Shared memory issues
-====================
 
 Gophernicus uses SYSV shared memory for session tracking and
 statistics. It creates the shared memory block using mode 600
@@ -156,17 +156,15 @@ $ sudo make clean-shm
 
 ## Porting to different platforms
 
-If you need to port Gophernicus to a new platform, please take
-a look at gophernicus.h which has a bunch of `HAVE_*` `#defines`.
-Fiddling with those usually makes it possible to compile a working
-server. If you succeed in compiling Gophernicus to a new
-platform please send the patches to 
-<gophernicus at gophernicus dot org> so we can include them into
-the next release.
+If you need to port Gophernicus to a new platform, please take a look at
+gophernicus.h which has a bunch of `#define HAVE_...` Fiddling with those
+usually makes it possible to compile a working server.
+If you succeed in compiling Gophernicus to a new platform please send
+the patches to <gophernicus at gophernicus dot org> so we can include
+them into the next release -- or even better, commit them to your fork
+on Github and make a pull request!
 
-<<<<<<< HEAD:INSTALL
-Supported Platforms
-===================
+## Supported Platforms
 
 | Platform     | Versions                     |
 | ------------ | ---------------------------- |
@@ -178,5 +176,4 @@ Supported Platforms
 | Arch Linux   | up to date                   |
 | Gentoo       | up to date                   |
 | Alpine Linux | Edge, 3.9                    |
-=======
->>>>>>> 82a1abebc4bfabc43ef6b27f0627f526984eaf30:INSTALL.md
+| FreeBSD      | 12.0                         |

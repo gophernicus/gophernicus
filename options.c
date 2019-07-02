@@ -151,7 +151,7 @@ void parse_args(state *st, int argc, char *argv[])
 			case 'd': st->debug = TRUE; break;
 			case 'b': puts(license); exit(EXIT_SUCCESS);
 
-			case 'v': 
+			case 'v':
 				printf("%s/%s \"%s\" (built %s)\n", SERVER_SOFTWARE, VERSION, CODENAME, __DATE__);
 				exit(EXIT_SUCCESS);
 
