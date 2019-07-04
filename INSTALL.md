@@ -177,3 +177,4 @@ on Github and make a pull request!
 | Gentoo       | up to date                   |
 | Alpine Linux | Edge, 3.9                    |
 | FreeBSD      | 12.0                         |
+| Darwin (Mac) | OSX 10.7                     |
