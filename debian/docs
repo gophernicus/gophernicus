@@ -2,6 +2,10 @@ README.md
 README.Gophermap
 TODO
 INSTALL.md
+<<<<<<< HEAD
 VERSONING.md
+=======
+VERSIONING.md
+>>>>>>> docs
 changelog
 gophertag

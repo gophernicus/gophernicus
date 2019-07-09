@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 3.0 (from 101)
 ==============
 
@@ -8,6 +9,24 @@ N.B. this version has two important changes that may make it backwards-incompati
 
 Other changes:
 
+=======
+3.0.1
+=====
+
+ * add installation notes to git checkout before installing
+ * fix typo in debian packaging
+
+3.0 (from 101)
+==============
+
+N.B. this version has two important changes that may make it
+backwards-incompatible:
+ * binary changed from in.gophernicus to gophernicus
+ * virtual hosting NEVER WORKED and does not work in the way previously
+   described
+
+Other changes:
+>>>>>>> docs
  * prevent leak of executable gophermap contents
  * make sure {x,}inetd works when systemd is on the system
  * allow -j flag to work
@@ -27,10 +46,17 @@ Other changes:
 
 Upgrade guide:
 
+<<<<<<< HEAD
 If you are running gophernicus on a **production** system, **do not** upgrade to 3.0.
 Wait for 3.1.
 
 As a general guide:
+=======
+If you are running gophernicus on a **production** system, **do not** upgrade
+to 3.0. Wait for 3.1.
+
+As a general guide,
+>>>>>>> docs
 
 If you are running 101 and haven't upgraded to newer versions **because** of
 instability worries, **wait for 3.1**.
