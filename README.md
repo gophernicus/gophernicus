@@ -2,10 +2,15 @@
 
 Version 3.0
 
+Development! DO NOT USE unless you want fiery dragons!
+(you probably want to `git checkout 3.0`)
+
 *Copyright (c) 2009-2019 Kim Holviala and others*
 
 Gophernicus is a modern full-featured (and hopefully) secure gopher
 daemon. It is licensed under the BSD license.
+
+(If you are looking for installation documentation, please see INSTALL.md).
 
 ## Support/Contact
 

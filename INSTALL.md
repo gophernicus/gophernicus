@@ -5,6 +5,9 @@ from standard LIBC ones. Care has been taken to use only
 standard POSIX syscalls so that it should work pretty much on
 any \*nix system.
 
+Please make sure that you checkout to the correct version you want.
+Currently, you most likely want version 3.0.
+
 To compile and install run:
 
 ```

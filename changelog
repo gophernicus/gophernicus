@@ -1,3 +1,9 @@
+3.0.1
+=====
+
+ * update documentation to `git checkout` before install
+  * fix typo in docs for debian packaging
+
 3.0 (from 101)
 ==============
 
