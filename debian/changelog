@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-=======
-gophernicus (3.0.1-1) unstable; urgency=medium
-
-  * add installation notes to git checkout before installing
-  * fix typo in debian packaging
-
->>>>>>> docs
 gophernicus (3.0-1.1) unstable; urgency=medium
 
   * N.B. this version has two important changes that may make it

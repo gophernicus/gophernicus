@@ -5,17 +5,13 @@ from standard LIBC ones. Care has been taken to use only
 standard POSIX syscalls so that it should work pretty much on
 any \*nix system.
 
-Please make sure that you checkout to the correct version you want.
-Currently, you most likely want version 3.0.
-
 To compile and install run:
 
 ```
 $ git clone https://github.com/gophernicus/gophernicus.git
 $ cd gophernicus
-$ git checkout 3.0
 $ make
-# make install
+$ sudo make install
 ```
 
 after having set the correct public hostname in the `gophernicus.env`
@@ -39,10 +35,7 @@ the gopher root and make sure you have at least the primary
 hostname (the one set with `-h <hostname>`) directory available
 (`mkdir /var/gopher/$HOSTNAME`).
 
-<<<<<<< HEAD
 
-=======
->>>>>>> docs
 ## Dependencies
 
 These were obtained from a base docker installation, what we
@@ -79,16 +72,13 @@ These were obtained from a base docker installation, what we
 ### Alpine Linux
 - alpine-sdk. once again, less is probably required.. blah blah.
 
-<<<<<<< HEAD
 ### Other installation targets
-=======
-## Other installation targets
->>>>>>> docs
 
 Suppose your server runs systemd, but you'd rather have Gophernicus
 started with inetd or xinetd.  To do that, do `make install-inetd`
 or `make install-xinetd`.  Likewise use `make uninstall-inetd` or
 `make uninstall-xinetd` to uninstall Gophernicus.
+
 
 ## Compiling with TCP wrappers
 
@@ -102,12 +92,9 @@ just run 'make withwrap'.
 
 For configuring IP access lists with TCP wrappers, take a look
 at the files `/etc/hosts.allow` and `/etc/hosts.deny` (because the
-<<<<<<< HEAD
 manual pages suck). Use the daemon name "gophernicus" to
-=======
-manual pages suck). Use the daemon name 'gophernicus' to
->>>>>>> docs
 make your access lists.
+
 
 ## Running with traditional inetd superserver
 
@@ -122,6 +109,7 @@ gopher  stream  tcp  nowait  nobody  /usr/sbin/gophernicus  gophernicus -h <host
 The Makefile will automatically do this for you and remove it when
 uninstalling.
 
+
 ## Compiling on Debian Linux (and Ubuntu)
 
 The above commands work on Debian just fine, but if you prefer
@@ -135,6 +123,7 @@ Work(tm).
 
 If you need TCP wrappers support on Debian/Ubuntu, please
 install libwrap0-dev before compiling.
+
 
 ## Cross-compiling
 
@@ -164,6 +153,7 @@ let Gophernicus recreate it - no harm done:
 $ sudo make clean-shm
 ```
 
+
 ## Porting to different platforms
 
 If you need to port Gophernicus to a new platform, please take a look at
@@ -174,11 +164,7 @@ the patches to <gophernicus at gophernicus dot org> so we can include
 them into the next release -- or even better, commit them to your fork
 on Github and make a pull request!
 
-<<<<<<< HEAD
 ## Supported Platforms
-=======
-# Supported Platforms
->>>>>>> docs
 
 | Platform     | Versions                     |
 | ------------ | ---------------------------- |
@@ -190,7 +176,4 @@ on Github and make a pull request!
 | Arch Linux   | up to date                   |
 | Gentoo       | up to date                   |
 | Alpine Linux | Edge, 3.9                    |
-<<<<<<< HEAD
 | FreeBSD      | 12.0                         |
-=======
->>>>>>> docs

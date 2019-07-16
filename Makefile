@@ -8,11 +8,7 @@
 NAME     = gophernicus
 PACKAGE  = $(NAME)
 BINARY   = $(NAME)
-<<<<<<< HEAD
 VERSION  = 3.0
-=======
-VERSION  = 3.0 
->>>>>>> docs
 CODENAME = Dungeon Edition
 AUTHOR   = h9bnks and fosslinux
 EMAIL    = gophernicus@gophernicus.org

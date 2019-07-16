@@ -1,22 +1,12 @@
 # Gophernicus
 
-<<<<<<< HEAD
 Version 3.0
-=======
-Development! DO NOT USE unless you want fiery dragons!
-(you probably want to `git checkout 3.0`)
->>>>>>> docs
 
 *Copyright (c) 2009-2019 Kim Holviala and others*
 
 Gophernicus is a modern full-featured (and hopefully) secure gopher
 daemon. It is licensed under the BSD license.
 
-<<<<<<< HEAD
-=======
-(If you are looking for installation documentation, please see INSTALL.md).
-
->>>>>>> docs
 ## Support/Contact
 
 Developers can be reached at <gophernicus AT gophernicus DOT org>.
@@ -151,7 +141,6 @@ gopher root which are named after your domain names. The primary vhost
 directory (set with the `-h HOSTNAME` option) must exist or virtual
 hosting will be disabled. Then simply add content to the hostname
 directories and you're (kind of) up and running.
-<<<<<<< HEAD
 
 There is a serious issue with virtual hosting.
 
@@ -166,22 +155,6 @@ way to fix this.
 It is recommended to add '%' on a line by itself to the bottom of your root
 gophermaps. This will add "special" links of the format example.com/;example.com
 which forces the correct vhost.
-=======
-
-There is a serious issue with virtual hosting.
-
-As stated previously, RFC1436 dosen't support virtual hosting. Clients won't
-like it.
-
-How the virtual hosting works, is that it loops through the vhosts looking for
-the selector. As you might think, the root gophermap exists on all of the
-vhosts, meaning it might not use the correct vhost. There is currently no easy
-way to fix this.
-
-It is recommended to add '%' on a line by itself to the bottom of your root
-gophermaps. This will add "special" links of the format example.com/;example.com
-which forces the correct vhost. 
->>>>>>> docs
 
 ## CGI support
 
