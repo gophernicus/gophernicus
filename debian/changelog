@@ -5,7 +5,7 @@ gophernicus (3.0.1-1) unstable; urgency=medium
   * update docs to reflect new changes
   * fix indenting and typos in docs
 
- -- gophernicus developers <gophernicus@gophernicus.org>  Sun, 31 Dec 9999 00:00:00 +0000
+ -- gophernicus developers <gophernicus@gophernicus.org>  Sun, 21 Jul 2019 18:36:08 +1000
 
 gophernicus (3.0-1.1) unstable; urgency=medium
 

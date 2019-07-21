@@ -1,9 +1,9 @@
 # Gophernicus
 
-Version 3.0
+Version 3.0.1
 
 Development! DO NOT USE unless you want fiery dragons!
-(you probably want to `git checkout 3.0`)
+(you probably want to `git checkout 3.0.1`)
 
 *Copyright (c) 2009-2019 Kim Holviala and others*
 
