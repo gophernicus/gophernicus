@@ -10,8 +10,10 @@
 
 ### 3.0.1
 
- * update documentation to `git checkout` before install
- * fix typo in docs for debian packaging
+ * add installation notes to git checkout before installing
+ * fix typo in debian packaging (fixes `make deb`)
+ * update docs to reflect new changes
+ * fix indenting and typos in docs
 
 ### 3.0 (from 101):
 
