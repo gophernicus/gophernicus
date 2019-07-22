@@ -2,7 +2,7 @@
 
 ## Latest version
 
-3.0
+3.0.1
 
 ## Changelog
 
