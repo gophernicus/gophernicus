@@ -2,11 +2,18 @@
 
 ## Latest version
 
-3.0
+3.0.1
 
 ## Changelog
 
 <!--- this should be mirrored from Changelog -->
+
+### 3.0.1
+
+ * add installation notes to git checkout before installing
+ * fix typo in debian packaging (fixes `make deb`)
+ * update docs to reflect new changes
+ * fix indenting and typos in docs
 
 ### 3.0 (from 101):
 
