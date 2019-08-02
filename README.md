@@ -14,7 +14,7 @@ daemon. It is licensed under the BSD license.
 
 ## Support/Contact
 
-Developers can be reached at <gophernicus AT gophernicus DOT org>.
+Developers can be reached at gophernicus AT gophernicus DOT org.
 
 Our IRC channel is on irc.freenode.net #gophernicus.
 
