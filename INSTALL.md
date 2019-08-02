@@ -13,6 +13,7 @@ To compile and install run:
 ```
 $ git clone https://github.com/gophernicus/gophernicus.git
 $ cd gophernicus
+$ git checkout 3.0.1
 $ make
 $ sudo make install
 ```
@@ -41,8 +42,7 @@ hostname (the one set with `-h <hostname>`) directory available
 
 ## Dependencies
 
-These were obtained from a base docker installation, what we
-(will) be using on Travis.
+These were obtained from a base docker installation.
 
 ### Ubuntu 18.04, 16.04, Debian Sid, Buster, Stretch, Jessie
 - build-essential
@@ -74,6 +74,7 @@ These were obtained from a base docker installation, what we
 
 ### Alpine Linux
 - alpine-sdk. once again, less is probably required.. blah blah.
+
 
 ### Other installation targets
 
