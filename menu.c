@@ -1,5 +1,9 @@
 /*
- * Gophernicus - Copyright (c) 2009-2018 Kim Holviala <kimholviala@fastmail.com>
+ * Gophernicus 
+ *
+ * Copyright (c) 2009-2018 Kim Holviala <kimholviala@fastmail.com>
+ * Copyright (c) 2019 Gophernicus Developers <gophernicus@gophernicus.org>
+ *
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
