@@ -37,258 +37,258 @@ void platform(state *st)
 {
 #ifdef HAVE_UNAME
 #if defined(_AIX) || defined(__linux) || defined(__APPLE__)
-	FILE *fp;
+    FILE *fp;
 #endif
 #if defined(__linux) || defined(__APPLE__)
-	char buf[BUFSIZE];
+    char buf[BUFSIZE];
 #endif
 #ifdef __linux
-	struct stat file;
+    struct stat file;
 #endif
-	struct utsname name;
-	char sysname[64];
-	char release[64];
-	char machine[64];
-	char *c;
+    struct utsname name;
+    char sysname[64];
+    char release[64];
+    char machine[64];
+    char *c;
 
-	/* Fetch system information */
-	uname(&name);
+    /* Fetch system information */
+    uname(&name);
 
-	strclear(sysname);
-	strclear(release);
-	strclear(machine);
+    strclear(sysname);
+    strclear(release);
+    strclear(machine);
 
-	/* AIX-specific */
+    /* AIX-specific */
 #ifdef _AIX
 
-	/* Fix uname() results */
-	sstrlcpy(machine, "powerpc");
-	snprintf(release, sizeof(release), "%s.%s",
-		name.version,
-		name.release);
+    /* Fix uname() results */
+    sstrlcpy(machine, "powerpc");
+    snprintf(release, sizeof(release), "%s.%s",
+        name.version,
+        name.release);
 
-	/* Get CPU type */
-	if ((fp = popen("/usr/sbin/getsystype -i", "r"))) {
-		if (fgets(machine, sizeof(machine), fp) != NULL)
-			strreplace(machine, ' ', '_');
-		pclose(fp);
-	}
+    /* Get CPU type */
+    if ((fp = popen("/usr/sbin/getsystype -i", "r"))) {
+        if (fgets(machine, sizeof(machine), fp) != NULL)
+            strreplace(machine, ' ', '_');
+        pclose(fp);
+    }
 
-	/* Get hardware name using shell uname */
-	if (!*st->server_description &&
-	    (fp = popen("/usr/bin/uname -M", "r"))) {
+    /* Get hardware name using shell uname */
+    if (!*st->server_description &&
+        (fp = popen("/usr/bin/uname -M", "r"))) {
 
-		if (fgets(st->server_description, sizeof(st->server_description), fp) != NULL) {
-			strreplace(st->server_description, ',', ' ');
-			chomp(st->server_description);
-		}
-		pclose(fp);
-	}
+        if (fgets(st->server_description, sizeof(st->server_description), fp) != NULL) {
+            strreplace(st->server_description, ',', ' ');
+            chomp(st->server_description);
+        }
+        pclose(fp);
+    }
 #endif
 
-	/* Mac OS X, just like Unix but totally different... */
+    /* Mac OS X, just like Unix but totally different... */
 #ifdef __APPLE__
 
-	/* Hardcode OS name */
-	sstrlcpy(sysname, "MacOSX");
+    /* Hardcode OS name */
+    sstrlcpy(sysname, "MacOSX");
 
-	/* Get OS X version */
-	if ((fp = popen("/usr/bin/sw_vers -productVersion", "r"))) {
-		if (fgets(release, sizeof(release), fp) == NULL) strclear(release);
-		pclose(fp);
-	}
+    /* Get OS X version */
+    if ((fp = popen("/usr/bin/sw_vers -productVersion", "r"))) {
+        if (fgets(release, sizeof(release), fp) == NULL) strclear(release);
+        pclose(fp);
+    }
 
-	/* Get hardware name */
-	if (!*st->server_description &&
-	    (fp = popen("/usr/sbin/sysctl -n hw.model", "r"))) {
+    /* Get hardware name */
+    if (!*st->server_description &&
+        (fp = popen("/usr/sbin/sysctl -n hw.model", "r"))) {
 
-		/* Read hardware name */
-		if (fgets(buf, sizeof(buf), fp) != NULL) {
+        /* Read hardware name */
+        if (fgets(buf, sizeof(buf), fp) != NULL) {
 
-			/* Clones are gone now so we'll hardcode the manufacturer */
-			sstrlcpy(st->server_description, "Apple ");
-			sstrlcat(st->server_description, buf);
+            /* Clones are gone now so we'll hardcode the manufacturer */
+            sstrlcpy(st->server_description, "Apple ");
+            sstrlcat(st->server_description, buf);
 
-			/* Remove hardware revision */
-			for (c = st->server_description; *c; c++)
-				if (*c >= '0' && *c <= '9') { *c = '\0'; break; }
-		}
-		pclose(fp);
-	}
+            /* Remove hardware revision */
+            for (c = st->server_description; *c; c++)
+                if (*c >= '0' && *c <= '9') { *c = '\0'; break; }
+        }
+        pclose(fp);
+    }
 #endif
 
-	/* Linux uname() just says Linux/kernelversion - let's dig deeper... */
+    /* Linux uname() just says Linux/kernelversion - let's dig deeper... */
 #ifdef __linux
 
-	/* Most Linux ARM/MIPS boards have hardware name in /proc/cpuinfo */
+    /* Most Linux ARM/MIPS boards have hardware name in /proc/cpuinfo */
 #if defined(__arm__) || defined(__mips__)
-	if (!*st->server_description && (fp = fopen("/proc/cpuinfo" , "r"))) {
+    if (!*st->server_description && (fp = fopen("/proc/cpuinfo" , "r"))) {
 
-		while (fgets(buf, sizeof(buf), fp)) {
+        while (fgets(buf, sizeof(buf), fp)) {
 #ifdef __arm__
-			if ((c = strkey(buf, "Hardware"))) {
+            if ((c = strkey(buf, "Hardware"))) {
 #else
-			if ((c = strkey(buf, "machine"))) {
+            if ((c = strkey(buf, "machine"))) {
 #endif
-				sstrlcpy(st->server_description, c);
-				chomp(st->server_description);
-				break;
-			}
-		}
-		fclose(fp);
-	}
-#endif
-
-	/* Get hardware type from DMI data */
-	if (!*st->server_description && (fp = fopen("/sys/class/dmi/id/board_vendor" , "r"))) {
-		if (fgets(buf, sizeof(buf), fp) != NULL) {
-			sstrlcpy(st->server_description, buf);
-			chomp(st->server_description);
-		}
-		fclose(fp);
-
-		if ((fp = fopen("/sys/class/dmi/id/board_name" , "r"))) {
-			if (fgets(buf, sizeof(buf), fp) != NULL) {
-				if (*st->server_description) sstrlcat(st->server_description, " ");
-				sstrlcat(st->server_description, buf);
-				chomp(st->server_description);
-			}
-
-			fclose(fp);
-		}
-	}
-
-	/* No DMI? Get possible hypervisor name */
-	if (!*st->server_description && (fp = fopen("/sys/hypervisor/type" , "r"))) {
-		if (fgets(buf, sizeof(buf), fp) != NULL) {
-			chomp(buf);
-			if (*buf) snprintf(st->server_description, sizeof(st->server_description), "%s virtual machine", buf);
-		}
-		fclose(fp);
-	}
-
-	/* Identify Gentoo */
-	if (!*sysname && (fp = fopen("/etc/gentoo-release", "r"))) {
-		if (fgets(sysname, sizeof(sysname), fp) != NULL) {
-			if ((c = strstr(sysname, "release "))) sstrlcpy(release, c + 8);
-			if ((c = strchr(release, ' '))) *c = '\0';
-			if ((c = strchr(sysname, ' '))) *c = '\0';
-		}
-		fclose(fp);
-	}
-
-	/* Identify RedHat */
-	if (!*sysname && (fp = fopen("/etc/redhat-release", "r"))) {
-		if (fgets(sysname, sizeof(sysname), fp) != NULL) {
-			if ((c = strstr(sysname, "release "))) sstrlcpy(release, c + 8);
-			if ((c = strchr(release, ' '))) *c = '\0';
-			if ((c = strchr(sysname, ' '))) *c = '\0';
-
-			if (strcmp(sysname, "Red") == MATCH) sstrlcpy(sysname, "RedHat");
-		}
-		fclose(fp);
-	}
-
-	/* Identify Slackware */
-	if (!*sysname && (fp = fopen("/etc/slackware-version", "r"))) {
-		if (fgets(sysname, sizeof(sysname), fp) != NULL) {
-
-			if ((c = strchr(sysname, ' '))) {
-				sstrlcpy(release, c + 1);
-				*c = '\0';
-			}
-
-			if ((c = strchr(sysname, '-'))) *c = '\0';
-		}
-		fclose(fp);
-	}
-
-	/* Identify CRUX */
-	if (!*sysname && stat("/usr/bin/crux", &file) == OK && (file.st_mode & S_IXOTH)) {
-
-		sstrlcpy(sysname, "CRUX");
-
-		if ((fp = popen("/usr/bin/crux", "r"))) {
-			if (fgets(buf, sizeof(buf), fp) != NULL &&
-			    (c = strchr(buf, ' ')) &&
-			    (c = strchr(c + 1, ' '))) sstrlcpy(release, c + 1);
-			pclose(fp);
-		}
-	}
-
-	/* Uh-oh.... how about a standard Linux with lsb_release? */
-	if (stat("/usr/bin/lsb_release", &file) == OK && (file.st_mode & S_IXOTH)) {
-
-		if (!*sysname && (fp = popen("/usr/bin/lsb_release -i -s", "r"))) {
-			if (fgets(sysname, sizeof(sysname), fp) == NULL) strclear(sysname);
-			pclose(fp);
-		}
-
-		if (!*release && (fp = popen("/usr/bin/lsb_release -r -s", "r"))) {
-			if (fgets(release, sizeof(release), fp) == NULL) strclear(release);
-			pclose(fp);
-		}
-	}
-
-	/* OK, nothing worked - let's try /etc/issue for sysname */
-	if (!*sysname && (fp = fopen("/etc/issue", "r"))) {
-		if (fgets(sysname, sizeof(sysname), fp) != NULL) {
-			if ((c = strchr(sysname, ' '))) *c = '\0';
-			if ((c = strchr(sysname, '\\'))) *c = '\0';
-		}
-		fclose(fp);
-	}
-
-	/* Debian version should be in /etc/debian_version */
-	if (!*release && (fp = fopen("/etc/debian_version", "r"))) {
-		if (fgets (release, sizeof(release), fp) != NULL)
-			if ((c = strchr(release, '/'))) *c = '\0';
-		fclose(fp);
-	}
+                sstrlcpy(st->server_description, c);
+                chomp(st->server_description);
+                break;
+            }
+        }
+        fclose(fp);
+    }
 #endif
 
-	/* Haiku OS */
+    /* Get hardware type from DMI data */
+    if (!*st->server_description && (fp = fopen("/sys/class/dmi/id/board_vendor" , "r"))) {
+        if (fgets(buf, sizeof(buf), fp) != NULL) {
+            sstrlcpy(st->server_description, buf);
+            chomp(st->server_description);
+        }
+        fclose(fp);
+
+        if ((fp = fopen("/sys/class/dmi/id/board_name" , "r"))) {
+            if (fgets(buf, sizeof(buf), fp) != NULL) {
+                if (*st->server_description) sstrlcat(st->server_description, " ");
+                sstrlcat(st->server_description, buf);
+                chomp(st->server_description);
+            }
+
+            fclose(fp);
+        }
+    }
+
+    /* No DMI? Get possible hypervisor name */
+    if (!*st->server_description && (fp = fopen("/sys/hypervisor/type" , "r"))) {
+        if (fgets(buf, sizeof(buf), fp) != NULL) {
+            chomp(buf);
+            if (*buf) snprintf(st->server_description, sizeof(st->server_description), "%s virtual machine", buf);
+        }
+        fclose(fp);
+    }
+
+    /* Identify Gentoo */
+    if (!*sysname && (fp = fopen("/etc/gentoo-release", "r"))) {
+        if (fgets(sysname, sizeof(sysname), fp) != NULL) {
+            if ((c = strstr(sysname, "release "))) sstrlcpy(release, c + 8);
+            if ((c = strchr(release, ' '))) *c = '\0';
+            if ((c = strchr(sysname, ' '))) *c = '\0';
+        }
+        fclose(fp);
+    }
+
+    /* Identify RedHat */
+    if (!*sysname && (fp = fopen("/etc/redhat-release", "r"))) {
+        if (fgets(sysname, sizeof(sysname), fp) != NULL) {
+            if ((c = strstr(sysname, "release "))) sstrlcpy(release, c + 8);
+            if ((c = strchr(release, ' '))) *c = '\0';
+            if ((c = strchr(sysname, ' '))) *c = '\0';
+
+            if (strcmp(sysname, "Red") == MATCH) sstrlcpy(sysname, "RedHat");
+        }
+        fclose(fp);
+    }
+
+    /* Identify Slackware */
+    if (!*sysname && (fp = fopen("/etc/slackware-version", "r"))) {
+        if (fgets(sysname, sizeof(sysname), fp) != NULL) {
+
+            if ((c = strchr(sysname, ' '))) {
+                sstrlcpy(release, c + 1);
+                *c = '\0';
+            }
+
+            if ((c = strchr(sysname, '-'))) *c = '\0';
+        }
+        fclose(fp);
+    }
+
+    /* Identify CRUX */
+    if (!*sysname && stat("/usr/bin/crux", &file) == OK && (file.st_mode & S_IXOTH)) {
+
+        sstrlcpy(sysname, "CRUX");
+
+        if ((fp = popen("/usr/bin/crux", "r"))) {
+            if (fgets(buf, sizeof(buf), fp) != NULL &&
+                (c = strchr(buf, ' ')) &&
+                (c = strchr(c + 1, ' '))) sstrlcpy(release, c + 1);
+            pclose(fp);
+        }
+    }
+
+    /* Uh-oh.... how about a standard Linux with lsb_release? */
+    if (stat("/usr/bin/lsb_release", &file) == OK && (file.st_mode & S_IXOTH)) {
+
+        if (!*sysname && (fp = popen("/usr/bin/lsb_release -i -s", "r"))) {
+            if (fgets(sysname, sizeof(sysname), fp) == NULL) strclear(sysname);
+            pclose(fp);
+        }
+
+        if (!*release && (fp = popen("/usr/bin/lsb_release -r -s", "r"))) {
+            if (fgets(release, sizeof(release), fp) == NULL) strclear(release);
+            pclose(fp);
+        }
+    }
+
+    /* OK, nothing worked - let's try /etc/issue for sysname */
+    if (!*sysname && (fp = fopen("/etc/issue", "r"))) {
+        if (fgets(sysname, sizeof(sysname), fp) != NULL) {
+            if ((c = strchr(sysname, ' '))) *c = '\0';
+            if ((c = strchr(sysname, '\\'))) *c = '\0';
+        }
+        fclose(fp);
+    }
+
+    /* Debian version should be in /etc/debian_version */
+    if (!*release && (fp = fopen("/etc/debian_version", "r"))) {
+        if (fgets (release, sizeof(release), fp) != NULL)
+            if ((c = strchr(release, '/'))) *c = '\0';
+        fclose(fp);
+    }
+#endif
+
+    /* Haiku OS */
 #ifdef __HAIKU__
 
-	/* Fix release name */
-	snprintf(release, sizeof(release), "R%s", name.release);
+    /* Fix release name */
+    snprintf(release, sizeof(release), "R%s", name.release);
 #endif
 
-	/* Fill in the blanks using uname() data */
-	if (!*sysname) sstrlcpy(sysname, name.sysname);
-	if (!*release) sstrlcpy(release, name.release);
-	if (!*machine) sstrlcpy(machine, name.machine);
+    /* Fill in the blanks using uname() data */
+    if (!*sysname) sstrlcpy(sysname, name.sysname);
+    if (!*release) sstrlcpy(release, name.release);
+    if (!*machine) sstrlcpy(machine, name.machine);
 
-	/* I always liked weird Perl-only functions */
-	chomp(sysname);
-	chomp(release);
-	chomp(machine);
+    /* I always liked weird Perl-only functions */
+    chomp(sysname);
+    chomp(release);
+    chomp(machine);
 
-	/* We're only interested in major.minor version */
-	if ((c = strchr(release, '.'))) if ((c = strchr(c + 1, '.'))) *c = '\0';
-	if ((c = strchr(release, '-'))) *c = '\0';
-	if ((c = strchr(release, '/'))) *c = '\0';
+    /* We're only interested in major.minor version */
+    if ((c = strchr(release, '.'))) if ((c = strchr(c + 1, '.'))) *c = '\0';
+    if ((c = strchr(release, '-'))) *c = '\0';
+    if ((c = strchr(release, '/'))) *c = '\0';
 
-	/* Create a nicely formatted platform string */
-	snprintf(st->server_platform, sizeof(st->server_platform), "%s/%s %s",
-	         sysname,
+    /* Create a nicely formatted platform string */
+    snprintf(st->server_platform, sizeof(st->server_platform), "%s/%s %s",
+             sysname,
 #if defined(__OpenBSD__) || defined(__FreeBSD__) || defined(__NetBSD__)
-	         machine,
-	         release);
+             machine,
+             release);
 #else
-	         release,
-	         machine);
+             release,
+             machine);
 #endif
 
-	/* Debug */
-	if (st->debug) {
-		syslog(LOG_INFO, "generated platform string \"%s\"",
-			st->server_platform);
-	}
+    /* Debug */
+    if (st->debug) {
+        syslog(LOG_INFO, "generated platform string \"%s\"",
+            st->server_platform);
+    }
 
 #else
-	/* Fallback reply */
-	sstrlcpy(st->server_platform, "Unknown computer-like system");
+    /* Fallback reply */
+    sstrlcpy(st->server_platform, "Unknown computer-like system");
 #endif
 }
 
@@ -298,34 +298,32 @@ void platform(state *st)
  */
 float loadavg(void)
 {
-	FILE *fp;
-	char buf[BUFSIZE];
+    FILE *fp;
+    char buf[BUFSIZE];
 
-	/* Faster Linux version */
+    /* Faster Linux version */
 #ifdef __linux
-	if ((fp = fopen("/proc/loadavg" , "r")) == NULL) return 0;
-	if (fgets(buf, sizeof(buf), fp) == NULL) strclear(buf);
-	fclose(fp);
+    if ((fp = fopen("/proc/loadavg" , "r")) == NULL) return 0;
+    if (fgets(buf, sizeof(buf), fp) == NULL) strclear(buf);
+    fclose(fp);
 
-	return (float) atof(buf);
+    return (float) atof(buf);
 
-	/* Generic slow version - parse the output of uptime */
+    /* Generic slow version - parse the output of uptime */
 #else
 #ifdef HAVE_POPEN
-	char *c;
+    char *c;
 
-	if ((fp = popen("/usr/bin/uptime", "r"))) {
-		if (fgets(buf, sizeof(buf), fp) == NULL) strclear(buf);
-		pclose(fp);
+    if ((fp = popen("/usr/bin/uptime", "r"))) {
+        if (fgets(buf, sizeof(buf), fp) == NULL) strclear(buf);
+        pclose(fp);
 
-		if ((c = strstr(buf, "average: ")) || (c = strstr(buf, "averages: ")))
-			return (float) atof(c + 9);
-	}
+        if ((c = strstr(buf, "average: ")) || (c = strstr(buf, "averages: ")))
+            return (float) atof(c + 9);
+    }
 #endif
 
-	/* Fallback reply */
-	return 0;
+    /* Fallback reply */
+    return 0;
 #endif
 }
-
-
