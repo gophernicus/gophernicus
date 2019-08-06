@@ -118,6 +118,7 @@ void parse_args(state *st, int argc, char *argv[])
             case 'w': st->out_width = atoi(optarg); break;
             case 'o':
                 if (sstrncasecmp(optarg, "UTF-8") == MATCH) st->out_charset = UTF_8;
+                if (sstrncasecmp(optarg, "US-ASCII") == MATCH) st->out_charset = US_ASCII;
                 if (sstrncasecmp(optarg, "ISO-8859-1") == MATCH) st->out_charset = ISO_8859_1;
                 break;
 
