@@ -1,12 +1,20 @@
 # Versioning
 
-## Latest version
+## Latest (stable) version
 
 3.0.1
 
 ## Changelog
 
 <!--- this should be mirrored from Changelog -->
+
+### 3.0.2 (development)
+
+ * update copyright
+ * change indentation from tabs to spaces
+ * change max width to 67, from 76 (for gophernicus-generated
+   headers/footers
+ * change default charset to UTF-8
 
 ### 3.0.1
 

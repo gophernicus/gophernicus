@@ -1,5 +1,9 @@
 /*
- * Gophernicus - Copyright (c) 2009-2018 Kim Holviala <kimholviala@fastmail.com>
+ * Gophernicus 
+ *
+ * Copyright (c) 2009-2018 Kim Holviala <kimholviala@fastmail.com>
+ * Copyright (c) 2019 Gophernicus Developers <gophernicus@gophernicus.org>
+ *
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,9 +41,9 @@
 /*
  * Features
  */
-#undef  ENABLE_STRICT_RFC1436	/* Follow RFC1436 to the letter */
-#undef  ENABLE_AUTOHIDING	/* Hide manually listed resources from generated menus */
-#define ENABLE_HAPROXY1		/* Autodetect HAproxy/Stunnel proxy protocol v1 */
+#undef  ENABLE_STRICT_RFC1436    /* Follow RFC1436 to the letter */
+#undef  ENABLE_AUTOHIDING    /* Hide manually listed resources from generated menus */
+#define ENABLE_HAPROXY1        /* Autodetect HAproxy/Stunnel proxy protocol v1 */
 
 
 /*
@@ -47,17 +51,17 @@
  */
 
 /* Defaults should fit standard POSIX systems */
-#define HAVE_IPv4		/* IPv4 should work anywhere */
-#define HAVE_IPv6		/* Requires modern POSIX */
-#define HAVE_PASSWD		/* For systems with passwd-like userdb */
-#define PASSWD_MIN_UID 100	/* Minimum allowed UID for ~userdirs */
-#define HAVE_LOCALES		/* setlocale() and friends */
-#define HAVE_SHMEM		/* Shared memory support */
-#define HAVE_UNAME		/* uname() */
-#define HAVE_POPEN		/* popen() */
-#undef  HAVE_STRLCPY		/* strlcpy() from OpenBSD */
-#undef  HAVE_SENDFILE		/* sendfile() in Linux & others */
-/* #undef  HAVE_LIBWRAP		   autodetected, don't enable here */
+#define HAVE_IPv4        /* IPv4 should work anywhere */
+#define HAVE_IPv6        /* Requires modern POSIX */
+#define HAVE_PASSWD        /* For systems with passwd-like userdb */
+#define PASSWD_MIN_UID 100    /* Minimum allowed UID for ~userdirs */
+#define HAVE_LOCALES        /* setlocale() and friends */
+#define HAVE_SHMEM        /* Shared memory support */
+#define HAVE_UNAME        /* uname() */
+#define HAVE_POPEN        /* popen() */
+#undef  HAVE_STRLCPY        /* strlcpy() from OpenBSD */
+#undef  HAVE_SENDFILE        /* sendfile() in Linux & others */
+/* #undef  HAVE_LIBWRAP           autodetected, don't enable here */
 
 /* Linux */
 #ifdef __linux
@@ -154,52 +158,52 @@ size_t strlcat(char *dst, const char *src, size_t siz);
  */
 
 /* Common stuff */
-#define CRLF		"\r\n"
-#define EMPTY		""
-#define PARENT		".."
-#define ROOT		"/"
+#define CRLF        "\r\n"
+#define EMPTY        ""
+#define PARENT        ".."
+#define ROOT        "/"
 
-#define FALSE		0
-#define TRUE		1
+#define FALSE        0
+#define TRUE        1
 
-#define QUIT		1
-#define OK		0
-#define ERROR		-1
+#define QUIT        1
+#define OK        0
+#define ERROR        -1
 
-#define MATCH		0
-#define WRAP_DENIED	0
+#define MATCH        0
+#define WRAP_DENIED    0
 
 
 /* Gopher filetypes */
-#define TYPE_TEXT	'0'
-#define TYPE_MENU	'1'
-#define TYPE_ERROR	'3'
-#define TYPE_GZIP	'5'
-#define TYPE_QUERY	'7'
-#define TYPE_BINARY	'9'
-#define TYPE_GIF	'g'
-#define TYPE_HTML	'h'
-#define TYPE_INFO	'i'
-#define TYPE_IMAGE	'I'
-#define TYPE_MIME	'M'
-#define TYPE_DOC	'd'
-#define TYPE_TITLE	'!'
+#define TYPE_TEXT    '0'
+#define TYPE_MENU    '1'
+#define TYPE_ERROR    '3'
+#define TYPE_GZIP    '5'
+#define TYPE_QUERY    '7'
+#define TYPE_BINARY    '9'
+#define TYPE_GIF    'g'
+#define TYPE_HTML    'h'
+#define TYPE_INFO    'i'
+#define TYPE_IMAGE    'I'
+#define TYPE_MIME    'M'
+#define TYPE_DOC    'd'
+#define TYPE_TITLE    '!'
 
 /* Protocols */
-#define PROTO_GOPHER	'g'
-#define PROTO_HTTP	'h'
+#define PROTO_GOPHER    'g'
+#define PROTO_HTTP    'h'
 
 /* Charsets */
-#define AUTO		0
-#define US_ASCII	1
-#define ISO_8859_1	2
-#define UTF_8		3
+#define AUTO        0
+#define US_ASCII    1
+#define ISO_8859_1    2
+#define UTF_8        3
 
 /* HTTP protocol stuff for logging */
-#define HTTP_OK		200
-#define HTTP_404	404
-#define HTTP_DATE	"%d/%b/%Y:%T %z"
-#define HTTP_USERAGENT	"Unknown gopher client"
+#define HTTP_OK        200
+#define HTTP_404    404
+#define HTTP_DATE    "%d/%b/%Y:%T %z"
+#define HTTP_USERAGENT    "Unknown gopher client"
 
 /* Defaults for settings */
 #define DEFAULT_HOST		"localhost"
@@ -210,64 +214,64 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define DEFAULT_TAG		"gophertag"
 #define DEFAULT_CGI		"/cgi-bin/"
 #define DEFAULT_USERDIR		"public_gopher"
-#define DEFAULT_WIDTH		76
-#define DEFAULT_CHARSET		US_ASCII
+#define DEFAULT_WIDTH       67	
+#define DEFAULT_CHARSET		UTF_8
 #define MIN_WIDTH		33
 #define MAX_WIDTH		200
 #define UNKNOWN_ADDR		"unknown"
 
 /* Session defaults */
-#define DEFAULT_SESSION_TIMEOUT		1800
-#define DEFAULT_SESSION_MAX_KBYTES	4194304
-#define DEFAULT_SESSION_MAX_HITS	4096
+#define DEFAULT_SESSION_TIMEOUT        1800
+#define DEFAULT_SESSION_MAX_KBYTES    4194304
+#define DEFAULT_SESSION_MAX_HITS    4096
 
 /* Dummy values for gopher protocol */
-#define DUMMY_SELECTOR	"null"
-#define DUMMY_HOST	"null.host\t1"
+#define DUMMY_SELECTOR    "null"
+#define DUMMY_HOST    "null.host\t1"
 
 /* Safe $PATH for exec() */
 #ifdef __HAIKU__
-#define SAFE_PATH	"/boot/common/bin:/bin"
+#define SAFE_PATH    "/boot/common/bin:/bin"
 #else
-#define SAFE_PATH	"/usr/bin:/bin"
+#define SAFE_PATH    "/usr/bin:/bin"
 #endif
 
 /* Special requests */
-#define SERVER_STATUS	"/server-status"
-#define CAPS_TXT	"/caps.txt"
+#define SERVER_STATUS    "/server-status"
+#define CAPS_TXT    "/caps.txt"
 
 /* Error messages */
-#define ERR_ACCESS	"Access denied!"
-#define ERR_NOTFOUND	"File or directory not found!"
+#define ERR_ACCESS    "Access denied!"
+#define ERR_NOTFOUND    "File or directory not found!"
 
-#define ERROR_HOST	"error.host\t1"
-#define ERROR_PREFIX	"Error: "
+#define ERROR_HOST    "error.host\t1"
+#define ERROR_PREFIX    "Error: "
 
 /* Strings */
-#define SERVER_SOFTWARE	"Gophernicus"
+#define SERVER_SOFTWARE    "Gophernicus"
 #define SERVER_SOFTWARE_FULL SERVER_SOFTWARE "/" VERSION " (%s)"
 
-#define HEADER_FORMAT	"[%s]"
-#define FOOTER_FORMAT	"Gophered by Gophernicus/" VERSION " on %s"
+#define HEADER_FORMAT    "[%s]"
+#define FOOTER_FORMAT    "Gophered by Gophernicus/" VERSION " on %s"
 
-#define UNITS		"KB", "MB", "GB", "TB", "PB", NULL
-#define DATE_FORMAT	"%Y-%b-%d %H:%M"	/* See man 3 strftime */
-#define DATE_WIDTH	17
-#define DATE_LOCALE 	"POSIX"
+#define UNITS        "KB", "MB", "GB", "TB", "PB", NULL
+#define DATE_FORMAT    "%Y-%b-%d %H:%M"    /* See man 3 strftime */
+#define DATE_WIDTH    17
+#define DATE_LOCALE     "POSIX"
 
-#define USERDIR_FORMAT	"~%s", pwd->pw_name	/* See man 3 getpwent */
-#define VHOST_FORMAT	"gopher://%s/"
+#define USERDIR_FORMAT    "~%s", pwd->pw_name    /* See man 3 getpwent */
+#define VHOST_FORMAT    "gopher://%s/"
 
 /* ISO-8859-1 to US-ASCII look-alike conversion table */
 #define ASCII \
-	"E?,f..++^%S<??Z?" \
-	"?''\"\"*--~?s>??zY" \
-	" !c_*Y|$\"C?<?-R-" \
-	"??23'u?*,1?>????" \
-	"AAAAAAACEEEEIIII" \
-	"DNOOOOO*OUUUUYTB" \
-	"aaaaaaaceeeeiiii" \
-	"dnooooo/ouuuuyty"
+    "E?,f..++^%S<??Z?" \
+    "?''\"\"*--~?s>??zY" \
+    " !c_*Y|$\"C?<?-R-" \
+    "??23'u?*,1?>????" \
+    "AAAAAAACEEEEIIII" \
+    "DNOOOOO*OUUUUYTB" \
+    "aaaaaaaceeeeiiii" \
+    "dnooooo/ouuuuyty"
 
 #define UNKNOWN '?'
 
@@ -281,129 +285,129 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 
 /* Struct for file suffix -> gopher filetype mapping */
 typedef struct {
-	char suffix[15];
-	char type;
+    char suffix[15];
+    char type;
 } ftype;
 
 /* Struct for selector rewriting */
 typedef struct {
-	char match[BUFSIZE];
-	char replace[BUFSIZE];
+    char match[BUFSIZE];
+    char replace[BUFSIZE];
 } srewrite;
 
 /* Struct for keeping the current options & state */
 typedef struct {
 
-	/* Request */
-	char req_selector[BUFSIZE];
-	char req_realpath[BUFSIZE];
-	char req_query_string[BUFSIZE];
-	char req_search[BUFSIZE];
-	char req_referrer[BUFSIZE];
-	char req_local_addr[64];
-	char req_remote_addr[64];
-	char req_filetype;
-	char req_protocol;
-	off_t req_filesize;
+    /* Request */
+    char req_selector[BUFSIZE];
+    char req_realpath[BUFSIZE];
+    char req_query_string[BUFSIZE];
+    char req_search[BUFSIZE];
+    char req_referrer[BUFSIZE];
+    char req_local_addr[64];
+    char req_remote_addr[64];
+    char req_filetype;
+    char req_protocol;
+    off_t req_filesize;
 
-	/* Output */
-	int out_width;
-	int out_charset;
+    /* Output */
+    int out_width;
+    int out_charset;
 
-	/* Settings */
-	char server_description[64];
-	char server_location[64];
-	char server_platform[64];
-	char server_admin[64];
-	char server_root[256];
-	char server_host_default[64];
-	char server_host[64];
-	int  server_port;
-	int  server_tls_port;
+    /* Settings */
+    char server_description[64];
+    char server_location[64];
+    char server_platform[64];
+    char server_admin[64];
+    char server_root[256];
+    char server_host_default[64];
+    char server_host[64];
+    int  server_port;
+    int  server_tls_port;
 
-	char default_filetype;
-	char map_file[64];
-	char tag_file[64];
-	char cgi_file[64];
-	char user_dir[64];
-	char log_file[256];
+    char default_filetype;
+    char map_file[64];
+    char tag_file[64];
+    char cgi_file[64];
+    char user_dir[64];
+    char log_file[256];
 
-	char hidden[MAX_HIDDEN][256];
-	int hidden_count;
+    char hidden[MAX_HIDDEN][256];
+    int hidden_count;
 
-	ftype filetype[MAX_FILETYPES];
-	int filetype_count;
-	char filter_dir[64];
+    ftype filetype[MAX_FILETYPES];
+    int filetype_count;
+    char filter_dir[64];
 
-	srewrite rewrite[MAX_REWRITE];
-	int rewrite_count;
+    srewrite rewrite[MAX_REWRITE];
+    int rewrite_count;
 
-	/* Session */
-	int session_timeout;
-	int session_max_kbytes;
-	int session_max_hits;
-	int session_id;
+    /* Session */
+    int session_timeout;
+    int session_max_kbytes;
+    int session_max_hits;
+    int session_id;
 
-	/* Feature options */
-	char opt_parent;
-	char opt_header;
-	char opt_footer;
-	char opt_date;
-	char opt_syslog;
-	char opt_magic;
-	char opt_iconv;
-	char opt_vhost;
-	char opt_query;
-	char opt_caps;
-	char opt_status;
-	char opt_shm;
-	char opt_root;
-	char opt_proxy;
-	char opt_exec;
-	char opt_personal_spaces;
-	char debug;
+    /* Feature options */
+    char opt_parent;
+    char opt_header;
+    char opt_footer;
+    char opt_date;
+    char opt_syslog;
+    char opt_magic;
+    char opt_iconv;
+    char opt_vhost;
+    char opt_query;
+    char opt_caps;
+    char opt_status;
+    char opt_shm;
+    char opt_root;
+    char opt_proxy;
+    char opt_exec;
+    char opt_personal_spaces;
+    char debug;
 } state;
 
 /* Shared memory for session & accounting data */
 #ifdef HAVE_SHMEM
 
-#define SHM_KEY		0xbeeb0008	/* Unique identifier + struct version */
-#define SHM_MODE	0600		/* Access mode for the shared memory */
-#define SHM_SESSIONS	256		/* Max amount of user sessions to track */
+#define SHM_KEY        0xbeeb0008    /* Unique identifier + struct version */
+#define SHM_MODE    0600        /* Access mode for the shared memory */
+#define SHM_SESSIONS    256        /* Max amount of user sessions to track */
 
 typedef struct {
-	long hits;
-	long kbytes;
+    long hits;
+    long kbytes;
 
-	time_t req_atime;
-	char req_selector[128];
-	char req_remote_addr[64];
-	char req_filetype;
-	int session_id;
+    time_t req_atime;
+    char req_selector[128];
+    char req_remote_addr[64];
+    char req_filetype;
+    int session_id;
 
-	char server_host[64];
-	int  server_port;
+    char server_host[64];
+    int  server_port;
 } shm_session;
 
 typedef struct {
-	time_t start_time;
-	long hits;
-	long kbytes;
-	char server_platform[64];
-	char server_description[64];
-	shm_session session[SHM_SESSIONS];
+    time_t start_time;
+    long hits;
+    long kbytes;
+    char server_platform[64];
+    char server_description[64];
+    shm_session session[SHM_SESSIONS];
 } shm_state;
 
 #endif
 
 /* Struct for directory sorting */
 typedef struct {
-	char	name[128];	/* Should be 256 but we're saving stack space */
-	mode_t	mode;
-	uid_t	uid;
-	gid_t	gid;
-	off_t	size;
-	time_t	mtime;
+    char    name[128];    /* Should be 256 but we're saving stack space */
+    mode_t    mode;
+    uid_t    uid;
+    gid_t    gid;
+    off_t    size;
+    time_t    mtime;
 } sdirent;
 
 /*
