@@ -39,7 +39,7 @@ are made.
     -l logfile    Log to Apache-compatible combined format logfile
 
     -w width      Change default page width          [76]
-    -o charset    Change default output charset      [US-ASCII]
+    -o charset    Change default output charset      [UTF-8]
 
     -s seconds    Session timeout in seconds         [1800]
     -i hits       Maximum hits until throttling      [4096]
