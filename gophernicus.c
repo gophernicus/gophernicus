@@ -448,6 +448,11 @@ void init_state(state *st)
     strclear(st->server_platform);
     strclear(st->server_admin);
 
+#ifdef __OpenBSD__
+	st->extra_unveil_paths = NULL;
+#endif
+
+
     /* Session */
     st->session_timeout = DEFAULT_SESSION_TIMEOUT;
     st->session_max_kbytes = DEFAULT_SESSION_MAX_KBYTES;
@@ -498,12 +503,16 @@ int main(int argc, char *argv[])
 #ifdef HAVE_SHMEM
     struct shmid_ds shm_ds;
     shm_state *shm;
-    int shmid;
+    int shmid = -1;
 #endif
 #ifdef ENABLE_HAPROXY1
     char remote[BUFSIZE];
     char local[BUFSIZE];
     int dummy;
+#endif
+#ifdef __OpenBSD__
+	char pledges[256];
+	char *extra_unveil;
 #endif
 
     /* Get the name of this binary */
@@ -522,6 +531,87 @@ int main(int argc, char *argv[])
 
     /* Open syslog() */
     if (st.opt_syslog) openlog(self, LOG_PID, LOG_DAEMON);
+
+#ifdef __OpenBSD__
+    /* unveil(2) support.
+     *
+     * We only enable unveil(2) if the user isn't expecting to shell-out to
+     * arbitrary commands.
+     */
+    if (st.opt_exec) {
+        if (st.extra_unveil_paths != NULL) {
+            die(&st, NULL, "-U and executable maps cannot co-exist");
+        }
+        if (st.debug)
+            syslog(LOG_INFO, "executable gophermaps are enabled, no unveil(2)");
+    } else {
+        if (unveil(st.server_root, "r") == -1)
+            die(&st, NULL, "unveil");
+
+        /*
+         * If we want personal gopherspaces, then we have to unveil(2) the user
+         * database. This isn't actually needed if pledge(2) is enabled, as the
+         * 'getpw' promise will ensure access to this file, but it doesn't hurt
+         * to unveil it anyway.
+         */
+        if (st.opt_personal_spaces) {
+            if (st.debug)
+                syslog(LOG_INFO, "unveiling /etc/pwd.db");
+            if (unveil("/etc/pwd.db", "r") == -1)
+                die(&st, NULL, "unveil");
+        }
+
+        /* Any extra unveil paths that the user has specified */
+        char *p = st.extra_unveil_paths;
+        while (p != NULL) {
+            extra_unveil = strsep(&p, ":");
+            if (*extra_unveil == '\0')
+                continue; /* empty path */
+
+            if (st.debug)
+                syslog(LOG_INFO, "unveiling extra path: %s\n", extra_unveil);
+            if (unveil(extra_unveil, "r") == -1)
+                die(&st, NULL, "unveil");
+        }
+
+        if (unveil(NULL, NULL) == -1)
+            die(&st, NULL, "unveil");
+    }
+
+    /* pledge(2) support */
+    if (st.opt_shm) {
+        /* pledge(2) never allows shared memory */
+        if (st.debug)
+            syslog(LOG_INFO, "shared-memory enabled, can't pledge(2)");
+    } else {
+        strlcpy(pledges,
+                "stdio rpath inet sendfd recvfd proc",
+                sizeof(pledges));
+
+        /* Executable maps shell-out using popen(3) */
+        if (st.opt_exec) {
+            strlcat(pledges, " exec", sizeof(pledges));
+            if (st.debug) {
+                syslog(LOG_INFO,
+                       "executable gophermaps enabled, "
+                       "adding 'exec' to pledge(2)");
+            }
+        }
+
+        /* Personal spaces require getpwnam(3) and getpwent(3) */
+        if (st.opt_personal_spaces) {
+            strlcat(pledges, " getpw", sizeof(pledges));
+            if (st.debug) {
+                syslog(LOG_INFO,
+                       "personal gopherspaces enabled, "
+                       "adding 'getpw' to pledge(2)");
+            }
+        }
+
+        if (pledge(pledges, NULL) == -1)
+            die(&st, NULL, "pledge");
+    }
+#endif
 
     /* Check if TCP wrappers have something to say about this connection */
 #ifdef HAVE_LIBWRAP
@@ -544,30 +634,31 @@ int main(int argc, char *argv[])
 
     /* Try to get shared memory */
 #ifdef HAVE_SHMEM
-    if ((shmid = shmget(SHM_KEY, sizeof(shm_state), IPC_CREAT | SHM_MODE)) == ERROR) {
+    if (st.opt_shm) {
+        if ((shmid = shmget(SHM_KEY, sizeof(shm_state), IPC_CREAT | SHM_MODE)) == ERROR) {
 
-        /* Getting memory failed -> delete the old allocation */
-        shmctl(shmid, IPC_RMID, &shm_ds);
+            /* Getting memory failed -> delete the old allocation */
+            shmctl(shmid, IPC_RMID, &shm_ds);
+            shm = NULL;
+        }
+        else {
+            /* Map shared memory */
+            if ((shm = (shm_state *) shmat(shmid, (void *) 0, 0)) == (void *) ERROR)
+                shm = NULL;
+
+            /* Initialize mapped shared memory */
+            if (shm && shm->start_time == 0) {
+                shm->start_time = time(NULL);
+
+                /* Keep server platform & description in shm */
+                platform(&st);
+                sstrlcpy(shm->server_platform, st.server_platform);
+                sstrlcpy(shm->server_description, st.server_description);
+            }
+        }
+    } else {
         shm = NULL;
     }
-    else {
-        /* Map shared memory */
-        if ((shm = (shm_state *) shmat(shmid, (void *) 0, 0)) == (void *) ERROR)
-            shm = NULL;
-
-        /* Initialize mapped shared memory */
-        if (shm && shm->start_time == 0) {
-            shm->start_time = time(NULL);
-
-            /* Keep server platform & description in shm */
-            platform(&st);
-            sstrlcpy(shm->server_platform, st.server_platform);
-            sstrlcpy(shm->server_description, st.server_description);
-        }
-    }
-
-    /* For debugging shared memory issues */
-    if (!st.opt_shm) shm = NULL;
 
     /* Get server platform and description */
     if (shm) {
