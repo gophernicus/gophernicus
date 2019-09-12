@@ -18,7 +18,7 @@ SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
 HEADERS = functions.h files.h
 OBJECTS = $(SOURCES:.c=.o)
 README  = README.md
-DOCS    = LICENSE README.md INSTALL.md TODO changelog README.Gophermap gophertag
+DOCS    = LICENSE README.md INSTALL.md changelog README.Gophermap gophertag
 
 INSTALL = PATH=$$PATH:/usr/sbin ./install-sh -o 0 -g 0
 DESTDIR = /usr
