@@ -48,6 +48,7 @@ These were obtained from a base docker installation.
 - build-essential
 - git
 - libwrap0-dev for tcp
+- fakeroot
 
 ### Centos 6, 7
 - the group 'Development Tools'. less is probably required, but
