@@ -22,6 +22,8 @@ DESTDIR = /usr
 OSXDEST = /usr/local
 SBINDIR = $(DESTDIR)/sbin
 DOCDIR  = $(DESTDIR)/share/doc/$(PACKAGE)
+MANPAGE = gophernicus.1.man 
+MANDEST = $(DESTDIR)/share/man/man1/gophernicus.1
 
 ROOT    = /var/gopher
 OSXROOT = /Library/GopherServer
@@ -167,6 +169,7 @@ install-files: $(BINARY)
 install-docs:
 	mkdir -p $(DOCDIR)
 	$(INSTALL) -m 644 $(DOCS) $(DOCDIR)
+	$(INSTALL) -m 644 $(MANPAGE) $(MANDEST)
 	@echo
 
 install-root:
