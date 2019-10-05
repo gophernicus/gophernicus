@@ -40,7 +40,9 @@ void send_binary_file(state *st)
     int fd;
     off_t offset = 0;
 
+#ifdef HAVE_SYSLOG
     if (st->debug) syslog(LOG_INFO, "outputting binary file \"%s\"", st->req_realpath);
+#endif
 
     if ((fd = open(st->req_realpath, O_RDONLY)) == ERROR) return;
     sendfile(1, fd, &offset, st->req_filesize);
@@ -52,7 +54,9 @@ void send_binary_file(state *st)
     char buf[BUFSIZE];
     int bytes;
 
+#ifdef HAVE_SYSLOG
     if (st->debug) syslog(LOG_INFO, "outputting binary file \"%s\"", st->req_realpath);
+#endif
 
     if ((fp = fopen(st->req_realpath , "r")) == NULL) return;
     while ((bytes = fread(buf, 1, sizeof(buf), fp)) > 0)
@@ -72,7 +76,9 @@ void send_text_file(state *st)
     char out[BUFSIZE];
     int line;
 
+#ifdef HAVE_SYSLOG
     if (st->debug) syslog(LOG_INFO, "outputting text file \"%s\"", st->req_realpath);
+#endif
     if ((fp = fopen(st->req_realpath , "r")) == NULL) return;
 
     /* Loop through the file line by line */
@@ -119,6 +125,7 @@ void url_redirect(state *st)
         die(st, ERR_ACCESS, "Refusing to HTTP redirect unsafe protocols");
 
     /* Log the redirect */
+#ifdef HAVE_SYSLOG
     if (st->opt_syslog) {
         syslog(LOG_INFO, "request for \"gopher%s://%s:%i/h%s\" from %s",
             (st->server_port == st->server_tls_port ? "s" : ""),
@@ -127,6 +134,7 @@ void url_redirect(state *st)
             st->req_selector,
             st->req_remote_addr);
     }
+#endif
     log_combined(st, HTTP_OK);
 
     /* Output HTML */
@@ -156,6 +164,7 @@ void server_status(state *st, shm_state *shm, int shmid)
     int i;
 
     /* Log the request */
+#ifdef HAVE_SYSLOG
     if (st->opt_syslog) {
         syslog(LOG_INFO, "request for \"gopher%s://%s:%i/0" SERVER_STATUS "\" from %s",
             (st->server_port == st->server_tls_port ? "s" : ""),
@@ -163,6 +172,7 @@ void server_status(state *st, shm_state *shm, int shmid)
             st->server_port,
             st->req_remote_addr);
     }
+#endif
     log_combined(st, HTTP_OK);
 
     /* Quit if shared memory isn't initialized yet */
@@ -231,6 +241,7 @@ void server_status(state *st, shm_state *shm, int shmid)
 void caps_txt(state *st, shm_state *shm)
 {
     /* Log the request */
+#ifdef HAVE_SYSLOG
     if (st->opt_syslog) {
         syslog(LOG_INFO, "request for \"gopher%s://%s:%i/0" CAPS_TXT "\" from %s",
             (st->server_port == st->server_tls_port ? "s" : ""),
@@ -238,6 +249,7 @@ void caps_txt(state *st, shm_state *shm)
             st->server_port,
             st->req_remote_addr);
     }
+#endif
     log_combined(st, HTTP_OK);
 
     /* Update counters */
@@ -370,12 +382,16 @@ void run_cgi(state *st, char *script, char *arg)
     if (st->opt_exec) {
 
     /* Setup environment & execute the binary */
+#ifdef HAVE_SYSLOG
     if (st->debug) syslog(LOG_INFO, "executing script \"%s\"", script);
+#endif
 
     setenv_cgi(st, script);
     execl(script, script, arg, NULL);
     }
+#ifdef HAVE_SYSLOG
     else if (st->debug) syslog(LOG_INFO, "script \"%s\" was blocked by -nx", script);
+#endif
 
     /* Didn't work - die */
     die(st, ERR_ACCESS, NULL);

@@ -309,6 +309,7 @@ int gophermap(state *st, char *mapfile, int depth)
     }
 
     /* Debug output */
+#ifdef HAVE_SYSLOG
     if (st->debug) {
         if (exe) {
             if (st->opt_exec)
@@ -318,6 +319,7 @@ int gophermap(state *st, char *mapfile, int depth)
         }
         else syslog(LOG_INFO, "parsing static gophermap \"%s\"", mapfile);
     }
+#endif
 
     /* Try to execute or open the mapfile */
     if (exe & st->opt_exec) {

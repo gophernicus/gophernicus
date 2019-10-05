@@ -175,6 +175,10 @@ void parse_args(state *st, int argc, char *argv[])
     if (st->out_width < MIN_WIDTH) st->out_width = MIN_WIDTH;
     if (st->out_width < MIN_WIDTH + DATE_WIDTH) st->opt_date = FALSE;
     if (!st->opt_syslog) st->debug = FALSE;
+#ifdef _WIN32
+    st->opt_syslog = FALSE;
+    st->opt_shm = FALSE;
+#endif
 
     /* Primary vhost directory must exist or we disable vhosting */
     if (st->opt_vhost) {

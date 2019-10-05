@@ -56,6 +56,7 @@
 #define HAVE_PASSWD        /* For systems with passwd-like userdb */
 #define PASSWD_MIN_UID 100    /* Minimum allowed UID for ~userdirs */
 #define HAVE_LOCALES        /* setlocale() and friends */
+#define HAVE_SYSLOG        /* syslog() */
 #define HAVE_SHMEM        /* Shared memory support */
 #define HAVE_UNAME        /* uname() */
 #define HAVE_POPEN        /* popen() */
@@ -99,6 +100,14 @@
 #define _LARGE_FILES 1
 #endif
 
+/* Windows */
+#ifdef _WIN32
+#undef HAVE_SYSLOG
+#undef HAVE_SHMEM
+#undef HAVE_UNAME
+#undef HAVE_PASSWD
+#endif
+
 /* Add other OS-specific defines here */
 
 /*
@@ -113,9 +122,24 @@
 #include <string.h>
 #include <libgen.h>
 #include <time.h>
+
+/* Windows */
+#ifdef _WIN32
+#include <windows.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#endif
+
+#ifdef HAVE_SYSLOG
 #include <syslog.h>
+#endif
+
 #include <errno.h>
+
+#ifndef _WIN32 // on windows we use windows.h
 #include <pwd.h>
+#endif
+
 #include <limits.h>
 
 #ifdef HAVE_SENDFILE
@@ -127,17 +151,19 @@
 #include <locale.h>
 #endif
 
-#ifdef HAVE_SHMEM
+#if defined(HAVE_SHMEM)
 #include <sys/ipc.h>
 #include <sys/shm.h>
-#else
-#define shm_state void
 #endif
 
 #if defined(HAVE_IPv4) || defined(HAVE_IPv6)
+#ifdef _WIN32
+#include <winsock2.h>
+#else
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#endif
 #endif
 
 #ifdef HAVE_UNAME
@@ -370,6 +396,11 @@ typedef struct {
     char opt_exec;
     char opt_personal_spaces;
     char debug;
+
+    /* Windows */
+#ifdef _WIN32
+    WSADATA wsa_data;
+#endif
 } state;
 
 /* Shared memory for session & accounting data */
@@ -408,8 +439,13 @@ typedef struct {
 typedef struct {
     char    name[128];    /* Should be 256 but we're saving stack space */
     mode_t    mode;
+#ifdef _WIN32
+    int      uid;
+    int      gid;
+#else
     uid_t    uid;
     gid_t    gid;
+#endif
     off_t    size;
     time_t    mtime;
 } sdirent;

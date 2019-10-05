@@ -119,10 +119,12 @@ void die(state *st, char *message, char *description)
     if (description == NULL) description = strerror(en);
 
     /* Log the error */
+#ifdef HAVE_SYSLOG
     if (st->opt_syslog) {
         syslog(LOG_ERR, "error \"%s\" for request \"%s\" from %s",
             description, st->req_selector, st->req_remote_addr);
     }
+#endif
     log_combined(st, HTTP_404);
 
     /* Handle menu errors */
@@ -221,10 +223,12 @@ void selector_to_path(state *st)
                 st->rewrite[i].replace,
                 st->req_selector + strlen(st->rewrite[i].match));
 
+#ifdef HAVE_SYSLOG
             if (st->debug) {
                 syslog(LOG_INFO, "rewriting selector \"%s\" -> \"%s\"",
                     st->req_selector, buf);
             }
+#endif
 
             sstrlcpy(st->req_selector, buf);
         }
@@ -530,13 +534,18 @@ int main(int argc, char *argv[])
     parse_args(&st, argc, argv);
 
     /* Open syslog() */
+#ifdef HAVE_SYSLOG
     if (st.opt_syslog) openlog(self, LOG_PID, LOG_DAEMON);
+#endif
 
 #ifdef __OpenBSD__
     /* unveil(2) support.
      *
      * We only enable unveil(2) if the user isn't expecting to shell-out to
      * arbitrary commands.
+     */
+    /*
+     * We don't bother with HAVE_SYSLOG checks as OpenBSD has syslog.
      */
     if (st.opt_exec) {
         if (st.extra_unveil_paths != NULL) {
@@ -679,12 +688,16 @@ get_selector:
     /* Remove trailing CRLF */
     chomp(selector);
 
+#ifdef HAVE_SYSLOG
     if (st.debug) syslog(LOG_INFO, "client sent us \"%s\"", selector);
+#endif
 
     /* Handle HAproxy/Stunnel proxy protocol v1 */
 #ifdef ENABLE_HAPROXY1
     if (sstrncmp(selector, "PROXY TCP") == MATCH && st.opt_proxy) {
+#ifdef HAVE_SYSLOG
         if (st.debug) syslog(LOG_INFO, "got proxy protocol header \"%s\"", selector);
+#endif
 
         sscanf(selector, "PROXY TCP%d %s %s %d %d",
             &dummy, remote, local, &dummy, &st.server_port);
@@ -715,7 +728,9 @@ get_selector:
         printf("+VIEWS:" CRLF " application/gopher+-menu: <512b>" CRLF);
         printf("." CRLF);
 
+#ifdef HAVE_SYSLOG
         if (st.debug) syslog(LOG_INFO, "got a request for gopher+ root menu");
+#endif
         return OK;
     }
 
@@ -727,8 +742,9 @@ get_selector:
         if ((c = strchr(selector, ' '))) *c = '\0';
 
         st.req_protocol = PROTO_HTTP;
-
+#ifdef HAVE_SYSLOG
         if (st.debug) syslog(LOG_INFO, "got HTTP request for \"%s\"", selector);
+#endif
     }
 
     /* Save default server_host & fetch session data (including new server_host) */
@@ -798,7 +814,9 @@ get_selector:
 
     /* Convert seletor to path & stat() */
     selector_to_path(&st);
+#ifdef HAVE_SYSLOG
     if (st.debug) syslog(LOG_INFO, "path to resource is \"%s\"", st.req_realpath);
+#endif
 
     if (stat(st.req_realpath, &file) == ERROR) {
 
@@ -856,6 +874,7 @@ get_selector:
 #endif
 
     /* Log the request */
+#ifdef HAVE_SYSLOG
     if (st.opt_syslog) {
         syslog(LOG_INFO, "request for \"gopher%s://%s:%i/%c%s\" from %s",
             (st.server_port == st.server_tls_port ? "s" : ""),
@@ -865,6 +884,7 @@ get_selector:
             st.req_selector,
             st.req_remote_addr);
     }
+#endif
 
     /* Check file type & act accordingly */
     switch (file.st_mode & S_IFMT) {

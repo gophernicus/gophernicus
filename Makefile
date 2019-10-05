@@ -92,6 +92,8 @@ functions.h:
 		grep -v "strlc" | \
 		grep -v "[a-z]:" | \
 		sed -e "s/ =.*$$//" -e "s/ *$$/;/" >> $@
+	sed -i '/shm_state/i #ifdef HAVE_SHMEM' functions.h
+	sed -i '/shm_state/a #endif' functions.h
 	@echo
 
 bin2c: bin2c.c

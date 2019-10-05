@@ -143,8 +143,10 @@ void update_shm_session(state *st, shm_state *shm)
             shm->session[i].hits / st->session_max_hits);
 
         /* Throttle user */
+#ifdef HAVE_SYSLOG
         syslog(LOG_INFO, "throttling user from %s for %i seconds",
             st->req_remote_addr, delay);
+#endif
         sleep(delay);
     }
 }
