@@ -342,6 +342,10 @@ typedef struct {
     srewrite rewrite[MAX_REWRITE];
     int rewrite_count;
 
+#ifdef __OpenBSD__
+	char *extra_unveil_paths;
+#endif
+
     /* Session */
     int session_timeout;
     int session_max_kbytes;

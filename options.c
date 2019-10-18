@@ -101,7 +101,11 @@ void parse_args(state *st, int argc, char *argv[])
     int opt;
 
     /* Parse args */
-    while ((opt = getopt(argc, argv, "h:p:T:r:t:g:a:c:u:m:l:w:o:s:i:k:f:e:R:D:L:A:P:n:dbv?-")) != ERROR) {
+    while ((opt = getopt(argc, argv,
+#ifdef __OpenBSD__
+        "U:" /* extra unveil(2) paths are OpenBSD only */
+#endif
+        "h:p:T:r:t:g:a:c:u:m:l:w:o:s:i:k:f:e:R:D:L:A:P:n:dbv?-")) != ERROR) {
         switch(opt) {
             case 'h': sstrlcpy(st->server_host, optarg); break;
             case 'p': st->server_port = atoi(optarg); break;
@@ -133,7 +137,9 @@ void parse_args(state *st, int argc, char *argv[])
             case 'D': sstrlcpy(st->server_description, optarg); break;
             case 'L': sstrlcpy(st->server_location, optarg); break;
             case 'A': sstrlcpy(st->server_admin, optarg); break;
-
+#ifdef __OpenBSD__
+            case 'U': st->extra_unveil_paths = optarg; break;
+#endif
             case 'n':
                 if (*optarg == 'v') { st->opt_vhost = FALSE; break; }
                 if (*optarg == 'l') { st->opt_parent = FALSE; break; }

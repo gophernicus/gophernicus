@@ -18,13 +18,15 @@ SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
 HEADERS = functions.h files.h filetypes.h
 OBJECTS = $(SOURCES:.c=.o)
 README  = README.md
-DOCS    = LICENSE README.md INSTALL.md TODO changelog README.Gophermap gophertag
+DOCS    = LICENSE README.md INSTALL.md changelog README.Gophermap gophertag
 
 INSTALL = PATH=$$PATH:/usr/sbin ./install-sh -o 0 -g 0
 DESTDIR = /usr
 OSXDEST = /usr/local
 SBINDIR = $(DESTDIR)/sbin
 DOCDIR  = $(DESTDIR)/share/doc/$(PACKAGE)
+MANPAGE = gophernicus.1.man 
+MANDEST = $(DESTDIR)/share/man/man1/gophernicus.1
 
 ROOT    = /var/gopher
 OSXROOT = /Library/GopherServer
@@ -56,18 +58,15 @@ IPCRM   = /usr/bin/ipcrm
 #
 # Platform support, compatible with both BSD and GNU make
 #
-all: headers
+all:
 	@case `uname` in \
 		Darwin)	$(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDEST)" $(BINARY); ;; \
 		Haiku)	$(MAKE) EXTRA_LIBS="-lnetwork" $(BINARY); ;; \
 		*)	if [ -f "/usr/include/tcpd.h" ]; then $(MAKE) withwrap; else $(MAKE) $(BINARY); fi; ;; \
 	esac
 
-generic: $(BINARY)
-
 withwrap:
 	$(MAKE) EXTRA_CFLAGS="-DHAVE_LIBWRAP" EXTRA_LIBS="-lwrap" $(BINARY)
-
 
 #
 # Special targets
@@ -78,6 +77,9 @@ deb:
 #
 # Building
 #
+
+headers: $(HEADERS)
+
 $(NAME).c: headers $(NAME).h
 
 $(BINARY): $(OBJECTS)
@@ -86,9 +88,6 @@ $(BINARY): $(OBJECTS)
 .c.o:
 	$(CC) -c $(CFLAGS) $(EXTRA_CFLAGS) -DVERSION="\"$(VERSION)\"" -DCODENAME="\"$(CODENAME)\"" -DDEFAULT_ROOT="\"$(ROOT)\"" $< -o $@
 
-
-headers: $(HEADERS)
-	@echo
 
 functions.h:
 	echo "/* Automatically generated function definitions */" > $@
@@ -122,7 +121,7 @@ files.h: bin2c README
 
 
 #
-# Cleanup after building
+# Clean targets
 #
 clean: clean-build clean-deb
 
@@ -181,6 +180,7 @@ install-files: $(BINARY)
 install-docs:
 	mkdir -p $(DOCDIR)
 	$(INSTALL) -m 644 $(DOCS) $(DOCDIR)
+	$(INSTALL) -m 644 $(MANPAGE) $(MANDEST)
 	@echo
 
 install-root:
@@ -311,27 +311,3 @@ uninstall-systemd:
 		done; \
 	fi
 	@echo
-
-
-#
-# List all C defines
-#
-defines: functions.h files.h
-	$(CC) -dM -E $(NAME).c
-
-
-#
-# LOC
-#
-loc:
-	@wc -l *.c
-
-
-#
-# Fix copyright notes
-#
-copyright: README
-	sed -i .stupid -e "s/Copyright .c. 2.*$$/Copyright (c) $(STARTED)-`date +%Y` $(AUTHOR) <$(EMAIL)>/" *.c *.h LICENSE $(README) debian/copyright
-	sed -i .stupid -e "s/Maintainer: .*$$/Maintainer: $(AUTHOR) <$(EMAIL)>/" debian/control
-	rm -f *.stupid debian/*.stupid
-

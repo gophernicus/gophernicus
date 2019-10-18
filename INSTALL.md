@@ -11,9 +11,8 @@ Currently, you most likely want version 3.0.1.
 To compile and install run:
 
 ```
-$ git clone https://github.com/gophernicus/gophernicus.git
+$ git clone -b 3.0.1 https://github.com/gophernicus/gophernicus.git
 $ cd gophernicus
-$ git checkout 3.0.1
 $ make
 $ sudo make install
 ```
@@ -48,6 +47,7 @@ These were obtained from a base docker installation.
 - build-essential
 - git
 - libwrap0-dev for tcp
+- fakeroot
 
 ### Centos 6, 7
 - the group 'Development Tools'. less is probably required, but
