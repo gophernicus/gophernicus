@@ -315,6 +315,7 @@ void selector_to_path(state *st)
  */
 char *get_local_address(void)
 {
+#ifndef _WIN32
 #ifdef HAVE_IPv4
     struct sockaddr_in addr;
     socklen_t addrsize = sizeof(addr);
@@ -345,6 +346,7 @@ char *get_local_address(void)
         }
     }
 #endif
+#endif
 
     /* Nothing works... I'm out of ideas */
     return UNKNOWN_ADDR;
@@ -356,6 +358,7 @@ char *get_local_address(void)
  */
 char *get_peer_address(void)
 {
+#ifndef _WIN32
 #ifdef HAVE_IPv4
     struct sockaddr_in addr;
     socklen_t addrsize = sizeof(addr);
@@ -389,6 +392,7 @@ char *get_peer_address(void)
             else return address;
         }
     }
+#endif
 #endif
 
     /* Nothing works... I'm out of ideas */
@@ -429,8 +433,10 @@ void init_state(state *st)
 
     if ((c = getenv("HOSTNAME")))
         sstrlcpy(st->server_host, c);
+#ifndef _WIN32
     else if ((gethostname(buf, sizeof(buf))) != ERROR)
         sstrlcpy(st->server_host, buf);
+#endif
 
     st->server_port = DEFAULT_PORT;
     st->server_tls_port = DEFAULT_TLS_PORT;
@@ -528,7 +534,12 @@ int main(int argc, char *argv[])
     setlocale(LC_TIME, DATE_LOCALE);
 #endif
     init_state(&st);
+#ifdef _WIN32
+    /* Windows dosen't have getppid() */
+    srand(time(NULL) / getpid());
+#else
     srand(time(NULL) / (getpid() + getppid()));
+#endif
 
     /* Handle command line arguments */
     parse_args(&st, argc, argv);
@@ -838,10 +849,13 @@ get_selector:
     st.req_filesize = file.st_size;
 
     /* Everyone must have read access but no write access */
+    /* Skip this check on Windows */
+#ifndef _WIN32
     if ((file.st_mode & S_IROTH) == 0)
         die(&st, ERR_ACCESS, "File or directory not world-readable");
     if ((file.st_mode & S_IWOTH) != 0)
         die(&st, ERR_ACCESS, "File or directory world-writeable");
+#endif
 
     /* If stat said it was a dir then it's a menu */
     if ((file.st_mode & S_IFMT) == S_IFDIR) st.req_filetype = TYPE_MENU;

@@ -171,8 +171,11 @@ void vhostlist(state *st)
         if (!strchr(dir[i].name, '.')) continue;
 
         /* We only want world-readable directories */
+        /* Skip check on Windows */
+#ifndef _WIN32
         if ((dir[i].mode & S_IROTH) == 0) continue;
         if ((dir[i].mode & S_IFMT) != S_IFDIR) continue;
+#endif
 
         /* Generate display string for vhost */
         snprintf(buf, sizeof(buf), VHOST_FORMAT, dir[i].name);
@@ -288,6 +291,8 @@ int gophermap(state *st, char *mapfile, int depth)
     if (depth > 4) return OK;
 
     /* Try to figure out whether the map is executable */
+    /* Executable gophermaps not yet supported on Windows */
+#ifndef _WIN32
     if (stat(mapfile, &file) == OK) {
         if ((file.st_mode & S_IXOTH)) {
 #ifdef HAVE_POPEN
@@ -307,6 +312,9 @@ int gophermap(state *st, char *mapfile, int depth)
 #endif
         exe = TRUE;
     }
+#else
+    exe = FALSE;
+#endif
 
     /* Debug output */
 #ifdef HAVE_SYSLOG
@@ -558,9 +566,13 @@ void gopher_menu(state *st)
         snprintf(pathname, sizeof(pathname), "%s/%s",
             st->req_realpath, dir[i].name);
 
-        /* Skip dotfiles and non world-readables */
+        /* Skip dotfiles */ 
         if (dir[i].name[0] == '.') continue;
+        /* Skip non world-readables */
+        /* Skip check on Windows */
+#ifndef _WIN32
         if ((dir[i].mode & S_IROTH) == 0) continue;
+#endif
 
         /* Skip gophermaps and tags (but not dirs) */
         if ((dir[i].mode & S_IFMT) != S_IFDIR) {

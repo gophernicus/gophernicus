@@ -238,7 +238,11 @@ void server_status(state *st, shm_state *shm, int shmid)
 /*
  * Handle /caps.txt
  */
+#ifdef HAVE_SHMEM
 void caps_txt(state *st, shm_state *shm)
+#else
+void caps_txt(state *st)
+#endif
 {
     /* Log the request */
 #ifdef HAVE_SYSLOG
@@ -425,7 +429,12 @@ void gopher_file(state *st)
         snprintf(buf, sizeof(buf), "%s/%s", st->filter_dir, c + 1);
 
         /* Filter file through the script */
+        /* Skip this second check on Windows */
+#ifdef _WIN32
+        if (stat(buf, &file) == OK)
+#else
         if (stat(buf, &file) == OK && (file.st_mode & S_IXOTH))
+#endif
             run_cgi(st, buf, st->req_realpath);
     }
 
@@ -434,7 +443,12 @@ void gopher_file(state *st)
         snprintf(buf, sizeof(buf), "%s/%c", st->filter_dir, st->req_filetype);
 
         /* Filter file through the script */
+        /* Skip this second check on Windows */
+#ifdef _WIN32
+        if (stat(buf, &file) == OK)
+#else
         if (stat(buf, &file) == OK && (file.st_mode & S_IXOTH))
+#endif
             run_cgi(st, buf, st->req_realpath);
     }
 
