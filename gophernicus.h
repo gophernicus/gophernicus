@@ -278,7 +278,7 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 /* Sizes & maximums */
 #define BUFSIZE		1024	/* Default size for string buffers */
 #define MAX_HIDDEN	32	/* Maximum number of hidden files */
-#define MAX_FILETYPES	1000	/* Maximum number of suffix to filetype mappings */
+#define MAX_FILETYPES	1024	/* Maximum number of suffix to filetype mappings */
 #define MAX_FILTERS	16	/* Maximum number of file filters */
 #define MAX_SDIRENT	1024	/* Maximum number of files per directory to handle */
 #define MAX_REWRITE	32	/* Maximum number of selector rewrite options */
