@@ -31,7 +31,7 @@ Other changes:
  * prevent leak of executable gophermap contents
  * make sure {x,}inetd works when systemd is on the system
  * allow -j flag to work
- * add h9bnks (yargo) and fosslinux into developer roles
+ * add hb9kns (yargo) and fosslinux into developer roles
  * add -nx flag, blocks executable gophermaps
  * add -nu flag, disable ~/public_gopher
  * modify various documentation to markdown
