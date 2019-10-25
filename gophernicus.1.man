@@ -61,13 +61,14 @@ much more. It is fully FOSS, licensed under the BSD 2-Clause license.
   -v            Display version number and build date
   -b            Display the BSD license
   -?            Display this help
-.SH AUTHOR
-fosslinux and hb9kns; <gophernicus at gophernicus dot org>
-.SH REPORTING BUGS
-Please report bugs on our GitHub page: https://github.com/gophernicus/gophernicus.
-.SH COPYRIGHT
-Copyright (c) Kim Holavia 2009-2018
 
+(Note: default options may have been changed through gophernicus.env file at compile time.)
+.SH AUTHOR
+fosslinux, hb9kns and others; <gophernicus at gophernicus dot org>
+.SH REPORTING BUGS
+Please report bugs on Gophernicus GitHub page: https://github.com/gophernicus/gophernicus.
+.SH COPYRIGHT
+Copyright (c) Kim Holviala 2009-2018
 Copyright (c) Gophernicus Developers 2019
 
 Licensed to you under the terms of the BSD 2-Clause license, please see LICENSE
