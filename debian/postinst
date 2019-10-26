@@ -24,7 +24,7 @@ fi
 # Configure gophernicus
 if [ "$1" = "configure" ]; then
 	if [ ! -f "$ROOT/gophermap" ]; then
-		cp $LIBDIR/gophermap $ROOT/
+		cp $LIBDIR/gophermap.sample $ROOT/gophermap
 	fi
 
 	chown $USER.adm $LOGDIR
