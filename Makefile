@@ -42,8 +42,7 @@ HAS_STD = /run/systemd/system
 SYSCONF = /etc/sysconfig
 DEFAULT = /etc/default
 
-CC      = gcc
-HOSTCC	= $(CC)
+CC      ?= gcc
 CFLAGS  = -O2 -Wall
 LDFLAGS =
 
@@ -95,7 +94,7 @@ functions.h:
 	@echo
 
 bin2c: bin2c.c
-	$(HOSTCC) bin2c.c -o $@
+	$(CC) bin2c.c -o $@
 	@echo
 
 README: $(README)
