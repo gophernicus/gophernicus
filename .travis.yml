@@ -1,0 +1,6 @@
+dist: bionic
+
+language: c
+compiler:
+  - gcc
+  - clang
