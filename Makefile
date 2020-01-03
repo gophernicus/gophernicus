@@ -45,6 +45,7 @@ SYSCONF = /etc/sysconfig
 DEFAULT = /etc/default
 
 CC      ?= gcc
+HOSTCC  ?= $(CC)
 CFLAGS  = -O2 -Wall
 LDFLAGS =
 
