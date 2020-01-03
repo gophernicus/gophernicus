@@ -1,7 +1,0 @@
-Possible future development:
-
-	* RPM package
-	* Add support for mmap() in addition to SHM (for Haiku/R1)
-	* Password-protected resources
-	* Automated feature testing script
-

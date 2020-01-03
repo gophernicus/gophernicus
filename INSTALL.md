@@ -11,7 +11,7 @@ Currently, you most likely want version 3.0.1.
 To compile and install run:
 
 ```
-$ git clone https://github.com/gophernicus/gophernicus.git
+$ git clone -b 3.0.1 https://github.com/gophernicus/gophernicus.git
 $ cd gophernicus
 $ make
 $ sudo make install
@@ -41,13 +41,13 @@ hostname (the one set with `-h <hostname>`) directory available
 
 ## Dependencies
 
-These were obtained from a base docker installation, what we
-(will) be using on Travis.
+These were obtained from a base docker installation.
 
 ### Ubuntu 18.04, 16.04, Debian Sid, Buster, Stretch, Jessie
 - build-essential
 - git
 - libwrap0-dev for tcp
+- fakeroot
 
 ### Centos 6, 7
 - the group 'Development Tools'. less is probably required, but
@@ -74,6 +74,7 @@ These were obtained from a base docker installation, what we
 
 ### Alpine Linux
 - alpine-sdk. once again, less is probably required.. blah blah.
+
 
 ### Other installation targets
 

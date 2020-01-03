@@ -1,3 +1,15 @@
+3.1
+===
+
+ * update copyright
+ * change indentation from tabs to spaces
+ * change max width to 67, from 76 (for gophernicus-generated
+   headers/footers)
+ * change default charset to UTF-8
+ * add OpenBSD pledge(2) and unveil(2) support
+ * remove TODO
+ * clarify master as development in README
+
 3.0.1
 =====
 
