@@ -247,7 +247,7 @@ it's all detected automatically.
 With standard gopher clients this is a bit of a problem as your text
 files WILL be converted to 7-bit US-ASCII. This means that all 8-bit
 charaters WILL BE LOST. This decision was made because no gopher
-client that I tested was reliably cabable of decoding anything else
+client that I tested was reliably capable of decoding anything else
 than pure US-ASCII. If you want to disable the conversion use the
 `-no` option, or if you'd like to change the default output charset to
 something else than US-ASCII just use for example the `-o ISO-8859-1`
