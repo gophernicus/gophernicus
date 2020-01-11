@@ -1,31 +1,24 @@
-##
-## Gophernicus server Makefile
-##
-
-#
-# Variables and default configuration
-#
-NAME     = gophernicus
-PACKAGE  = $(NAME)
-BINARY   = $(NAME)
-VERSION  = 3.1
+NAME = gophernicus
+PACKAGE = $(NAME)
+BINARY = $(NAME)
+VERSION = 3.1
 CODENAME = Dungeon Edition
 
-SOURCES = $(NAME).c file.c menu.c string.c platform.c session.c options.c
-HEADERS = functions.h files.h
+SOURCES = src/$(NAME).c src/file.c src/menu.c src/string.c src/platform.c src/session.c src/options.c
+HEADERS = src/functions.h src/files.h
 OBJECTS = $(SOURCES:.c=.o)
-README  = README.md
-DOCS    = LICENSE README.md INSTALL.md changelog README.Gophermap gophertag
+README = README.md
+DOCS = LICENSE README.md INSTALL.md changelog README.Gophermap gophertag
 
-INSTALL = PATH=$$PATH:/usr/sbin ./install-sh -o 0 -g 0
 DESTDIR = /usr
-OSXDEST = /usr/local
+OSXDIR = /usr/local
 SBINDIR = $(DESTDIR)/sbin
-DOCDIR  = $(DESTDIR)/share/doc/$(PACKAGE)
-MANPAGE = gophernicus.1.man 
+DOCDIR = $(DESTDIR)/share/doc/$(PACKAGE)
+MANPAGE = gophernicus.1.man
 MANDEST = $(DESTDIR)/share/man/man1/gophernicus.1
 
-ROOT    = /var/gopher
+INSTALL = PATH=$$PATH:/usr/sbin ./install-sh -o 0 -g 0
+ROOT = /var/gopher
 OSXROOT = /Library/GopherServer
 WRTROOT = /gopher
 MAP     = gophermap
@@ -48,42 +41,30 @@ LDFLAGS =
 
 IPCRM   = /usr/bin/ipcrm
 
-
-#
-# Platform support, compatible with both BSD and GNU make
-#
 all:
 	@case `uname` in \
-		Darwin)	$(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDEST)" $(BINARY); ;; \
-		Haiku)	$(MAKE) EXTRA_LIBS="-lnetwork" $(BINARY); ;; \
-		*)	if [ -f "/usr/include/tcpd.h" ]; then $(MAKE) withwrap; else $(MAKE) $(BINARY); fi; ;; \
+		Darwin)	$(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDEST)" src/$(BINARY); ;; \
+		Haiku)	$(MAKE) EXTRA_LIBS="-lnetwork" src/$(BINARY); ;; \
+		*)	if [ -f "/usr/include/tcpd.h" ]; then $(MAKE) withwrap; else $(MAKE) src/$(BINARY); fi; ;; \
 	esac
 
 withwrap:
-	$(MAKE) EXTRA_CFLAGS="-DHAVE_LIBWRAP" EXTRA_LIBS="-lwrap" $(BINARY)
+	$(MAKE) EXTRA_CFLAGS="-DHAVE_LIBWRAP" EXTRA_LIBS="-lwrap" src/$(BINARY)
 
-#
-# Special targets
-#
 deb:
 	dpkg-buildpackage -rfakeroot -uc -us
 
-#
-# Building
-#
-
 headers: $(HEADERS)
 
-$(NAME).c: headers $(NAME).h
+src/$(NAME).c: headers src/$(NAME).h
 
-$(BINARY): $(OBJECTS)
+src/$(BINARY): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(EXTRA_LDFLAGS) $(OBJECTS) $(EXTRA_LIBS) -o $@
 
 .c.o:
 	$(CC) -c $(CFLAGS) $(EXTRA_CFLAGS) -DVERSION="\"$(VERSION)\"" -DCODENAME="\"$(CODENAME)\"" -DDEFAULT_ROOT="\"$(ROOT)\"" $< -o $@
 
-
-functions.h:
+src/functions.h:
 	echo "/* Automatically generated function definitions */" > $@
 	echo >> $@
 	grep -h "^[a-z]" $(SOURCES) | \
@@ -93,39 +74,34 @@ functions.h:
 		sed -e "s/ =.*$$//" -e "s/ *$$/;/" >> $@
 	@echo
 
-bin2c: bin2c.c
-	$(CC) bin2c.c -o $@
-	@echo
+src/bin2c: src/bin2c.c
+	$(CC) src/bin2c.c -o $@
 
 README: $(README)
 	cat $(README) > $@
 
-files.h: bin2c README
+src/files.h: src/bin2c README
 	sed -e '/^(end of option list)/,$$d' README > README.options
-	./bin2c -0 -n README README.options > $@
-	./bin2c -0 LICENSE >> $@
-	./bin2c -n ERROR_GIF error.gif >> $@
+	./src/bin2c -0 -n README README.options > $@
+	./src/bin2c -0 LICENSE >> $@
+	./src/bin2c -n ERROR_GIF error.gif >> $@
 	@echo
 
+# Clean cases
 
-#
-# Clean targets
-#
 clean: clean-build clean-deb
 
 clean-build:
-	rm -f $(BINARY) $(OBJECTS) $(HEADERS) README.options README bin2c
+	rm -rf src/$(BINARY) $(OBJECTS) $(HEADERS) README.options README src/bin2c
 
 clean-deb:
 	if [ -d debian/$(PACKAGE) ]; then fakeroot debian/rules clean; fi
 
 clean-shm:
-	if [ -x $(IPCRM) ]; then $(IPCRM) -M `awk '/SHM_KEY/ { print $$3 }' $(NAME).h` || true; fi
+	if [ -x $(IPCRM) ]; then $(IPCRM) -M `awk '/SHM_KEY/ { print $$3 }' src/$(NAME).h` || true; fi
 
+# Install cases
 
-#
-# Install targets
-#
 install: clean-shm
 	@case `uname` in \
 		Darwin)  $(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDEST)" install-files install-docs install-root install-osx install-done; ;; \
@@ -160,9 +136,9 @@ install-done:
 	@echo "======================================================================"
 	@echo
 
-install-files: $(BINARY)
+install-files: src/$(BINARY)
 	mkdir -p $(SBINDIR)
-	$(INSTALL) -s -m 755 $(BINARY) $(SBINDIR)
+	$(INSTALL) -s -m 755 src/$(BINARY) $(SBINDIR)
 	@echo
 
 install-docs:
@@ -201,7 +177,7 @@ install-xinetd: install-files install-docs install-root
 
 install-osx:
 	if [ -d "$(LAUNCHD)" -a ! -f "$(LAUNCHD)/$(PLIST)" ]; then \
-		sed -e "s/@HOSTNAME@/`hostname`/g" $(PLIST) > $(LAUNCHD)/$(PLIST); \
+		sed -e "s/@HOSTNAME@/`hostname`/g" src/$(PLIST) > $(LAUNCHD)/$(PLIST); \
 		launchctl load $(LAUNCHD)/$(PLIST); \
 	fi
 	@echo
@@ -229,14 +205,14 @@ install-haiku:
 install-systemd: install-files install-docs install-root
 	if [ -d "$(HAS_STD)" ]; then \
 		if [ -d "$(SYSCONF)" -a ! -f "$(SYSCONF)/$(NAME)" ]; then \
-			$(INSTALL) -m 644 $(NAME).env $(SYSCONF)/$(NAME); \
+			$(INSTALL) -m 644 init/$(NAME).env $(SYSCONF)/$(NAME); \
 		fi; \
 		if [ ! -d "$(SYSCONF)" -a -d "$(DEFAULT)" -a ! -f $(DEFAULT)/$(NAME) ]; then \
-			$(INSTALL) -m 644 $(NAME).env $(DEFAULT)/$(NAME); \
+			$(INSTALL) -m 644 init/$(NAME).env $(DEFAULT)/$(NAME); \
 		fi; \
 		for DIR in $(SYSTEMD); do \
 			if [ -d "$$DIR" ]; then \
-				$(INSTALL) -m 644 $(NAME).socket $(NAME)\@.service $$DIR; \
+				$(INSTALL) -m 644 init/$(NAME).socket init/$(NAME)\@.service $$DIR; \
 				break; \
 			fi; \
 		done; \
@@ -248,13 +224,12 @@ install-systemd: install-files install-docs install-root
 	fi
 	@echo
 
-#
-# Uninstall targets
-#
+# Uninstall cases
 uninstall: uninstall-xinetd uninstall-launchd uninstall-systemd uninstall-inetd
 	rm -f $(SBINDIR)/$(BINARY)
 	for DOC in $(DOCS); do rm -f $(DOCDIR)/$$DOC; done
 	rmdir -p $(SBINDIR) $(DOCDIR) 2>/dev/null || true
+	rm -rf $(MANDEST)
 	@echo
 
 uninstall-inetd:
