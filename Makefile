@@ -151,7 +151,7 @@ install-root:
 	if [ ! -d "$(ROOT)" -o ! -f "$(ROOT)/$(MAP)" ]; then \
 		mkdir -p $(ROOT); \
 		$(INSTALL) -m 644 $(MAP).sample $(ROOT); \
-		ln -s $(DOCDIR) $(ROOT)/docs; \
+		ln -fs $(DOCDIR) $(ROOT)/docs; \
 	fi
 	@echo
 
