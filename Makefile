@@ -43,7 +43,7 @@ IPCRM   = /usr/bin/ipcrm
 
 all:
 	@case `uname` in \
-		Darwin)	$(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDEST)" src/$(BINARY); ;; \
+		Darwin)	$(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDIr)" src/$(BINARY); ;; \
 		Haiku)	$(MAKE) EXTRA_LIBS="-lnetwork" src/$(BINARY); ;; \
 		*)	if [ -f "/usr/include/tcpd.h" ]; then $(MAKE) withwrap; else $(MAKE) src/$(BINARY); fi; ;; \
 	esac
@@ -104,7 +104,7 @@ clean-shm:
 
 install: clean-shm
 	@case `uname` in \
-		Darwin)  $(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDEST)" install-files install-docs install-root install-osx install-done; ;; \
+		Darwin)  $(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDIR)" install-files install-docs install-root install-osx install-done; ;; \
 		Haiku)   $(MAKE) SBINDIR=/boot/common/bin DOCDIR=/boot/common/share/doc/$(PACKAGE) \
 		                 install-files install-docs install-root install-haiku install-done; ;; \
 		*)       $(MAKE) install-files install-docs install-root; ;; \
