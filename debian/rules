@@ -43,8 +43,8 @@ install: build
 	rm -rf $(DEST)/tmp
 	ln -s /usr/share/doc/gophernicus/ $(DEST)/var/gopher/docs
 	ln -s /usr/bin/php5 $(DEST)/usr/lib/gophernicus/filters/php
-	cp $(CURDIR)/gophermap $(DEST)/usr/lib/gophernicus/
-	cp $(CURDIR)/gophernicus.socket $(CURDIR)/gophernicus@.service $(DEST)/lib/systemd/system/
+	cp $(CURDIR)/gophermap.sample $(DEST)/usr/lib/gophernicus/gophermap
+	cp $(CURDIR)/init/gophernicus.socket $(CURDIR)/init/gophernicus@.service $(DEST)/lib/systemd/system/
 
 # Build architecture-independent files here.
 binary-indep: build install
