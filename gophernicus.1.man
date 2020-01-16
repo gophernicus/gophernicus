@@ -1,15 +1,17 @@
 .\" Manpage for gophernicus.
-.TH man 1 "31 Sep 2019" "3.0.1" "gophernicus man page"
+.TH man 1 "26 Oct 2019" "3.0.1" "gophernicus man page"
 .SH NAME
-gophernicus - a modern, full-featured and secure gopher daemon
+gophernicus \- a modern, full-featured and secure gopher daemon
 .SH SYNOPSIS
-gophernicus [options]
+.B gophernicus
+[options]
 .SH DESCRIPTION
-gophernicus is a daemon that serves the gopher protocol. It serves almost fully
+.B gophernicus
+is a daemon that serves the gopher protocol. It serves almost fully
 compliant RFC 1436, with a few very small changes to make it more modern.
 gophernicus has many useful features, including userdirs, executable gophermaps,
 virtual hosting as well as RFC supports it, unveil/pledge support on OpenBSD and
-much more. It is fully FOSS, licensed under the BSD 2-Clause license.
+much more. It is fully FOSS, and licensed under the BSD 2-Clause license.
 .SH OPTIONS
   -h hostname   Change server hostname (FQDN)      [$HOSTNAME]
   -p port       Change server port                 [70]
@@ -66,7 +68,8 @@ much more. It is fully FOSS, licensed under the BSD 2-Clause license.
 .SH AUTHOR
 fosslinux, hb9kns and others; <gophernicus at gophernicus dot org>
 .SH REPORTING BUGS
-Please report bugs on Gophernicus GitHub page: https://github.com/gophernicus/gophernicus.
+Please report bugs on our GitHub page:
+https://github.com/gophernicus/gophernicus.
 .SH COPYRIGHT
 Copyright (c) Kim Holviala 2009-2018
 Copyright (c) Gophernicus Developers 2019

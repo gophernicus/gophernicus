@@ -1,0 +1,19 @@
+language: c
+group: travis_latest
+dist: bionic
+
+git:
+  depth: false
+  quiet: true
+
+os:
+  - linux
+  - osx
+  
+compiler:
+  - clang
+  - gcc
+
+script:
+  - make
+  - sudo make install
