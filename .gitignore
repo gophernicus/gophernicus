@@ -1,9 +1,9 @@
 #
 # Build leftovers
 #
-*.o
-files.h
-functions.h
+src/*.o
+src/files.h
+src/functions.h
 README
 README.options
 bin2c
