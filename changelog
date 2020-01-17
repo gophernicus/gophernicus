@@ -1,14 +1,48 @@
 3.1
 ===
 
- * update copyright
- * change indentation from tabs to spaces
- * change max width to 67, from 76 (for gophernicus-generated
-   headers/footers)
- * change default charset to UTF-8
- * add OpenBSD pledge(2) and unveil(2) support
- * remove TODO
- * clarify master as development in README
+  * .gitignore for restructure
+  * src/bin2c.c should not be executable
+  * corrected some typos in author's names (#55)
+  * Merge pull request #54 from emilengler/2020-01-make-force-symlink
+  * build: macOS travis fix
+  * build: Force create symlink
+  * Merge pull request #52 from emilengler/2020-01-new-travis
+  * ci: New Travis system for linux and macOS builds and installs
+  * Merge pull request #51 from emilengler/2020-01-refactor-hierarchy
+  * refactor: New hierarchy and refactored Makefile
+  * re-add travis
+  * use user-defined CC by default
+  * update development version to 3.1; next release will be 3.1
+  * gophermap -> gophermap.sample debian
+  * Merge pull request #47 from tallship/patch-1
+  * Update gophernicus.1.man
+  * gophermap -> gophermap.sample, be more descriptive with the name
+  * add manpage
+  * clean up Makefile
+  * add -b option to git clone instead of git checkout
+  * add fakeroot as dependency for dpkg
+  * changelog update, todo makefile fix
+  * Merge pull request #44 from tallship/patch-1
+  * Update README.md
+  * remove TODO
+  * Merge pull request #17 from vext01/pledge-unveil
+  * Add OpenBSD pledge(2) and unveil(2) support.
+  * utf-8 default charset in readme.md
+  * update changelog
+  * Merge pull request #40 from fosslinux/utf8-charset
+  * change default charset to utf-8
+  * change max-width to 67 (#39)
+  * change indentation from tabs to spaces
+  * fix copyright
+  * update copyright in README.md
+  * Update INSTALL.md
+  * No longer relevant
+  * remove <>, was screwing up email
+  * remove obselete .travis.yml
+  * Update LICENSE
+  * forgot to change makefile
+  * Merge pull request #36 from gophernicus/3.0.1
 
 3.0.1
 =====
