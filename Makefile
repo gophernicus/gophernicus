@@ -1,18 +1,8 @@
-##
-## Gophernicus server Makefile
-##
-
-#
-# Variables and default configuration
-#
-NAME     = gophernicus
-PACKAGE  = $(NAME)
-BINARY   = $(NAME)
-VERSION  = 3.0.3
+NAME = gophernicus
+PACKAGE = $(NAME)
+BINARY = $(NAME)
+VERSION = 3.1
 CODENAME = Dungeon Edition
-AUTHOR   = hb9kns and fosslinux
-EMAIL    = gophernicus@gophernicus.org
-STARTED  = 2009
 
 SOURCES = src/$(NAME).c src/file.c src/menu.c src/string.c src/platform.c src/session.c src/options.c
 HEADERS = src/functions.h src/files.h src/filetypes.h
