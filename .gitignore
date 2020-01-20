@@ -3,6 +3,7 @@
 #
 src/*.o
 src/files.h
+src/filetypes.h
 src/functions.h
 README
 README.options

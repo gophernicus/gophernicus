@@ -278,7 +278,7 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 /* Sizes & maximums */
 #define BUFSIZE        1024    /* Default size for string buffers */
 #define MAX_HIDDEN    32    /* Maximum number of hidden files */
-#define MAX_FILETYPES    128    /* Maximum number of suffix to filetype mappings */
+#define MAX_FILETYPES    1024    /* Maximum number of suffix to filetype mappings */
 #define MAX_FILTERS    16    /* Maximum number of file filters */
 #define MAX_SDIRENT    1024    /* Maximum number of files per directory to handle */
 #define MAX_REWRITE    32    /* Maximum number of selector rewrite options */
@@ -414,27 +414,6 @@ typedef struct {
     time_t    mtime;
 } sdirent;
 
-
-/* File suffix to gopher filetype mappings */
-#define FILETYPES \
-    "txt","0","pl","0","py","0","sh","0","tcl","0","c","0","cpp","0", "h","0","log","0", \
-    "conf","0","php","0","php3","0", \
-    "map","1","menu","1", \
-    "hqx","4", \
-    "Z","5","gz","5","tgz","5","tar","5","zip","5","bz2","5","rar","5","sea","5", \
-    "q","7","qry","7", \
-    "iso","9","so","9","o","9","rtf","9","ttf","9","bin","9", \
-    "ics","c","ical","c", \
-    "gif","g", \
-    "html","h","htm","h","xhtml","h","css","h","swf","h","rdf","h","rss","h","xml","h", \
-    "jpg","I","jpeg","I","png","I","bmp","I","svg","I","tif","I","tiff","I", \
-    "ico","I","xbm","I","xpm","I","pcx","I", \
-    "mbox","M", \
-    "pdf","d","ps","d","doc","d","ppt","d","xls","d","xlsx","d","docx","d","pptx","d", \
-    "mp3","s","wav","s","mid","s","wma","s","flac","s","ogg","s","aiff","s","aac","s", \
-    "avi",";","mp4",";","mpg",";","mov",";","qt",";","asf",";","mpv",";","m4v",";","webm",";","ogv",";", \
-    NULL, NULL
-
 /*
  * Useful macros
  */
@@ -452,5 +431,6 @@ typedef struct {
  */
 #include "functions.h"
 #include "files.h"
+#include "filetypes.h"
 
 #endif
