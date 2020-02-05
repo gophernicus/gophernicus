@@ -11,6 +11,11 @@ bin2c
 gophernicus
 
 #
+# Test leftovers
+#
+test.output
+
+#
 # Release files
 #
 *.gz
