@@ -61,7 +61,7 @@ headers: $(HEADERS)
 src/$(NAME).c: headers src/$(NAME).h
 
 src/$(BINARY): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	$(CC) $(OBJECTS) $(CFLAGS) $(LDFLAGS) -o $@
 
 .c.o:
 	$(CC) -c $(CFLAGS) -DVERSION="\"$(VERSION)\"" -DCODENAME="\"$(CODENAME)\"" -DDEFAULT_ROOT="\"$(ROOT)\"" $< -o $@
