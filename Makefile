@@ -8,7 +8,7 @@ SOURCES = src/$(NAME).c src/file.c src/menu.c src/string.c src/platform.c src/se
 HEADERS = src/functions.h src/files.h src/filetypes.h
 OBJECTS = $(SOURCES:.c=.o)
 README = README.md
-DOCS = LICENSE README.md INSTALL.md changelog README.Gophermap gophertag
+DOCS = LICENSE README.md INSTALL.md changelog README.gophermap gophertag
 
 DESTDIR = /usr
 OSXDIR = /usr/local
