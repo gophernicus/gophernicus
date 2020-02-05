@@ -37,21 +37,21 @@ HAS_STD = /run/systemd/system
 SYSCONF = /etc/sysconfig
 DEFAULT = /etc/default
 
-CC      ?= gcc
-CFLAGS  = -O2 -Wall
-LDFLAGS =
+CC      ?= cc
+CFLAGS  := -O2 -Wall $(CFLAGS)
+LDFLAGS := $(LDFLAGS)
 
 IPCRM   = /usr/bin/ipcrm
 
 all:
 	@case `uname` in \
 		Darwin)	$(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDIr)" src/$(BINARY); ;; \
-		Haiku)	$(MAKE) EXTRA_LIBS="-lnetwork" src/$(BINARY); ;; \
+		Haiku)	$(MAKE) LDFLAGS="-lnetwork" src/$(BINARY); ;; \
 		*)	if [ -f "/usr/include/tcpd.h" ]; then $(MAKE) withwrap; else $(MAKE) src/$(BINARY); fi; ;; \
 	esac
 
 withwrap:
-	$(MAKE) EXTRA_CFLAGS="-DHAVE_LIBWRAP" EXTRA_LIBS="-lwrap" src/$(BINARY)
+	$(MAKE) CFLAGS="-DHAVE_LIBWRAP" LDFLAGS="-lwrap" src/$(BINARY)
 
 deb:
 	dpkg-buildpackage -rfakeroot -uc -us
@@ -61,10 +61,10 @@ headers: $(HEADERS)
 src/$(NAME).c: headers src/$(NAME).h
 
 src/$(BINARY): $(OBJECTS)
-	$(CC) $(LDFLAGS) $(EXTRA_LDFLAGS) $(OBJECTS) $(EXTRA_LIBS) -o $@
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 
 .c.o:
-	$(CC) -c $(CFLAGS) $(EXTRA_CFLAGS) -DVERSION="\"$(VERSION)\"" -DCODENAME="\"$(CODENAME)\"" -DDEFAULT_ROOT="\"$(ROOT)\"" $< -o $@
+	$(CC) -c $(CFLAGS) -DVERSION="\"$(VERSION)\"" -DCODENAME="\"$(CODENAME)\"" -DDEFAULT_ROOT="\"$(ROOT)\"" $< -o $@
 
 src/functions.h:
 	echo "/* Automatically generated function definitions */" > $@
