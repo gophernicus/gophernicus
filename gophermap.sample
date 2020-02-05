@@ -19,17 +19,17 @@ directory and replace this page.
 #
 Generic information:
 =echo "    your ip address: $REMOTE_ADDR"
-=echo "    server time....: `date`"
-=echo "    server uptime..: `uptime | sed 's/.*up *\([^,]*\), .*/\1/'`"
+=echo "    server time....: $(date)"
+=echo "    server uptime..: $(uptime | sed 's/.*up *\([^,]*\), .*/\1/')"
 =echo "    server version.: $SERVER_VERSION \"$SERVER_CODENAME\""
 =echo "    server platform: $SERVER_ARCH"
 =echo "    description....: $SERVER_DESCRIPTION"
 
 Server configuration:
-=echo "    config file....: `for FILE in /etc/sysconfig/gophernicus /etc/default/gophernicus /Library/LaunchDaemons/org.gophernicus.server.plist /boot/common/settings/network/services /lib/systemd/system/gophernicus\@.service /etc/xinetd.d/gophernicus /etc/inetd.conf; do if [ -f $FILE ]; then echo $FILE; break; fi; done`"
+=echo "    config file....: $(for FILE in /etc/sysconfig/gophernicus /etc/default/gophernicus /Library/LaunchDaemons/org.gophernicus.server.plist /boot/common/settings/network/services /lib/systemd/system/gophernicus\@.service /etc/xinetd.d/gophernicus /etc/inetd.conf; do if [ -f $FILE ]; then echo $FILE; break; fi; done)"
 =echo "    server hostname: $SERVER_HOST"
 =echo "    root directory.: $DOCUMENT_ROOT"
-=echo "    running as user: `whoami`"
+=echo "    running as user: $(whoami)"
 =echo "    output charset.: $GOPHER_CHARSET"
 =echo "    output width...: $COLUMNS characters"
 
