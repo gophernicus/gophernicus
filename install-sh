@@ -215,7 +215,7 @@ if test -z "$dir_arg"; then
       else
 	u_plus_rw='% 200'
       fi
-      cp_umask=`expr '(' 777 - $mode % 1000 ')' $u_plus_rw`;;
+      cp_umask=$(expr '(' 777 - $mode % 1000 ')' $u_plus_rw);;
     *)
       if test -z "$stripcmd"; then
 	u_plus_rw=
@@ -267,11 +267,11 @@ do
 	exit 1
       fi
       dstdir=$dst
-      dst=$dstdir/`basename "$src"`
+      dst=$dstdir/$(basename "$src")
       dstdir_status=0
     else
       # Prefer dirname, but fall back on a substitute if dirname fails.
-      dstdir=`
+      dstdir=$(
 	(dirname "$dst") 2>/dev/null ||
 	expr X"$dst" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
 	     X"$dst" : 'X\(//\)[^/]' \| \
@@ -295,7 +295,7 @@ do
 		   q
 		 }
 		 s/.*/./; q'
-      `
+      )
 
       test -d "$dstdir"
       dstdir_status=$?
@@ -309,17 +309,17 @@ do
       '')
 	# Create intermediate dirs using mode 755 as modified by the umask.
 	# This is like FreeBSD 'install' as of 1997-10-28.
-	umask=`umask`
+	umask=$(umask)
 	case $stripcmd.$umask in
 	  # Optimize common cases.
 	  *[2367][2367]) mkdir_umask=$umask;;
 	  .*0[02][02] | .[02][02] | .[02]) mkdir_umask=22;;
 
 	  *[0-7])
-	    mkdir_umask=`expr $umask + 22 \
+	    mkdir_umask=$(expr $umask + 22 \
 	      - $umask % 100 % 40 + $umask % 20 \
 	      - $umask % 10 % 4 + $umask % 2
-	    `;;
+	    );;
 	  *) mkdir_umask=$umask,go-w;;
 	esac
 
@@ -349,14 +349,14 @@ do
 		   # HP-UX 11.23 and IRIX 6.5 mkdir -m -p sets group- or
 		   # other-writeable bit of parent directory when it shouldn't.
 		   # FreeBSD 6.1 mkdir -m -p sets mode of existing directory.
-		   ls_ld_tmpdir=`ls -ld "$tmpdir"`
+		   ls_ld_tmpdir=$(ls -ld "$tmpdir")
 		   case $ls_ld_tmpdir in
 		     d????-?r-*) different_mode=700;;
 		     d????-?--*) different_mode=755;;
 		     *) false;;
 		   esac &&
 		   $mkdirprog -m$different_mode -p -- "$tmpdir" && {
-		     ls_ld_tmpdir_1=`ls -ld "$tmpdir"`
+		     ls_ld_tmpdir_1=$(ls -ld "$tmpdir")
 		     test "$ls_ld_tmpdir" = "$ls_ld_tmpdir_1"
 		   }
 		 }
@@ -416,7 +416,7 @@ do
 	    test -d "$prefix" || exit 1
 	  else
 	    case $prefix in
-	      *\'*) qprefix=`echo "$prefix" | sed "s/'/'\\\\\\\\''/g"`;;
+	      *\'*) qprefix=$(echo "$prefix" | sed "s/'/'\\\\\\\\''/g");;
 	      *) qprefix=$prefix;;
 	    esac
 	    prefixes="$prefixes '$qprefix'"
@@ -465,8 +465,8 @@ do
 
     # If -C, don't bother to copy if it wouldn't change the file.
     if $copy_on_change &&
-       old=`LC_ALL=C ls -dlL "$dst"	2>/dev/null` &&
-       new=`LC_ALL=C ls -dlL "$dsttmp"	2>/dev/null` &&
+       old=$(LC_ALL=C ls -dlL "$dst"	2>/dev/null) &&
+       new=$(LC_ALL=C ls -dlL "$dsttmp"	2>/dev/null) &&
 
        eval "$initialize_posix_glob" &&
        $posix_glob set -f &&

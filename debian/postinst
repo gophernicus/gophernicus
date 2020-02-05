@@ -6,7 +6,7 @@
 . /usr/share/debconf/confmodule
 
 # Configuration
-HOSTNAME="`hostname`"
+HOSTNAME="$(hostname)"
 ROOT=/var/gopher
 PACKAGE=gophernicus
 LOGDIR=/var/log/$PACKAGE
@@ -18,7 +18,7 @@ USER=nobody
 # Get hostname from debconf
 db_get gophernicus/fqdn
 if [ "$RET" ]; then
-	HOSTNAME="`echo $RET | tr -cd 'A-Za-z0-9.-'`"
+	HOSTNAME="$(echo $RET | tr -cd 'A-Za-z0-9.-')"
 fi
 
 # Configure gophernicus
