@@ -1,5 +1,0 @@
-#!/usr/bin/expect
-spawn "/usr/bin/gophernicus"
-sleep 0.05
-expect ""
-send "\n"
