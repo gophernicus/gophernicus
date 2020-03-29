@@ -120,14 +120,14 @@ void die(state *st, char *message, char *description)
 
 	/* Log the error */
 	if (st->opt_syslog) {
-		syslog(LOG_ERR, "error \"%s\" for request \"%s\" from %s",
-			description, st->req_selector, st->req_remote_addr);
+		syslog(LOG_ERR, "error \"%s %s\" for request \"%s\" from %s",
+			message, description, st->req_selector, st->req_remote_addr);
 	}
 	log_combined(st, HTTP_404);
 
 	/* Handle menu errors */
 	if (st->req_filetype == TYPE_MENU || st->req_filetype == TYPE_QUERY) {
-		printf("3" ERROR_PREFIX "%s\tTITLE\t" DUMMY_HOST CRLF, message);
+		printf("3" ERROR_PREFIX "%s %s\tTITLE\t" DUMMY_HOST CRLF, message, description);
 		footer(st);
 	}
 
@@ -141,17 +141,17 @@ void die(state *st, char *message, char *description)
 		printf("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2 Final//EN\">\n"
 			"<HTML>\n<HEAD>\n"
 			"  <META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html;charset=iso-8859-1\">\n"
-			"  <TITLE>" ERROR_PREFIX "%1$s</TITLE>\n"
+			"  <TITLE>" ERROR_PREFIX "%1$s %2$s</TITLE>\n"
 			"</HEAD>\n<BODY>\n"
-			"<STRONG>" ERROR_PREFIX "%1$s</STRONG>\n"
-			"<PRE>\n", message);
+			"<STRONG>" ERROR_PREFIX "%1$s %2$s</STRONG>\n"
+			"<PRE>", message, description);
 		footer(st);
 		printf("</PRE>\n</BODY>\n</HTML>\n");
 	}
 
 	/* Use plain text error for other filetypes */
 	else {
-		printf(ERROR_PREFIX "%s" CRLF, message);
+		printf(ERROR_PREFIX "%s %s" CRLF, message, description);
 		footer(st);
 	}
 
