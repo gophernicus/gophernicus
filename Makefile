@@ -72,7 +72,7 @@ src/functions.h:
 	grep -h "^[a-z]" $(SOURCES) | \
 		grep -v "int main" | \
 		grep -v "strlc" | \
-		grep -v "[a-z]:" | \
+		grep -vi "[a-z]:" | \
 		sed -e "s/ =.*$$//" -e "s/ *$$/;/" >> $@
 	@echo
 
