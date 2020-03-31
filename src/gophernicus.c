@@ -475,6 +475,7 @@ void init_state(state *st)
 	st->opt_proxy = TRUE;
 	st->opt_exec = TRUE;
 	st->opt_personal_spaces = TRUE;
+	st->opt_http_requests = TRUE;
 	st->debug = FALSE;
 
 	/* Load default suffix -> filetype mappings */
@@ -720,8 +721,9 @@ get_selector:
 	}
 
 	/* Convert HTTP request to gopher (respond using headerless HTTP/0.9) */
-	if (sstrncmp(selector, "GET ") == MATCH ||
-		sstrncmp(selector, "POST ") == MATCH ) {
+	if (st.opt_http_requests && (
+		sstrncmp(selector, "GET ") == MATCH ||
+		sstrncmp(selector, "POST ") == MATCH)) {
 
 		if ((c = strchr(selector, ' '))) sstrlcpy(selector, c + 1);
 		if ((c = strchr(selector, ' '))) *c = '\0';

@@ -58,6 +58,7 @@ much more. It is fully FOSS, and licensed under the BSD 2-Clause license.
   -np           Disable HAproxy proxy protocol
   -nx           Disable execution of gophermaps and scripts
   -nu           Disable personal gopherspaces
+  -nH           Disable HTTP response to HTTP GET/POST requests.
 
   -d            Debug output in syslog and /server-status
   -v            Display version number and build date
