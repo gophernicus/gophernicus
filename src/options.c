@@ -157,6 +157,7 @@ void parse_args(state *st, int argc, char *argv[])
 				if (*optarg == 'p') { st->opt_proxy = FALSE; break; }
 				if (*optarg == 'x') { st->opt_exec = FALSE; break; }
 				if (*optarg == 'u') { st->opt_personal_spaces = FALSE; break; }
+				if (*optarg == 'H') { st->opt_http_requests = FALSE; break; }
 				break;
 
 			case 'd': st->debug = TRUE; break;
