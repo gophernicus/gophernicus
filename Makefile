@@ -46,12 +46,12 @@ IPCRM   = /usr/bin/ipcrm
 all:
 	@case $$(uname) in \
 		Darwin)	$(MAKE) ROOT="$(OSXROOT)" DESTDIR="$(OSXDIr)" src/$(BINARY); ;; \
-		Haiku)	$(MAKE) LDFLAGS="-lnetwork" src/$(BINARY); ;; \
+		Haiku)	$(MAKE) LDFLAGS="$(LDFLAGS) -lnetwork" src/$(BINARY); ;; \
 		*)	if [ -f "/usr/include/tcpd.h" ]; then $(MAKE) withwrap; else $(MAKE) src/$(BINARY); fi; ;; \
 	esac
 
 withwrap:
-	$(MAKE) CFLAGS="-DHAVE_LIBWRAP" LDFLAGS="-lwrap" src/$(BINARY)
+	$(MAKE) CFLAGS="$(CFLAGS) -DHAVE_LIBWRAP" LDFLAGS="$(LDFLAGS) -lwrap" src/$(BINARY)
 
 deb:
 	dpkg-buildpackage -rfakeroot -uc -us
@@ -72,7 +72,7 @@ src/functions.h:
 	grep -h "^[a-z]" $(SOURCES) | \
 		grep -v "int main" | \
 		grep -v "strlc" | \
-		grep -v "[a-z]:" | \
+		grep -vi "[a-z]:" | \
 		sed -e "s/ =.*$$//" -e "s/ *$$/;/" >> $@
 	@echo
 

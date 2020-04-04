@@ -283,6 +283,7 @@ int gophermap(state *st, char *mapfile, int depth)
 	char type;
 	int port;
 	int exe;
+	int return_val = QUIT;
 
 	/* Prevent include loops */
 	if (depth > 4) return OK;
@@ -343,8 +344,13 @@ int gophermap(state *st, char *mapfile, int depth)
 		if (type == '#') continue;
 
 		/* Stop handling gophermap? */
-		if (type == '*') return OK;
-		if (type == '.') return QUIT;
+		if (type == '*') {
+			return_val = OK;
+			goto CLOSE_FP;
+		}
+		if (type == '.')
+			goto CLOSE_FP;
+
 
 		/* Print a list of users with public_gopher */
 		if (type == '~' && st->opt_personal_spaces) {
@@ -435,14 +441,14 @@ int gophermap(state *st, char *mapfile, int depth)
 		}
 	}
 
-	/* Clean up & return */
+CLOSE_FP:
 #ifdef HAVE_POPEN
 	if (exe & st->opt_exec) pclose(fp);
 	else
 #endif
 		fclose(fp);
 
-	return QUIT;
+	return return_val;
 }
 
 
