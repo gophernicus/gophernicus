@@ -14,7 +14,7 @@ DESTDIR = /usr
 OSXDIR = /usr/local
 SBINDIR = $(DESTDIR)/sbin
 DOCDIR = $(DESTDIR)/share/doc/$(PACKAGE)
-MANPAGE = gophernicus.1.man
+MANPAGE = gophernicus.1
 MANDEST = $(DESTDIR)/share/man/man1/gophernicus.1
 
 INSTALL = PATH=$$PATH:/usr/sbin ./install-sh -o 0 -g 0
