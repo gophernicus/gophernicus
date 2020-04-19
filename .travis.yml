@@ -17,4 +17,5 @@ compiler:
 script:
   - make
   - sudo make install
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then make deb ; fi
   - .travis/test.sh
