@@ -38,7 +38,7 @@ are made.
     -u userdir    Change users personal gopherspace  [public_gopher]
     -l logfile    Log to Apache-compatible combined format logfile
 
-    -w width      Change default page width          [76]
+    -w width      Change default page width          [67]
     -o charset    Change default output charset      [UTF-8]
 
     -s seconds    Session timeout in seconds         [1800]
