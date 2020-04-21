@@ -20,6 +20,7 @@ addons:
     - build-essential
     - fakeroot
     - libwrap0-dev
+    - debhelper
 
 script:
   - make
