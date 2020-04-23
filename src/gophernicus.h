@@ -1,5 +1,5 @@
 /*
- * Gophernicus 
+ * Gophernicus
  *
  * Copyright (c) 2009-2018 Kim Holviala <kimholviala@fastmail.com>
  * Copyright (c) 2019 Gophernicus Developers <gophernicus@gophernicus.org>
@@ -214,7 +214,7 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define DEFAULT_TAG		"gophertag"
 #define DEFAULT_CGI		"/cgi-bin/"
 #define DEFAULT_USERDIR		"public_gopher"
-#define DEFAULT_WIDTH       67	
+#define DEFAULT_WIDTH       67
 #define DEFAULT_CHARSET		UTF_8
 #define MIN_WIDTH		33
 #define MAX_WIDTH		200

@@ -69,7 +69,7 @@ Additional type characters supported by Gophernicus:
 
 Examples of valid resource lines:
 
-1subdir	
+1subdir
 1Relative internal link	subdir
 1Absolute internal link	/subdir
 1External link 	/	gopher.floodgap.com	70
@@ -106,4 +106,3 @@ Execute script and parse output as subgophermap:
 
 Here we stop processing the gophermap and include the regular menu:
 *
-
