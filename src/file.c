@@ -1,5 +1,5 @@
 /*
- * Gophernicus 
+ * Gophernicus
  *
  * Copyright (c) 2009-2018 Kim Holviala <kimholviala@fastmail.com>
  * Copyright (c) 2019 Gophernicus Developers <gophernicus@gophernicus.org>
@@ -397,7 +397,7 @@ void gopher_file(state *st)
 
 	if (strcmp(c, st->map_file) == MATCH)
 		die(st, ERR_ACCESS, "Refusing to serve out a gophermap file");
-	if (strcmp(c, st->tag_file) == MATCH)	
+	if (strcmp(c, st->tag_file) == MATCH)
 		die(st, ERR_ACCESS, "Refusing to serve out a gophertag file");
 
 	/* Check for & run CGI and query scripts */

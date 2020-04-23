@@ -5,10 +5,11 @@ src/*.o
 src/files.h
 src/filetypes.h
 src/functions.h
+src/bin2c
+src/gophernicus
+
 README
 README.options
-bin2c
-gophernicus
 
 #
 # Test leftovers
