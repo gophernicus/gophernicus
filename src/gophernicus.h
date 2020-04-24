@@ -113,7 +113,6 @@
 #include <string.h>
 #include <libgen.h>
 #include <time.h>
-#include <syslog.h>
 #include <errno.h>
 #include <pwd.h>
 #include <limits.h>
@@ -250,6 +249,7 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 /* Strings */
 #define SERVER_SOFTWARE    "Gophernicus"
 #define SERVER_SOFTWARE_FULL SERVER_SOFTWARE "/" VERSION " (%s)"
+#define PROGNAME             "gophernicus"
 
 #define HEADER_FORMAT    "[%s]"
 #define FOOTER_FORMAT    "Gophered by Gophernicus/" VERSION " on %s"
@@ -484,4 +484,12 @@ void update_shm_session(state *st, shm_state *shm);
 /* options.c */
 void add_ftype_mapping(state *st, char *suffix);
 void parse_args(state *st, int argc, char *argv[]);
+
+/* log.c */
+void log_init(int enable, int debug);
+void log_fatal(const char *fmt, ...);
+void log_warning(const char *fmt, ...);
+void log_info(const char *fmt, ...);
+void log_debug(const char *fmt, ...);
+
 #endif

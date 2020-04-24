@@ -280,11 +280,8 @@ void platform(state *st)
 			 machine);
 #endif
 
-	/* Debug */
-	if (st->debug) {
-		syslog(LOG_INFO, "generated platform string \"%s\"",
-			st->server_platform);
-	}
+	log_debug("generated platform string \"%s\"",
+	          st->server_platform);
 
 #else
 	/* Fallback reply */

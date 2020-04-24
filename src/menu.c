@@ -339,16 +339,10 @@ static int gophermap(state *st, char *mapfile, int depth)
 		exe = TRUE;
 	}
 
-	/* Debug output */
-	if (st->debug) {
-		if (exe) {
-			if (st->opt_exec)
-			 syslog(LOG_INFO, "parsing executable gophermap \"%s\"", mapfile);
-			else
-			 syslog(LOG_INFO, "parsing executable gophermap \"%s\" forbidden by -nx", mapfile);
-		}
-		else syslog(LOG_INFO, "parsing static gophermap \"%s\"", mapfile);
-	}
+	log_debug("parsing %s gophermap \"%s\"%s",
+	          exe ? "executable" : "static",
+	          mapfile,
+	          exe && !st->opt_exec ? ": forbidden by `-nx'" : "");
 
 	/* Try to execute or open the mapfile */
 	if (exe & st->opt_exec) {
