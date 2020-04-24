@@ -33,7 +33,7 @@
 /*
  * Alphabetic folders first sort for sortdir()
  */
-int foldersort(const void *a, const void *b)
+static int foldersort(const void *a, const void *b)
 {
 	mode_t amode;
 	mode_t bmode;
@@ -61,7 +61,7 @@ int datesort(const void *a, const void *b)
 /*
  * Scan, stat and sort a directory folders first (scandir replacement)
  */
-int sortdir(char *path, sdirent *list, int max)
+static int sortdir(char *path, sdirent *list, int max)
 {
 	DIR *dp;
 	struct dirent *d;
@@ -104,7 +104,7 @@ int sortdir(char *path, sdirent *list, int max)
  * Print a list of users with ~/public_gopher
  */
 #ifdef HAVE_PASSWD
-void userlist(state *st)
+static void userlist(state *st)
 {
 	struct passwd *pwd;
 	struct stat dir;
@@ -174,7 +174,7 @@ void userlist(state *st)
 /*
  * Print a list of available virtual hosts
  */
-void vhostlist(state *st)
+static void vhostlist(state *st)
 {
 	sdirent dir[MAX_SDIRENT];
 	struct tm *ltime;
@@ -298,7 +298,7 @@ char gopher_filetype(state *st, char *file, char magic)
 /*
  * Handle gophermaps
  */
-int gophermap(state *st, char *mapfile, int depth)
+static int gophermap(state *st, char *mapfile, int depth)
 {
 	FILE *fp;
 	struct stat file;

@@ -365,7 +365,7 @@ void setenv_cgi(state *st, char *script)
 /*
  * Execute a CGI script
  */
-void run_cgi(state *st, char *script, char *arg)
+static void run_cgi(state *st, char *script, char *arg)
 {
 	if (st->opt_exec) {
 

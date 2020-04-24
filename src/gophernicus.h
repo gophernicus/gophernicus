@@ -437,8 +437,51 @@ typedef struct {
 /*
  * Include generated headers
  */
-#include "functions.h"
 #include "files.h"
 #include "filetypes.h"
 
+
+/* gophernicus.c */
+void info(state *st, char *str, char type);
+void footer(state *st);
+void die(state *st, const char *message, const char *description);
+void log_combined(state *st, int status);
+
+/* file.c */
+void send_binary_file(state *st);
+void send_text_file(state *st);
+void url_redirect(state *st);
+void server_status(state *st, shm_state *shm, int shmid);
+void caps_txt(state *st, shm_state *shm);
+void setenv_cgi(state *st, char *script);
+void gopher_file(state *st);
+
+/* menu.c */
+char gopher_filetype(state *st, char *file, char magic);
+void gopher_menu(state *st);
+
+/* string.c */
+void strrepeat(char *dest, char c, size_t num);
+void strreplace(char *str, char from, char to);
+size_t strcut(char *str, size_t width);
+char *strkey(char *header, char *key);
+char strlast(char *str);
+void chomp(char *str);
+char *strcharset(int charset);
+void strniconv(int charset, char *out, char *in, size_t outsize);
+void strnencode(char *out, const char *in, size_t outsize);
+void strndecode(char *out, char *in, size_t outsize);
+void strfsize(char *out, off_t size, size_t outsize);
+
+/* platform.c */
+void platform(state *st);
+float loadavg(void);
+
+/* session.c */
+void get_shm_session(state *st, shm_state *shm);
+void update_shm_session(state *st, shm_state *shm);
+
+/* options.c */
+void add_ftype_mapping(state *st, char *suffix);
+void parse_args(state *st, int argc, char *argv[]);
 #endif

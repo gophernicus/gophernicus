@@ -68,7 +68,7 @@ void add_ftype_mapping(state *st, char *suffix)
 /*
  * Add one selector rewrite mapping to the array
  */
-void add_rewrite_mapping(state *st, char *match)
+static void add_rewrite_mapping(state *st, char *match)
 {
 	char *replace;
 

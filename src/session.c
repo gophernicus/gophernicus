@@ -34,7 +34,7 @@
  * Locate shared memory session ID
  */
 #ifdef HAVE_SHMEM
-int get_shm_session_id(state *st, shm_state *shm)
+static int get_shm_session_id(state *st, shm_state *shm)
 {
 	time_t now;
 	int i;

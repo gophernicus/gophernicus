@@ -5,7 +5,7 @@ VERSION = 3.1
 CODENAME = Dungeon Edition
 
 SOURCES = src/$(NAME).c src/file.c src/menu.c src/string.c src/platform.c src/session.c src/options.c
-HEADERS = src/functions.h src/files.h src/filetypes.h
+HEADERS = src/files.h src/filetypes.h
 OBJECTS = $(SOURCES:.c=.o)
 README = README.md
 DOCS = LICENSE README.md INSTALL.md changelog README.gophermap gophertag
@@ -65,16 +65,6 @@ src/$(BINARY): $(OBJECTS)
 
 .c.o:
 	$(CC) -c $(CFLAGS) -DVERSION="\"$(VERSION)\"" -DCODENAME="\"$(CODENAME)\"" -DDEFAULT_ROOT="\"$(ROOT)\"" $< -o $@
-
-src/functions.h:
-	echo "/* Automatically generated function definitions */" > $@
-	echo >> $@
-	grep -h "^[a-z]" $(SOURCES) | \
-		grep -v "int main" | \
-		grep -v "strlc" | \
-		grep -vi "[a-z]:" | \
-		sed -e "s/ =.*$$//" -e "s/ *$$/;/" >> $@
-	@echo
 
 src/filetypes.h: src/filetypes.conf
 	sh src/filetypes.sh < src/filetypes.conf > $@

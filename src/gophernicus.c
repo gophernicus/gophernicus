@@ -197,7 +197,7 @@ void log_combined(state *st, int status)
 /*
  * Convert gopher selector to an absolute path
  */
-void selector_to_path(state *st)
+static void selector_to_path(state *st)
 {
 	DIR *dp;
 	struct dirent *dir;
@@ -309,7 +309,7 @@ void selector_to_path(state *st)
 /*
  * Get local IP address
  */
-char *get_local_address(void)
+static char *get_local_address(void)
 {
 #ifdef HAVE_IPv4
 	struct sockaddr_in addr;
@@ -350,7 +350,7 @@ char *get_local_address(void)
 /*
  * Get remote peer IP address
  */
-char *get_peer_address(void)
+static char *get_peer_address(void)
 {
 #ifdef HAVE_IPv4
 	struct sockaddr_in addr;
@@ -395,7 +395,7 @@ char *get_peer_address(void)
 /*
  * Initialize state struct to default/empty values
  */
-void init_state(state *st)
+static void init_state(state *st)
 {
 	static const char *filetypes[] = { FILETYPES };
 	char buf[BUFSIZE];
