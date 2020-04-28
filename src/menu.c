@@ -49,6 +49,16 @@ int foldersort(const void *a, const void *b)
 
 
 /*
+ * Date sort for userlist()
+ */
+int datesort(const void *a, const void *b)
+{
+	if (((user_date *)a)->mtime > ((user_date *)b)->mtime) return -1;
+	else return 1;
+}
+
+
+/*
  * Scan, stat and sort a directory folders first (scandir replacement)
  */
 int sortdir(char *path, sdirent *list, int max)
@@ -99,6 +109,7 @@ void userlist(state *st)
 	struct passwd *pwd;
 	struct stat dir;
 	char buf[BUFSIZE];
+	user_date users[MAX_USERS];
 	struct tm *ltime;
 	char timestr[20];
 	int width;
@@ -108,6 +119,7 @@ void userlist(state *st)
 
 	/* Loop through all users */
 	setpwent();
+	int i = 0;
 	while ((pwd = getpwent())) {
 
 		/* Skip too small uids */
@@ -120,18 +132,36 @@ void userlist(state *st)
 		if (dir.st_uid != pwd->pw_uid) continue;
 
 		/* Found one */
+		strcpy(users[i].user, pwd->pw_name);
+		users[i].mtime = dir.st_mtime;
+		i++;
+	}
+
+	/* Sort by date */
+	int true_length = 0;
+	while((users[true_length].user[0] != '\0') && (true_length < MAX_USERS)) true_length++;
+	qsort((void*)users, true_length, sizeof(users[0]), datesort);
+
+	/* Loop over the found users */
+	for(
+			i = 0;
+			((i < MAX_USERS) && (users[i].user[0] != '\0'));
+			i++)
+	{
+		/* Format the user string */
 		snprintf(buf, sizeof(buf), USERDIR_FORMAT);
 
+		/* Output */
 		if (st->opt_date) {
-			ltime = localtime(&dir.st_mtime);
+			ltime = localtime(&users[i].mtime);
 			strftime(timestr, sizeof(timestr), DATE_FORMAT, ltime);
 
 			printf("1%-*.*s   %s		-  \t/~%s/\t%s\t%i" CRLF,
-				width, width, buf, timestr, pwd->pw_name,
+				width, width, buf, timestr, users[i].user,
 				st->server_host, st->server_port);
 		}
 		else {
-			printf("1%.*s\t/~%s/\t%s\t%i" CRLF, st->out_width, buf,
+			printf("1%.*s\t/~%s/\t%s\t%i" CRLF, st->out_width, users[i].user,
 				pwd->pw_name, st->server_host_default, st->server_port);
 		}
 	}

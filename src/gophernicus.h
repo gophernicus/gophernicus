@@ -259,7 +259,7 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define DATE_WIDTH    17
 #define DATE_LOCALE     "POSIX"
 
-#define USERDIR_FORMAT    "~%s", pwd->pw_name    /* See man 3 getpwent */
+#define USERDIR_FORMAT    "~%s", users[i].user    /* See man 3 getpwent */
 #define VHOST_FORMAT    "gopher://%s/"
 
 /* ISO-8859-1 to US-ASCII look-alike conversion table */
@@ -282,6 +282,7 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define MAX_FILTERS    16    /* Maximum number of file filters */
 #define MAX_SDIRENT    1024    /* Maximum number of files per directory to handle */
 #define MAX_REWRITE    32    /* Maximum number of selector rewrite options */
+#define MAX_USERS    1024 /* Maximum number of users for the ~ option */
 
 /* Struct for file suffix -> gopher filetype mapping */
 typedef struct {
@@ -414,6 +415,12 @@ typedef struct {
     off_t    size;
     time_t    mtime;
 } sdirent;
+
+/* Struct for the userlist with date */
+typedef struct {
+	char   user[32]; /* Maximum in most systems */
+	time_t mtime;
+} user_date;
 
 /*
  * Useful macros
