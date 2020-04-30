@@ -156,13 +156,13 @@ void userlist(state *st)
 			ltime = localtime(&users[i].mtime);
 			strftime(timestr, sizeof(timestr), DATE_FORMAT, ltime);
 
-			printf("1%-*.*s   %s		-  \t/~%s/\t%s\t%i" CRLF,
-				width, width, buf, timestr, users[i].user,
-				st->server_host, st->server_port);
+			printf("1%-*.*s   %s        -  \t/~%s/\t%s\t%i" CRLF,
+			    width, width, buf, timestr, users[i].user,
+			    st->server_host, st->server_port);
 		}
 		else {
-			printf("1%.*s\t/~%s/\t%s\t%i" CRLF, st->out_width, users[i].user,
-				pwd->pw_name, st->server_host_default, st->server_port);
+			printf("1%.*s\t/~%s/\t%s\t%i" CRLF, st->out_width, buf,
+			    users[i].user, st->server_host_default, st->server_port);
 		}
 	}
 
