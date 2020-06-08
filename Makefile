@@ -1,24 +1,23 @@
-NAME = gophernicus
-PACKAGE = $(NAME)
-BINARY = $(NAME)
-VERSION = 3.1
+NAME     = gophernicus
+PACKAGE  = $(NAME)
+BINARY   = $(NAME)
+VERSION  = 3.1
 CODENAME = Dungeon Edition
 
 SOURCES = src/$(NAME).c src/file.c src/menu.c src/string.c src/platform.c src/session.c src/options.c
-HEADERS = src/files.h src/filetypes.h
+HEADERS = src/functions.h src/files.h src/filetypes.h
 OBJECTS = $(SOURCES:.c=.o)
-README = README.md
-DOCS = LICENSE README.md INSTALL.md changelog README.gophermap gophertag
+README  = README.md
 
 DESTDIR = /usr
-OSXDIR = /usr/local
+OSXDIR  = /usr/local
 SBINDIR = $(DESTDIR)/sbin
-DOCDIR = $(DESTDIR)/share/doc/$(PACKAGE)
+DOCDIR  = $(DESTDIR)/share/doc/$(PACKAGE)
 MANPAGE = gophernicus.1
 MANDEST = $(DESTDIR)/share/man/man1/gophernicus.1
 
 INSTALL = PATH=$$PATH:/usr/sbin ./install-sh -o 0 -g 0
-ROOT = /var/gopher
+ROOT    = /var/gopher
 OSXROOT = /Library/GopherServer
 WRTROOT = /gopher
 MAP     = gophermap
@@ -138,7 +137,6 @@ install-files: src/$(BINARY)
 
 install-docs:
 	mkdir -p $(DOCDIR)
-	$(INSTALL) -m 644 $(DOCS) $(DOCDIR)
 	$(INSTALL) -m 644 $(MANPAGE) $(MANDEST)
 	@echo
 
