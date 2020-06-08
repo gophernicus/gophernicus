@@ -110,7 +110,7 @@ void footer(state *st)
 /*
  * Print error message & exit
  */
-void die(state *st, char *message, char *description)
+void die(state *st, const char *message, const char *description)
 {
 	int en = errno;
 	static const char error_gif[] = ERROR_GIF;
