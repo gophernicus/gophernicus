@@ -5,7 +5,7 @@ VERSION  = 3.1
 CODENAME = Dungeon Edition
 
 SOURCES = src/$(NAME).c src/file.c src/menu.c src/string.c src/platform.c src/session.c src/options.c
-HEADERS = src/functions.h src/files.h src/filetypes.h
+HEADERS = src/files.h src/filetypes.h
 OBJECTS = $(SOURCES:.c=.o)
 README  = README.md
 
