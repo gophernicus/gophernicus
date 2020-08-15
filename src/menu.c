@@ -659,7 +659,7 @@ void gopher_menu(state *st)
 				n = width - strcut(displayname, width);
 				strrepeat(buf, ' ', n);
 
-				printf("1%s%s   %s		-  \t%s%s/\t%s\t%i" CRLF,
+				printf("1%s%s   %s   --------\t%s%s/\t%s\t%i" CRLF,
 					displayname,
 					buf,
 					timestr,
