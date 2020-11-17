@@ -4,7 +4,7 @@ BINARY   = $(NAME)
 VERSION  = 3.1
 CODENAME = Dungeon Edition
 
-SOURCES = src/$(NAME).c src/file.c src/menu.c src/string.c src/platform.c src/session.c src/options.c
+SOURCES = src/$(NAME).c src/file.c src/menu.c src/string.c src/platform.c src/session.c src/options.c src/log.c
 HEADERS = src/files.h src/filetypes.h
 OBJECTS = $(SOURCES:.c=.o)
 README  = README.md
