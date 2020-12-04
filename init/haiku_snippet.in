@@ -1,0 +1,7 @@
+
+service gopher {
+  family inet
+  protocol tcp
+  port 70
+  launch @BINARY@ -h @HOSTNAME@
+}
