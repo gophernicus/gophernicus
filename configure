@@ -8,7 +8,7 @@ usage() {
     printf "  --bindir=PREFIX/bin         Prefix for binaries\\n"
     printf "  --sbindir=PREFIX/sbin       Prefix for system binaries\\n"
     printf "  --mandir=PREFIX/share/man   Prefix for manpages\\n"
-    printf "  --man1dir=MANDIR/man1       Prefix for section 1 manpages\\n"
+    printf "  --man8dir=MANDIR/man8       Prefix for section 8 manpages\\n"
     printf "  --gopherroot=/var/gopher    Path to gopher root\\n"
     printf "  --sysconfig=/etc/sysconfig  Path to sysconfig directory\\n\\n"
     printf "  --default=/etc/default      Path to 'default' configuration directory\\n\\n"
@@ -30,7 +30,7 @@ while [ "$#" -gt 0 ] ; do
         sbindir) SBINDIR="${value}"; shift ;;
         docdir) DOCDIR="${value}"; shift ;;
         mandir) MANDIR="${value}"; shift ;;
-        man1dir) MAN1DIR="${value}"; shift ;;
+        man8dir) MAN8DIR="${value}"; shift ;;
         gopherroot) GOPHERROOT="${value}"; shift ;;
         sysconfig) SYSCONFIG="${value}"; shift ;;
         default) DEFAULTCONF="${value}"; shift ;;
@@ -50,7 +50,7 @@ done
 : ${SBINDIR:=${PREFIX}/sbin}
 : ${DOCDIR:=${PREFIX}/share/doc}
 : ${MANDIR:=${PREFIX}/share/man}
-: ${MAN1DIR:=${MANDIR}/man1}
+: ${MAN8DIR:=${MANDIR}/man8}
 : ${GOPHERROOT:=/var/gopher}
 : ${SYSCONFIG:=/etc/sysconfig}
 : ${DEFAULTCONF:=/etc/default}
@@ -223,7 +223,7 @@ cat > conftest.c <<EOF
 int main() {}
 EOF
 if ${CC} -o conftest -lwrap conftest.c 2>/dev/null; then
-    LIBWRAP="-DHAVE_LIBWRAP"
+    LIBWRAP="-DHAVE_LIBWRAP -lwrap"
     printf "yes"
 else
     LIBWRAP=
@@ -275,7 +275,7 @@ sed -i "s:@BINDIR@:${BINDIR}:" Makefile
 sed -i "s:@SBINDIR@:${SBINDIR}:" Makefile
 sed -i "s:@DOCDIR@:${DOCDIR}:" Makefile
 sed -i "s:@MANDIR@:${MANDIR}:" Makefile
-sed -i "s:@MAN1DIR@:${MAN1DIR}:" Makefile
+sed -i "s:@MAN8DIR@:${MAN8DIR}:" Makefile
 
 sed -i "s:@IPCRM@:${IPCRM}:" Makefile
 sed -i "s:@CLEAN_SHM@:${CLEAN_SHM}:" Makefile

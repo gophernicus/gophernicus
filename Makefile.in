@@ -8,14 +8,15 @@ SOURCES = src/$(NAME).c src/file.c src/menu.c src/string.c src/platform.c src/se
 HEADERS = src/files.h src/filetypes.h
 OBJECTS = $(SOURCES:.c=.o)
 README  = README.md
-MANPAGE = $(DESTDIR)gophernicus.1
+MANPAGE = gophernicus.8
+MAP     = gophermap
 
 DESTDIR ?= /
 PREFIX   = @PREFIX@
 BINDIR   = @BINDIR@
 SBINDIR  = @SBINDIR@
 MANDIR   = @MANDIR@
-MAN1DIR  = @MAN1DIR@
+MAN8DIR  = @MAN8DIR@
 
 INSTALL      = @INSTALL@
 INSTALL_ARGS = -o 0 -g 0
@@ -76,11 +77,8 @@ clean-shm:
 
 # Install cases
 
-install: src/$(BINARY) @CLEAN_SHM@ install-man @INSTALL_ROOT@ @INSTALL_OSX@ @INSTALL_HAIKU@ @INSTALL_SYSTEMD@ @INSTALL_XINETD@ @INSTALL_INETD_MANUAL@ @INSTALL_INETD_UPDATE@ install-done
-	$(INSTALL) -s -m 755 src/$(BINARY) $(DESTDIR)$(SBINDIR)
-.PHONY: install
-
-install-done:
+install: src/$(BINARY) @CLEAN_SHM@ install-man @INSTALL_ROOT@ @INSTALL_OSX@ @INSTALL_HAIKU@ @INSTALL_SYSTEMD@ @INSTALL_XINETD@ @INSTALL_INETD_MANUAL@ @INSTALL_INETD_UPDATE@
+	$(INSTALL) -s -m 755 -D -t $(DESTDIR)$(SBINDIR) src/$(BINARY)
 	@echo
 	@echo "======================================================================"
 	@echo
@@ -94,10 +92,10 @@ install-done:
 	@echo
 
 install-man:
-	$(INSTALL) -m 644 $(MANPAGE) $(DESTDIR)$(MANDEST)
+	$(INSTALL) -m 644 -D -t $(DESTDIR)$(MAN8DIR) $(MANPAGE)
 
 install-root:
-	$(INSTALL) -m 644 $(MAP).sample $(DESTDIR)$(ROOT)
+	$(INSTALL) -m 644 -D $(MAP).sample $(DESTDIR)$(ROOT)/gophermap
 
 install-inetd-update: install-root
 	update-inetd --add $$(sed -e "s/@BINARY_PATH@/$(DESTDIR)$(SBINDIR)$(BINARY)/g" -e "s/@BINARY_NAME@/$(BINARY)/g" -e "s/@OPTIONS@/$(INETOPT)/g" init/inetlin.in)
