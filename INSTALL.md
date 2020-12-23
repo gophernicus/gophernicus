@@ -13,121 +13,65 @@ To compile and install run:
 ```
 $ git clone -b 3.0.1 https://github.com/gophernicus/gophernicus.git
 $ cd gophernicus
+$ ./configure --listener=somelistener
 $ make
 $ sudo make install
 ```
 
-after having set the correct public hostname in the `gophernicus.env`
-file. If this is wrong, selectors ("gopher links") won't work!
+Important configure arguments include:
 
-On \*nix systems, `hostname` might give you an idea, but please
-note this might be completely wrong, especially on your personal
-machine at home or on some cheap virtual server. If you know you
-have a fixed numerical IP, you can also directly use that.
-For testing, just keep the default value of `localhost` which will
-result in selectors working only when you're connecting locally.
+- `--listener`. This is the only required argument. You must
+  choose a listener that passes network requests to
+  gophernicus, as gophernicus dosen't do this by itself. The
+  options are:
+  - systemd, a common init system on many Linux distributions
+    that can do this without an external program.
+  - inetd, an older, well-known implementation that is very
+    simple.
+  - xinetd, a modern reimplementation of inetd using specific
+    config files.
+  - mac, to be used on Mac OSX machines.
+  - haiku, to be used on Haiku machines.
+  - autodetect, which looks at what you have avaliable
+    (unrecommended, please manually specify where possible).
+- `--hostname`. This is by default attempted to be autodetected
+  by the configure script, using the command `hostname`. It is
+  expected to be the publicly-accessible address of the server.
+  However, this might be completely wrong, especially on your
+  personal machine at home or on some cheap VPS. If you know you
+  have a fixed numerical IP, you can also directly use that.
+  For testing, just keep the default value of `localhost` which will
+  result in selectors working only when you're connecting locally.
+- `--gopherroot`. The location in which your gopher server will
+  serve from. By default is `/var/gopher`. Also can be changed
+  later using the `-r <root>` parameter in configuration files.
 
 That's it - Gophernicus should now be installed, preconfigured
 and running under gopher://<HOSTNAME>/. And more often than not,
 It Just Works(tm).
-
-By default Gophernicus serves gopher documents from `/var/gopher`
-although that can be changed by using the `-r <root>` parameter.
-To enable virtual hosting create hostname directories under
-the gopher root and make sure you have at least the primary
-hostname (the one set with `-h <hostname>`) directory available
-(`mkdir /var/gopher/$HOSTNAME`).
-
-
-## Dependencies
-
-These were obtained from a base docker installation.
-
-### Ubuntu 18.04, 16.04, Debian Sid, Buster, Stretch, Jessie
-- build-essential
-- git
-- libwrap0-dev for tcp
-- fakeroot
-
-### Centos 6, 7
-- the group 'Development Tools'. less is probably required, but
-  I know this works and couldn't be bothered to find out what was
-  actually required.
-
-### Fedora 29, 30, rawhide
-- the group 'Development Tools'. less is probably required, but
-  I know this works and couldn't be bothered to find out what was
-  actually required.
-- net-tools
-
-### OpenSuse Leap, Tumbleweed
-- the pattern devel_C_C++
-- the pattern devel_basis
-- git
-
-### archlinux
-- base-devel
-- git
-
-### Gentoo
-- git
-
-### Alpine Linux
-- alpine-sdk. once again, less is probably required.. blah blah.
-
-
-### Other installation targets
-
-Suppose your server runs systemd, but you'd rather have Gophernicus
-started with inetd or xinetd.  To do that, do `make install-inetd`
-or `make install-xinetd`.  Likewise use `make uninstall-inetd` or
-`make uninstall-xinetd` to uninstall Gophernicus.
-
 
 ## Compiling with TCP wrappers
 
 Gophernicus uses no extra libraries... well... except libwrap
 (TCP wrappers) if it is installed with headers in default Unix
 directories at the time of compiling. If you have the headers
-installed and don't want wrapper support, run 'make generic'
-instead of just 'make', and if you have wrappers installed in
-non-standard place and want to force compile with wrappers
-just run 'make withwrap'.
+installed and don't want wrapper support, too bad (for now, see
+issue #89).
 
 For configuring IP access lists with TCP wrappers, take a look
 at the files `/etc/hosts.allow` and `/etc/hosts.deny` (because the
 manual pages suck). Use the daemon name "gophernicus" to
 make your access lists.
 
+## Distributions
 
-## Running with traditional inetd superserver
+### Debian (and -based) (including Ubuntu) distributions
 
-If you want to run Gophernicus under the traditional Unix inetd, the
-below line should be added to your `/etc/inetd.conf` and the inetd
-process restarted.
-
-```
-gopher  stream  tcp  nowait  nobody  /usr/sbin/gophernicus  gophernicus -h <hostname>
-```
-
-The Makefile will automatically do this for you and remove it when
-uninstalling.
-
-
-## Compiling on Debian Linux (and Ubuntu)
-
-The above commands work on Debian just fine, but if you prefer
-having everything installed as packages run `make deb` instead
-of plain `make`. If all the dependencies were in place you'll
-end up with an offical-looking deb package in the parent
-directory (don't ask - that's just how it works). And instead
-of `sudo make install` you should just install the deb with
-`dpkg -i ../gophernicus_*.deb` after which It Should Just
-Work(tm).
-
-If you need TCP wrappers support on Debian/Ubuntu, please
-install libwrap0-dev before compiling.
-
+We used to distribute a `debian/` directory for people to `make
+deb` and then install a deb. However, thanks to the work of
+Ryan Kavanagh, gophernicus will be distributed in the official
+debian repositories in the next stable release! In the interim,
+either keep using the old version or install without deb.
 
 ## Cross-compiling
 
@@ -137,7 +81,9 @@ must point to a local arch compiler, and CC to the target
 arch one.
 
 ```
-$ make HOSTCC=gcc CC=target-arch-gcc
+$ export HOSTCC=gcc CC=target-arch-gcc
+$ ./configure ....
+$ make
 ```
 
 ## Shared memory issues
@@ -157,7 +103,6 @@ let Gophernicus recreate it - no harm done:
 $ sudo make clean-shm
 ```
 
-
 ## Porting to different platforms
 
 If you need to port Gophernicus to a new platform, please take a look at
@@ -168,17 +113,15 @@ the patches to <gophernicus at gophernicus dot org> so we can include
 them into the next release -- or even better, commit them to your fork
 on Github and make a pull request!
 
-## Supported Platforms
+## For packagers
 
-| Platform     | Versions                     |
-| ------------ | ---------------------------- |
-| Ubuntu       | 18.04, 16.04                 |
-| Debian       | Sid, Buster, Stretch, Jessie |
-| Centos       | 7, 6                         |
-| Fedora       | 29, 30, Rawhide              |
-| Opensuse     | Leap, Tumbleweed             |
-| Arch Linux   | up to date                   |
-| Gentoo       | up to date                   |
-| Alpine Linux | Edge, 3.9                    |
-| FreeBSD      | 12.0                         |
-| Darwin (Mac) | OSX 10.7                     |
+Are you looking to package gophernicus for a Linux
+distribution? Thanks! Please see issue #50 to help. Some tips:
+
+- Hostnames will need to be configured by users at runtime, the
+  installed gophernicus.env will need to be a config file.
+- You probably want to support as many listeners as possible.
+  We allow this through the use of a comma seperated list to
+  `--listener`.
+- The default gopher root is `/var/gopher`; many disributions
+  prefer `/srv`.

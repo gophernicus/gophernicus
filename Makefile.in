@@ -26,15 +26,15 @@ OSXROOT      = /Library/GopherServer
 INETD   = @INETD_CONF@
 XINETD  = @XINETD_CONF@
 # get OPTIONS line from gophernicus.env and use that also for inetd
-INETOPT  = $$(grep '^OPTIONS=' $(NAME).env | tail -n 1 | sed -e 's/OPTIONS="*//;s/"*$$//')
+INETOPT  = $$(grep '^OPTIONS=' init/$(NAME).env | tail -n 1 | sed -e 's/OPTIONS="*//;s/"*$$//')
 LAUNCHD  = @LAUNCHD@
 PLIST    = org.$(NAME).server.plist
 HAIKU_SRV = @HAIKUSRV@
 DEFAULT  = @DEFAULT@
 SYSCONF  = @SYSCONF@
-HOSTNAME = @HOSTNAME@
 
 CC      ?= @CC@
+HOSTCC  ?= @HOSTCC@
 CFLAGS  := -O2 -Wall @LIBWRAP@ $(CFLAGS)
 LDFLAGS := $(LDFLAGS)
 
@@ -59,7 +59,7 @@ src/filetypes.h: src/filetypes.conf
 	sh src/filetypes.sh < src/filetypes.conf > $@
 
 src/bin2c: src/bin2c.c
-	$(CC) src/bin2c.c -o $@
+	$(HOSTCC) src/bin2c.c -o $@
 
 src/files.h: src/bin2c
 	sed -e '/^(end of option list)/,$$d' README.md > README.options
@@ -101,18 +101,18 @@ install-inetd-update: install-root
 	update-inetd --add $$(sed -e "s/@BINARY_PATH@/$(DESTDIR)$(SBINDIR)$(BINARY)/g" -e "s/@BINARY_NAME@/$(BINARY)/g" -e "s/@OPTIONS@/$(INETOPT)/g" init/inetlin.in)
 
 install-inetd-manual: install-root
-	sed -e "s/@BINARY_PATH@/$(DESTDIR)$(SBINDIR)$(BINARY)/g" -e "s/@BINARY_NAME@/$(BINARY)/g" -e "s/@OPTIONS@/$(INETOPT)/g" init/inetlin.in > $(DESTDIR)$(INETD)
+	sed -e "s:@BINARY_PATH@:$(DESTDIR)$(SBINDIR)/$(BINARY):g" -e "s/@BINARY_NAME@/$(BINARY)/g" -e "s/@OPTIONS@/$(INETOPT)/g" init/inetlin.in >> $(DESTDIR)$(INETD)
 
 install-xinetd: install-root
-	sed -e "s/@HOSTNAME@/$(HOSTNAME)/g" init/$(NAME).xinetd.in > $(DESTDIR)$(XINETD)/$(NAME)
+	$(INSTALL) -T -m 644 init/$(NAME).xinetd $(DESTDIR)$(XINETD)
 
 install-osx: install-root
-	sed -e "s/@HOSTNAME@/$(HOSTNAME)/g" init/$(PLIST).in > $(DESTDIR)$(LAUNCHD)/$(PLIST)
+	$(INSTALL) -m 644 init/$(PLIST) $(DESTDIR)$(LAUNCHD)
 	chown -h root:admin $(DESTDIR)$(ROOT) $(DESTDIR)$(ROOT)/*
 	chmod -h 0775 $(DESTDIR)$(ROOT) $(DESTDIR)$(ROOT)/docs
 
 install-haiku: install-root
-	sed -e "s/@HOSTNAME@/$(HOSTNAME)/g" -e "s/@BINARY@/$(BINARY)/g" init/haiku_snippet.in >> $(DESTDIR)$(HAIKU_SRV)
+	sed -e "s/@BINARY@/$(BINARY)/g" init/haiku_snippet.in >> $(DESTDIR)$(HAIKU_SRV)
 	chown user:root $(DESTDIR)$(DOCDIR)/* $(DESTDIR)$(SBINDIR)/$(BINARY) $(DESTDIR)$(ROOT)/$(MAP)
 
 install-systemd: install-root
@@ -121,7 +121,7 @@ install-systemd: install-root
 
 uninstall: @UNINSTALL_INETD_UPDATE@ @UNINSTALL_INETD_MANUAL@ @UNINSTALL_XINETD@ @UNINSTALL_OSX@ @UNINSTALL_SYSTEMD@
 	rm -f $(DESTDIR)$(SBINDIR)/$(BINARY)
-	rm -f $(DESTDIR)$(MANDEST)/$(MANPAGE)
+	rm -f $(DESTDIR)$(MAN8DIR)/$(MANPAGE)
 
 uninstall-inetd-update:
 	update-inetd --remove "^gopher.*gophernicus"
@@ -130,7 +130,7 @@ uninstall-inetd-manual:
 	sed -i '/^gopher/d' $(DESTDIR)$(INETD)
 
 uninstall-xinetd:
-	rm -f $(DESTDIR)$(XINETD)/gopher
+	rm -f $(DESTDIR)$(XINETD)
 
 uninstall-osx:
 	rm -f $(DESTDIR)$(LAUNCHD)/$(PLIST)

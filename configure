@@ -15,7 +15,7 @@ usage() {
     printf "  --launchd=/Library/LaunchDaemons                  Path to launchd for MacOS\\n"
     printf "  --haikusrv=/boot/common/settings/network/services Path to services directory in Haiku\\n\\n"
     printf "  --os=autodetected        Your target OS, one of linux, mac, haiku, netbsd, openbsd or freebsd\\n"
-    printf "  --listener=autodetected  Program to recieve and pass network requests; one or more of systemd, inetd, xinetd, comma-seperated, or autodetect, mac or haiku (parameter required, mac/haiku required on respective OSes)\\n"
+    printf "  --listener=somelistener   Program to recieve and pass network requests; one or more of systemd, inetd, xinetd, comma-seperated, or autodetect, mac or haiku (parameter required, mac/haiku required on respective OSes)\\n"
     printf "  --hostname=autodetected  Desired hostname for gophernicus to identify as\\n"
 }
 
@@ -57,6 +57,7 @@ done
 : ${LAUNCHD:=/Library/LaunchDaemons}
 : ${HAIKUSRV:=/boot/common/settings/network/services}
 : ${CC:=cc}
+: ${HOSTCC:=${CC}}
 : ${CFLAGS:=-O2}
 : ${HOSTNAME:=autodetect}
 
@@ -74,7 +75,7 @@ else
 fi
 
 # Autodetect the OS
-if ! [ "${OS:=1}" ]; then
+if [ -z "${OS}" ]; then
     # If it can't find uname, it needs to be manually specified
     printf "checking for uname... "
     if ! UNAME="$(command -v uname)"; then
@@ -110,102 +111,105 @@ else
 fi
 printf "\\n"
 
-# Check for listener validity and autodetect if required
-# Checks that take place:
-# mac OS = mac listener (both ways)
-# haiku OS = haiku listener (both ways)
-# systemd listener = linux OS
-printf "checking for listener... "
-if [ -z "${LISTENER}" ]; then
-    printf "not given\\n"
-    exit 1
-elif [ "${LISTENER}" = "mac" ] && [ "${OS}" != "mac" ]; then
-    printf "mac listener only valid with macos\\n"
-    exit 1
-elif [ "${LISTENER}" = "haiku" ] && [ "${OS}" != "haiku" ]; then
-    printf "haiku listener only valid with haiku\\n"
-    exit 1
-elif [ "${LISTENER}" = "systemd" ] && [ "${OS}" != "linux" ]; then
-    printf "systemd listener only valid with linux\\n"
-    exit 1
-elif [ "${LISTENER}" = "autodetect" ]; then
-    # OS-specific listeners
-    case "${OS}" in
-        mac)
-            LISTENER=mac
-            printf "mac\\n"
-            break ;;
-        haiku)
-            LISTENER=haiku
-            printf "haiku\\n"
-            break ;;
-    esac
-
-    if [ -d "/lib/systemd/system" ] ; then
-        LISTENER=systemd
-        printf "systemd\\n"
-        break
-    fi
-
-    printf "checking for inetd... "
-    if command -v update-inetd; then
-        LISTENER=inetd
-        printf "inetd\\n"
-        break
-    fi
-
-    printf "checking for xinetd... "
-    if XINETD="$(command -v xinetd)"; then
-        LISTENER=xinetd
-        printf "xinetd\\n"
-        break
-    fi
-
-    # Ensure we detected something
-    if [ "${LISTENER}" = "autodetect" ]; then
-        printf "unable to autodetect, please manually specify\\n"
+listeners="$(echo ${LISTENER} | tr ',' ' ')"
+for listener in ${listeners}; do
+    # Check for listener validity and autodetect if required
+    # Checks that take place:
+    # mac OS = mac listener (both ways)
+    # haiku OS = haiku listener (both ways)
+    # systemd listener = linux OS
+    printf "checking for listener... "
+    if [ -z "${listener}" ]; then
+        printf "not given\\n"
         exit 1
-    fi
-elif [ "${OS}" = "haiku" ] && [ "${LISTENER}" != "haiku" ]; then
-    printf "only haiku listener supported on haiku\\n"
-    exit 1
-elif [ "${OS}" = "mac" ] && [ "${LISTENER}" != "mac" ]; then
-    printf "only mac listener supported on mac\\n"
-    exit 1
-else
-    printf "%s\\n" "${LISTENER}"
-fi
+    elif [ "${listener}" = "mac" ] && [ "${OS}" != "mac" ]; then
+        printf "mac listener only valid with macos\\n"
+        exit 1
+    elif [ "${listener}" = "haiku" ] && [ "${OS}" != "haiku" ]; then
+        printf "haiku listener only valid with haiku\\n"
+        exit 1
+    elif [ "${listener}" = "systemd" ] && [ "${OS}" != "linux" ]; then
+        printf "systemd listener only valid with linux\\n"
+        exit 1
+    elif [ "${listener}" = "autodetect" ]; then
+        # OS-specific listeners
+        case "${OS}" in
+            mac)
+                LISTENER=mac
+                printf "mac\\n"
+                break ;;
+            haiku)
+                LISTENER=haiku
+                printf "haiku\\n"
+                break ;;
+        esac
 
-# Act accordingly based on whichever listener we are given
-case "${LISTENER}" in
-    systemd)
-        INSTALL_SYSTEMD="install-systemd"
-        UNINSTALL_SYSTEMD="uninstall-systemd" ;;
-    xinetd)
-        INSTALL_XINETD="install-xinetd"
-        UNINSTALL_XINETD="uninstall-xinetd"
-        XINETD_CONF="/etc/xinetd.d/gophernicus" ;;
-    inetd)
-        INSTALL_INETD="install-inetd"
-        INETD_CONF="/etc/inetd.conf"
-        printf "checking for update-inetd... "
-        if ! UPDATE_INETD="$(command -v update-inetd)"; then
-            printf "not found\\n"
-            INSTALL_INETD_MANUAL="install-inetd-manual"
-            UNINSTALL_INETD_UPDATE="uninstall-inetd-update"
-        else
-            printf "%s\\n" "${UPDATE_INETD}"
-            INSTALL_INETD_UPDATE="install-inetd-update"
-            UNINSTALL_INETD_UPDATE="uninstall-inetd-update"
+        if [ -d "/lib/systemd/system" ] ; then
+            LISTENER=systemd
+            printf "systemd\\n"
+            break
         fi
-        ;;
-    mac) INSTALL_OSX="install-osx" UNINSTALL_OSX="uninstall-osx" ;;
-    haiku) INSTALL_HAIKU="install-haiku" UNINSTALL_HAIKU="uninstall-haiku" ;;
-    *) printf "The listener %s is not offically supported; continuing anyway.\\n" "${LISTENER}" ;;
-esac
+
+        printf "checking for inetd... "
+        if command -v update-inetd; then
+            LISTENER=inetd
+            printf "inetd\\n"
+            break
+        fi
+
+        printf "checking for xinetd... "
+        if XINETD="$(command -v xinetd)"; then
+            LISTENER=xinetd
+            printf "xinetd\\n"
+            break
+        fi
+
+        # Ensure we detected something
+        if [ "${listener}" = "autodetect" ]; then
+            printf "unable to autodetect, please manually specify\\n"
+            exit 1
+        fi
+    elif [ "${OS}" = "haiku" ] && [ "${listener}" != "haiku" ]; then
+        printf "only haiku listener supported on haiku\\n"
+        exit 1
+    elif [ "${OS}" = "mac" ] && [ "${listener}" != "mac" ]; then
+        printf "only mac listener supported on mac\\n"
+        exit 1
+    else
+        printf "%s\\n" "${listener}"
+    fi
+
+    # Act accordingly based on whichever listener we are given
+    case "${listener}" in
+        systemd)
+            INSTALL_SYSTEMD="install-systemd"
+            UNINSTALL_SYSTEMD="uninstall-systemd" ;;
+        xinetd)
+            INSTALL_XINETD="install-xinetd"
+            UNINSTALL_XINETD="uninstall-xinetd"
+            XINETD_CONF="/etc/xinetd.d/gophernicus" ;;
+        inetd)
+            INSTALL_INETD="install-inetd"
+            INETD_CONF="/etc/inetd.conf"
+            printf "checking for update-inetd... "
+            if ! UPDATE_INETD="$(command -v update-inetd)"; then
+                printf "not found\\n"
+                INSTALL_INETD_MANUAL="install-inetd-manual"
+                UNINSTALL_INETD_UPDATE="uninstall-inetd-manual"
+            else
+                printf "%s\\n" "${UPDATE_INETD}"
+                INSTALL_INETD_UPDATE="install-inetd-update"
+                UNINSTALL_INETD_UPDATE="uninstall-inetd-update"
+            fi
+            ;;
+        mac) INSTALL_OSX="install-osx" UNINSTALL_OSX="uninstall-osx" ;;
+        haiku) INSTALL_HAIKU="install-haiku" UNINSTALL_HAIKU="uninstall-haiku" ;;
+        *) printf "The listener %s is not offically supported; continuing anyway.\\n" "${listener}" ;;
+    esac
+done
 
 # Try to detect hostname
-printf "getting hostname... "
+printf "checking current hostname... "
 if [ "${HOSTNAME}" = "autodetect" ]; then
     HOSTNAME="$(hostname)"
     # If no hostname then we couldn't autodetect
@@ -266,6 +270,7 @@ cp Makefile.in Makefile
 
 printf "creating Makefile... "
 sed -i "s:@CC@:${CC}:" Makefile
+sed -i "s:@HOSTCC@:${HOSTCC}:" Makefile
 sed -i "s:@LIBWRAP@:${LIBWRAP}:" Makefile
 sed -i "s:@INSTALL@:${INSTALL}:" Makefile
 sed -i "s:@MAKE@:${MAKE}:" Makefile
@@ -304,7 +309,17 @@ sed -i "s:@UNINSTALL_HAIKU@:${UNINSTALL_HAIKU}:" Makefile
 
 sed -i "s:@INETD_CONF@:${INETD_CONF}:" Makefile
 sed -i "s:@XINETD_CONF@:${XINETD_CONF}:" Makefile
+
 printf "done\\n"
+
+# Also sub in $HOSTNAME to the various init systems (whether or not we really
+# use them, its just easier)
+for f in gophernicus.env haiku_snippet org.gophernicus.server.plist \
+    gophernicus.xinetd; do
+    printf "creating init/${f}... "
+    sed -e "s:@HOSTNAME@:${HOSTNAME}:" "init/${f}.in" > "init/${f}"
+    printf "done\\n"
+done
 
 # Cleanup
 rm -f conftest conftest.c
