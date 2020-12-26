@@ -107,6 +107,13 @@ if ! INSTALL="$(command -v install)"; then
     printf "install-sh"
     INSTALL=build-aux/install-sh
 else
+    # Check it has required features (*cough* macos)
+    mkdir testconf
+    touch testfile
+    ${INSTALL} -t testconf testfile || INSTALL=build-aux/install-sh
+    rm testconf/testfile
+    ${INSTALL} -T testfile testconf/testfile || INSTALL=build-aux/install-sh
+    rm -r testconf testfile
     printf "%s" "${INSTALL}"
 fi
 printf "\\n"
@@ -269,46 +276,46 @@ printf "\\n"
 cp Makefile.in Makefile
 
 printf "creating Makefile... "
-sed -i "s:@CC@:${CC}:" Makefile
-sed -i "s:@HOSTCC@:${HOSTCC}:" Makefile
-sed -i "s:@LIBWRAP@:${LIBWRAP}:" Makefile
-sed -i "s:@INSTALL@:${INSTALL}:" Makefile
-sed -i "s:@MAKE@:${MAKE}:" Makefile
+sed -i -e "s:@CC@:${CC}:" Makefile
+sed -i -e "s:@HOSTCC@:${HOSTCC}:" Makefile
+sed -i -e "s:@LIBWRAP@:${LIBWRAP}:" Makefile
+sed -i -e "s:@INSTALL@:${INSTALL}:" Makefile
+sed -i -e "s:@MAKE@:${MAKE}:" Makefile
 
-sed -i "s:@PREFIX@:${PREFIX}:" Makefile
-sed -i "s:@BINDIR@:${BINDIR}:" Makefile
-sed -i "s:@SBINDIR@:${SBINDIR}:" Makefile
-sed -i "s:@DOCDIR@:${DOCDIR}:" Makefile
-sed -i "s:@MANDIR@:${MANDIR}:" Makefile
-sed -i "s:@MAN8DIR@:${MAN8DIR}:" Makefile
+sed -i -e "s:@PREFIX@:${PREFIX}:" Makefile
+sed -i -e "s:@BINDIR@:${BINDIR}:" Makefile
+sed -i -e "s:@SBINDIR@:${SBINDIR}:" Makefile
+sed -i -e "s:@DOCDIR@:${DOCDIR}:" Makefile
+sed -i -e "s:@MANDIR@:${MANDIR}:" Makefile
+sed -i -e "s:@MAN8DIR@:${MAN8DIR}:" Makefile
 
-sed -i "s:@IPCRM@:${IPCRM}:" Makefile
-sed -i "s:@CLEAN_SHM@:${CLEAN_SHM}:" Makefile
+sed -i -e "s:@IPCRM@:${IPCRM}:" Makefile
+sed -i -e "s:@CLEAN_SHM@:${CLEAN_SHM}:" Makefile
 
-sed -i "s:@SYSCONF@:${SYSCONFIG}:" Makefile
-sed -i "s:@DEFAULT@:${DEFAULTCONF}:" Makefile
-sed -i "s:@HOSTNAME@:${HOSTNAME}:" Makefile
-sed -i "s:@ROOT@:${GOPHERROOT}:" Makefile
+sed -i -e "s:@SYSCONF@:${SYSCONFIG}:" Makefile
+sed -i -e "s:@DEFAULT@:${DEFAULTCONF}:" Makefile
+sed -i -e "s:@HOSTNAME@:${HOSTNAME}:" Makefile
+sed -i -e "s:@ROOT@:${GOPHERROOT}:" Makefile
 
-sed -i "s:@HAIKUSRV@:${HAIKUSRV}:" Makefile
-sed -i "s:@LAUNCHD@:${LAUNCHD}:" Makefile
-sed -i "s:@INSTALL_ROOT@:${INSTALL_ROOT}:" Makefile
+sed -i -e "s:@HAIKUSRV@:${HAIKUSRV}:" Makefile
+sed -i -e "s:@LAUNCHD@:${LAUNCHD}:" Makefile
+sed -i -e "s:@INSTALL_ROOT@:${INSTALL_ROOT}:" Makefile
 
-sed -i "s:@INSTALL_OSX@:${INSTALL_OSX}:" Makefile
-sed -i "s:@INSTALL_INETD_MANUAL@:${INSTALL_INETD_MANUAL}:" Makefile
-sed -i "s:@INSTALL_INETD_UPDATE@:${INSTALL_INETD_UPDATE}:" Makefile
-sed -i "s:@INSTALL_XINETD@:${INSTALL_XINETD}:" Makefile
-sed -i "s:@INSTALL_SYSTEMD@:${INSTALL_SYSTEMD}:" Makefile
-sed -i "s:@INSTALL_HAIKU@:${INSTALL_HAIKU}:" Makefile
-sed -i "s:@UNINSTALL_OSX@:${UNINSTALL_OSX}:" Makefile
-sed -i "s:@UNINSTALL_INETD_MANUAL@:${UNINSTALL_INETD_MANUAL}:" Makefile
-sed -i "s:@UNINSTALL_INETD_UPDATE@:${UNINSTALL_INETD_UPDATE}:" Makefile
-sed -i "s:@UNINSTALL_XINETD@:${UNINSTALL_XINETD}:" Makefile
-sed -i "s:@UNINSTALL_SYSTEMD@:${UNINSTALL_SYSTEMD}:" Makefile
-sed -i "s:@UNINSTALL_HAIKU@:${UNINSTALL_HAIKU}:" Makefile
+sed -i -e "s:@INSTALL_OSX@:${INSTALL_OSX}:" Makefile
+sed -i -e "s:@INSTALL_INETD_MANUAL@:${INSTALL_INETD_MANUAL}:" Makefile
+sed -i -e "s:@INSTALL_INETD_UPDATE@:${INSTALL_INETD_UPDATE}:" Makefile
+sed -i -e "s:@INSTALL_XINETD@:${INSTALL_XINETD}:" Makefile
+sed -i -e "s:@INSTALL_SYSTEMD@:${INSTALL_SYSTEMD}:" Makefile
+sed -i -e "s:@INSTALL_HAIKU@:${INSTALL_HAIKU}:" Makefile
+sed -i -e "s:@UNINSTALL_OSX@:${UNINSTALL_OSX}:" Makefile
+sed -i -e "s:@UNINSTALL_INETD_MANUAL@:${UNINSTALL_INETD_MANUAL}:" Makefile
+sed -i -e "s:@UNINSTALL_INETD_UPDATE@:${UNINSTALL_INETD_UPDATE}:" Makefile
+sed -i -e "s:@UNINSTALL_XINETD@:${UNINSTALL_XINETD}:" Makefile
+sed -i -e "s:@UNINSTALL_SYSTEMD@:${UNINSTALL_SYSTEMD}:" Makefile
+sed -i -e "s:@UNINSTALL_HAIKU@:${UNINSTALL_HAIKU}:" Makefile
 
-sed -i "s:@INETD_CONF@:${INETD_CONF}:" Makefile
-sed -i "s:@XINETD_CONF@:${XINETD_CONF}:" Makefile
+sed -i -e "s:@INETD_CONF@:${INETD_CONF}:" Makefile
+sed -i -e "s:@XINETD_CONF@:${XINETD_CONF}:" Makefile
 
 printf "done\\n"
 

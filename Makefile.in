@@ -78,7 +78,8 @@ clean-shm:
 # Install cases
 
 install: src/$(BINARY) @CLEAN_SHM@ install-man @INSTALL_ROOT@ @INSTALL_OSX@ @INSTALL_HAIKU@ @INSTALL_SYSTEMD@ @INSTALL_XINETD@ @INSTALL_INETD_MANUAL@ @INSTALL_INETD_UPDATE@
-	$(INSTALL) -s -m 755 -D -t $(DESTDIR)$(SBINDIR) src/$(BINARY)
+	$(INSTALL) -d -m 755 $(DESTDIR)$(SBINDIR)
+	$(INSTALL) -s -m 755 -t $(DESTDIR)$(SBINDIR) src/$(BINARY)
 	@echo
 	@echo "======================================================================"
 	@echo
@@ -92,10 +93,12 @@ install: src/$(BINARY) @CLEAN_SHM@ install-man @INSTALL_ROOT@ @INSTALL_OSX@ @INS
 	@echo
 
 install-man:
-	$(INSTALL) -m 644 -D -t $(DESTDIR)$(MAN8DIR) $(MANPAGE)
+	$(INSTALL) -d -m 755 $(DESTDIR)$(MAN8DIR)
+	$(INSTALL) -m 644 -t $(DESTDIR)$(MAN8DIR) $(MANPAGE)
 
 install-root:
-	$(INSTALL) -m 644 -D $(MAP).sample $(DESTDIR)$(ROOT)/gophermap
+	$(INSTALL) -d -m 755 $(DESTDIR)$(ROOT)
+	$(INSTALL) -m 644 $(MAP).sample $(DESTDIR)$(ROOT)/gophermap
 
 install-inetd-update: install-root
 	update-inetd --add $$(sed -e "s/@BINARY_PATH@/$(DESTDIR)$(SBINDIR)$(BINARY)/g" -e "s/@BINARY_NAME@/$(BINARY)/g" -e "s/@OPTIONS@/$(INETOPT)/g" init/inetlin.in)
@@ -104,20 +107,27 @@ install-inetd-manual: install-root
 	sed -e "s:@BINARY_PATH@:$(DESTDIR)$(SBINDIR)/$(BINARY):g" -e "s/@BINARY_NAME@/$(BINARY)/g" -e "s/@OPTIONS@/$(INETOPT)/g" init/inetlin.in >> $(DESTDIR)$(INETD)
 
 install-xinetd: install-root
-	$(INSTALL) -T -m 644 init/$(NAME).xinetd $(DESTDIR)$(XINETD)
+	$(INSTALL) -d -m 755 $(DESTDIR)/etc/xinetd.d
+	$(INSTALL) -m 644 -T init/$(NAME).xinetd $(DESTDIR)$(XINETD)
 
 install-osx: install-root
 	$(INSTALL) -m 644 init/$(PLIST) $(DESTDIR)$(LAUNCHD)
 	chown -h root:admin $(DESTDIR)$(ROOT) $(DESTDIR)$(ROOT)/*
-	chmod -h 0775 $(DESTDIR)$(ROOT) $(DESTDIR)$(ROOT)/docs
+	chmod -h 0775 $(DESTDIR)$(ROOT)
 
 install-haiku: install-root
 	sed -e "s/@BINARY@/$(BINARY)/g" init/haiku_snippet.in >> $(DESTDIR)$(HAIKU_SRV)
 	chown user:root $(DESTDIR)$(DOCDIR)/* $(DESTDIR)$(SBINDIR)/$(BINARY) $(DESTDIR)$(ROOT)/$(MAP)
 
 install-systemd: install-root
-	$(INSTALL) -m 644 init/$(NAME).env init/$(NAME).socket init/$(NAME)\@.service $(DESTDIR)$(SYSCONF)/$(NAME)
-	$(INSTALL) -m 644 init/$(NAME).env init/$(NAME).socket init/$(NAME)\@.service $(DESTDIR)$(DEFAULT)/$(NAME)
+	$(INSTALL) -d -m 755 $(DESTDIR)$(SYSCONF)
+	$(INSTALL) -m 644 -T init/$(NAME).env $(DESTDIR)$(SYSCONF)/$(NAME)
+	$(INSTALL) -m 644 -T init/$(NAME).socket $(DESTDIR)$(SYSCONF)/$(NAME)
+	$(INSTALL) -m 644 -T init/$(NAME)\@.service $(DESTDIR)$(SYSCONF)/$(NAME)
+	$(INSTALL) -d -m 755 $(DESTDIR)$(DEFAULT)
+	$(INSTALL) -m 644 -T init/$(NAME).env $(DESTDIR)$(DEFAULT)/$(NAME)
+	$(INSTALL) -m 644 -T init/$(NAME).socket $(DESTDIR)$(DEFAULT)/$(NAME)
+	$(INSTALL) -m 644 init/$(NAME)\@.service $(DESTDIR)$(DEFAULT)/$(NAME)
 
 uninstall: @UNINSTALL_INETD_UPDATE@ @UNINSTALL_INETD_MANUAL@ @UNINSTALL_XINETD@ @UNINSTALL_OSX@ @UNINSTALL_SYSTEMD@
 	rm -f $(DESTDIR)$(SBINDIR)/$(BINARY)
