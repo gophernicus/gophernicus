@@ -1,0 +1,157 @@
+NAME     = gophernicus
+PACKAGE  = $(NAME)
+BINARY   = $(NAME)
+VERSION  = 3.1
+CODENAME = Dungeon Edition
+
+SOURCES = src/$(NAME).c src/file.c src/menu.c src/string.c src/platform.c src/session.c src/options.c src/log.c
+HEADERS = src/files.h src/filetypes.h
+OBJECTS = $(SOURCES:.c=.o)
+README  = README.md
+MANPAGE = gophernicus.8
+MAP     = gophermap
+
+DESTDIR ?= /
+PREFIX   = @PREFIX@
+BINDIR   = @BINDIR@
+SBINDIR  = @SBINDIR@
+MANDIR   = @MANDIR@
+MAN8DIR  = @MAN8DIR@
+
+INSTALL      = @INSTALL@
+INSTALL_ARGS = -o 0 -g 0
+ROOT         = @ROOT@
+OSXROOT      = /Library/GopherServer
+
+INETD   = @INETD_CONF@
+XINETD  = @XINETD_CONF@
+# get OPTIONS line from gophernicus.env and use that also for inetd
+INETOPT  = $$(grep '^OPTIONS=' init/$(NAME).env | tail -n 1 | sed -e 's/OPTIONS="*//;s/"*$$//')
+LAUNCHD  = @LAUNCHD@
+PLIST    = org.$(NAME).server.plist
+HAIKU_SRV = @HAIKUSRV@
+DEFAULT  = @DEFAULT@
+SYSCONF  = @SYSCONF@
+
+CC      ?= @CC@
+HOSTCC  ?= @HOSTCC@
+CFLAGS  := -O2 -Wall @LIBWRAP@ $(CFLAGS)
+LDFLAGS := $(LDFLAGS)
+
+IPCRM   ?= @IPCRM@
+MAKE    ?= @MAKE@
+
+all:
+	$(MAKE) headers
+	$(MAKE) src/$(BINARY)
+
+headers: $(HEADERS)
+
+src/$(NAME).c: src/$(NAME).h
+
+src/$(BINARY): $(OBJECTS)
+	$(CC) $(OBJECTS) $(CFLAGS) -o $@ $(LDFLAGS)
+
+.c.o:
+	$(CC) -c $(CFLAGS) -DVERSION="\"$(VERSION)\"" -DCODENAME="\"$(CODENAME)\"" -DDEFAULT_ROOT="\"$(ROOT)\"" $< -o $@
+
+src/filetypes.h: src/filetypes.conf
+	sh src/filetypes.sh < src/filetypes.conf > $@
+
+src/bin2c: src/bin2c.c
+	$(HOSTCC) src/bin2c.c -o $@
+
+src/files.h: src/bin2c
+	sed -e '/^(end of option list)/,$$d' README.md > README.options
+	./src/bin2c -0 -n README README.options > $@
+	./src/bin2c -0 LICENSE >> $@
+	./src/bin2c -n ERROR_GIF error.gif >> $@
+
+# Clean cases
+
+clean: @CLEAN_SHM@
+	rm -rf src/$(BINARY) $(OBJECTS) $(HEADERS) README.options README src/bin2c
+
+clean-shm:
+	$(IPCRM) -M $$(awk '/SHM_KEY/ { print $$3 }' src/$(NAME).h) || true
+
+# Install cases
+
+install: src/$(BINARY) @CLEAN_SHM@ install-man @INSTALL_ROOT@ @INSTALL_OSX@ @INSTALL_HAIKU@ @INSTALL_SYSTEMD@ @INSTALL_XINETD@ @INSTALL_INETD_MANUAL@ @INSTALL_INETD_UPDATE@
+	$(INSTALL) -d -m 755 $(DESTDIR)$(SBINDIR)
+	$(INSTALL) -s -m 755 -t $(DESTDIR)$(SBINDIR) src/$(BINARY)
+	@echo
+	@echo "======================================================================"
+	@echo
+	@echo "If there were no errors shown above,"
+	@echo "Gophernicus has now been succesfully installed. To try it out, launch"
+	@echo "your favorite gopher browser and navigate to your gopher root."
+	@echo
+	@echo "Gopher URL...: gopher://$$(hostname)/"
+	@echo
+	@echo "======================================================================"
+	@echo
+
+install-man:
+	$(INSTALL) -d -m 755 $(DESTDIR)$(MAN8DIR)
+	$(INSTALL) -m 644 -t $(DESTDIR)$(MAN8DIR) $(MANPAGE)
+
+install-root:
+	$(INSTALL) -d -m 755 $(DESTDIR)$(ROOT)
+	$(INSTALL) -m 644 $(MAP).sample $(DESTDIR)$(ROOT)/gophermap
+
+install-inetd-update: install-root
+	update-inetd --add $$(sed -e "s/@BINARY_PATH@/$(DESTDIR)$(SBINDIR)$(BINARY)/g" -e "s/@BINARY_NAME@/$(BINARY)/g" -e "s/@OPTIONS@/$(INETOPT)/g" init/inetlin.in)
+
+install-inetd-manual: install-root
+	sed -e "s:@BINARY_PATH@:$(DESTDIR)$(SBINDIR)/$(BINARY):g" -e "s/@BINARY_NAME@/$(BINARY)/g" -e "s/@OPTIONS@/$(INETOPT)/g" init/inetlin.in >> $(DESTDIR)$(INETD)
+
+install-xinetd: install-root
+	$(INSTALL) -d -m 755 $(DESTDIR)/etc/xinetd.d
+	$(INSTALL) -m 644 -T init/$(NAME).xinetd $(DESTDIR)$(XINETD)
+
+install-osx: install-root
+	$(INSTALL) -m 644 init/$(PLIST) $(DESTDIR)$(LAUNCHD)
+	chown -h root:admin $(DESTDIR)$(ROOT) $(DESTDIR)$(ROOT)/*
+	chmod -h 0775 $(DESTDIR)$(ROOT)
+
+install-haiku: install-root
+	sed -e "s/@BINARY@/$(BINARY)/g" init/haiku_snippet.in >> $(DESTDIR)$(HAIKU_SRV)
+	chown user:root $(DESTDIR)$(DOCDIR)/* $(DESTDIR)$(SBINDIR)/$(BINARY) $(DESTDIR)$(ROOT)/$(MAP)
+
+install-systemd: install-root
+	$(INSTALL) -d -m 755 $(DESTDIR)$(SYSCONF)
+	$(INSTALL) -m 644 -T init/$(NAME).env $(DESTDIR)$(SYSCONF)/$(NAME)
+	$(INSTALL) -m 644 -T init/$(NAME).socket $(DESTDIR)$(SYSCONF)/$(NAME)
+	$(INSTALL) -m 644 -T init/$(NAME)\@.service $(DESTDIR)$(SYSCONF)/$(NAME)
+	$(INSTALL) -d -m 755 $(DESTDIR)$(DEFAULT)
+	$(INSTALL) -m 644 -T init/$(NAME).env $(DESTDIR)$(DEFAULT)/$(NAME)
+	$(INSTALL) -m 644 -T init/$(NAME).socket $(DESTDIR)$(DEFAULT)/$(NAME)
+	$(INSTALL) -m 644 init/$(NAME)\@.service $(DESTDIR)$(DEFAULT)/$(NAME)
+
+uninstall: @UNINSTALL_INETD_UPDATE@ @UNINSTALL_INETD_MANUAL@ @UNINSTALL_XINETD@ @UNINSTALL_OSX@ @UNINSTALL_SYSTEMD@
+	rm -f $(DESTDIR)$(SBINDIR)/$(BINARY)
+	rm -f $(DESTDIR)$(MAN8DIR)/$(MANPAGE)
+
+uninstall-inetd-update:
+	update-inetd --remove "^gopher.*gophernicus"
+
+uninstall-inetd-manual:
+	sed -i '/^gopher/d' $(DESTDIR)$(INETD)
+
+uninstall-xinetd:
+	rm -f $(DESTDIR)$(XINETD)
+
+uninstall-osx:
+	rm -f $(DESTDIR)$(LAUNCHD)/$(PLIST)
+
+uninstall-haiku:
+	rm -f $(DESTDIR)$(HAIKU_SRV)
+
+uninstall-systemd:
+	rm -f $(DESTDIR)$(SYSCONF)/$(NAME)/$(NAME).env
+	rm -f $(DESTDIR)$(SYSCONF)/$(NAME)/$(NAME).socket
+	rm -f $(DESTDIR)$(SYSCONF)/$(NAME)/$(NAME)\@.service
+	rm -f $(DESTDIR)$(DEFAULT)/$(NAME)/$(NAME).env
+	rm -f $(DESTDIR)$(DEFAULT)/$(NAME)/$(NAME).socket
+	rm -f $(DESTDIR)$(DEFAULT)/$(NAME)/$(NAME)\@.service

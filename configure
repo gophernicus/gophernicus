@@ -1,0 +1,332 @@
+#!/bin/sh
+
+# Is similar to an autoconf configure script, but is written by hand
+
+usage() {
+    printf "Usage: %s [options]\\n\\n" "$0"
+    printf "  --prefix=/usr/local         Prefix for all files\\n"
+    printf "  --bindir=PREFIX/bin         Prefix for binaries\\n"
+    printf "  --sbindir=PREFIX/sbin       Prefix for system binaries\\n"
+    printf "  --mandir=PREFIX/share/man   Prefix for manpages\\n"
+    printf "  --man8dir=MANDIR/man8       Prefix for section 8 manpages\\n"
+    printf "  --gopherroot=/var/gopher    Path to gopher root\\n"
+    printf "  --sysconfig=/etc/sysconfig  Path to sysconfig directory\\n\\n"
+    printf "  --default=/etc/default      Path to 'default' configuration directory\\n\\n"
+    printf "  --launchd=/Library/LaunchDaemons                  Path to launchd for MacOS\\n"
+    printf "  --haikusrv=/boot/common/settings/network/services Path to services directory in Haiku\\n\\n"
+    printf "  --os=autodetected        Your target OS, one of linux, mac, haiku, netbsd, openbsd or freebsd\\n"
+    printf "  --listener=somelistener   Program to recieve and pass network requests; one or more of systemd, inetd, xinetd, comma-seperated, or autodetect, mac or haiku (parameter required, mac/haiku required on respective OSes)\\n"
+    printf "  --hostname=autodetected  Desired hostname for gophernicus to identify as\\n"
+}
+
+# Set values for each option
+while [ "$#" -gt 0 ] ; do
+    opt="${1%%=*}"
+    opt="${opt##--}"
+    value="${1##*=}"
+    case "${opt}" in
+        prefix) PREFIX="${value}"; shift ;;
+        bindir) BINDIR="${value}"; shift ;;
+        sbindir) SBINDIR="${value}"; shift ;;
+        docdir) DOCDIR="${value}"; shift ;;
+        mandir) MANDIR="${value}"; shift ;;
+        man8dir) MAN8DIR="${value}"; shift ;;
+        gopherroot) GOPHERROOT="${value}"; shift ;;
+        sysconfig) SYSCONFIG="${value}"; shift ;;
+        default) DEFAULTCONF="${value}"; shift ;;
+        os) OS="${value}"; shift ;;
+        launchd) LAUNCHD="${value}"; shift ;;
+        haikusrv) HAIKUSRV="${value}"; shift ;;
+        listener) LISTENER="${value}"; shift ;;
+        hostname) HOSTNAME="${value}"; shift ;;
+        help) usage; exit 0 ;;
+        *) usage; exit 2 ;;
+    esac
+done
+
+# Set default values
+: ${PREFIX:=/usr/local}
+: ${BINDIR:=${PREFIX}/bin}
+: ${SBINDIR:=${PREFIX}/sbin}
+: ${DOCDIR:=${PREFIX}/share/doc}
+: ${MANDIR:=${PREFIX}/share/man}
+: ${MAN8DIR:=${MANDIR}/man8}
+: ${GOPHERROOT:=/var/gopher}
+: ${SYSCONFIG:=/etc/sysconfig}
+: ${DEFAULTCONF:=/etc/default}
+: ${LAUNCHD:=/Library/LaunchDaemons}
+: ${HAIKUSRV:=/boot/common/settings/network/services}
+: ${CC:=cc}
+: ${HOSTCC:=${CC}}
+: ${CFLAGS:=-O2}
+: ${HOSTNAME:=autodetect}
+
+# Check for a compiler that actually works
+printf "checking for working compiler... "
+cat > conftest.c <<EOF
+#include <stdlib.h>
+int main() { return 0; }
+EOF
+if ! ${CC} -o conftest conftest.c; then
+    printf "no\\n"
+    exit 1
+else
+    printf "${CC}\\n"
+fi
+
+# Autodetect the OS
+if [ -z "${OS}" ]; then
+    # If it can't find uname, it needs to be manually specified
+    printf "checking for uname... "
+    if ! UNAME="$(command -v uname)"; then
+        printf "please provide OS in options\\n"
+        exit 1
+    else
+        printf "%s\\n" "${UNAME}"
+    fi
+
+    # If it can, it presses on
+    printf "checking for OS... "
+    case "$(${UNAME})" in
+        Linux) OS=linux ;;
+        Haiku) OS=haiku
+            INSTALL_HAIKU="install-haiku" ;;
+        Darwin) OS=mac
+            INSTALL_OSX="install-osx" ;;
+        NetBSD) OS=netbsd ;;
+        OpenBSD) OS=openbsd ;;
+        FreeBSD) OS=freebsd ;;
+        *) printf "unknown, pressing on anyway\\n" ;;
+    esac
+    printf "%s\\n" "${OS}"
+fi
+
+# Checks for an install command and falls back to install-sh
+printf "checking for install... "
+if ! INSTALL="$(command -v install)"; then
+    printf "install-sh"
+    INSTALL=build-aux/install-sh
+else
+    # Check it has required features (*cough* macos)
+    mkdir testconf
+    touch testfile
+    ${INSTALL} -t testconf testfile || INSTALL=build-aux/install-sh
+    rm testconf/testfile
+    ${INSTALL} -T testfile testconf/testfile || INSTALL=build-aux/install-sh
+    rm -r testconf testfile
+    printf "%s" "${INSTALL}"
+fi
+printf "\\n"
+
+listeners="$(echo ${LISTENER} | tr ',' ' ')"
+for listener in ${listeners}; do
+    # Check for listener validity and autodetect if required
+    # Checks that take place:
+    # mac OS = mac listener (both ways)
+    # haiku OS = haiku listener (both ways)
+    # systemd listener = linux OS
+    printf "checking for listener... "
+    if [ -z "${listener}" ]; then
+        printf "not given\\n"
+        exit 1
+    elif [ "${listener}" = "mac" ] && [ "${OS}" != "mac" ]; then
+        printf "mac listener only valid with macos\\n"
+        exit 1
+    elif [ "${listener}" = "haiku" ] && [ "${OS}" != "haiku" ]; then
+        printf "haiku listener only valid with haiku\\n"
+        exit 1
+    elif [ "${listener}" = "systemd" ] && [ "${OS}" != "linux" ]; then
+        printf "systemd listener only valid with linux\\n"
+        exit 1
+    elif [ "${listener}" = "autodetect" ]; then
+        # OS-specific listeners
+        case "${OS}" in
+            mac)
+                LISTENER=mac
+                printf "mac\\n"
+                break ;;
+            haiku)
+                LISTENER=haiku
+                printf "haiku\\n"
+                break ;;
+        esac
+
+        if [ -d "/lib/systemd/system" ] ; then
+            LISTENER=systemd
+            printf "systemd\\n"
+            break
+        fi
+
+        printf "checking for inetd... "
+        if command -v update-inetd; then
+            LISTENER=inetd
+            printf "inetd\\n"
+            break
+        fi
+
+        printf "checking for xinetd... "
+        if XINETD="$(command -v xinetd)"; then
+            LISTENER=xinetd
+            printf "xinetd\\n"
+            break
+        fi
+
+        # Ensure we detected something
+        if [ "${listener}" = "autodetect" ]; then
+            printf "unable to autodetect, please manually specify\\n"
+            exit 1
+        fi
+    elif [ "${OS}" = "haiku" ] && [ "${listener}" != "haiku" ]; then
+        printf "only haiku listener supported on haiku\\n"
+        exit 1
+    elif [ "${OS}" = "mac" ] && [ "${listener}" != "mac" ]; then
+        printf "only mac listener supported on mac\\n"
+        exit 1
+    else
+        printf "%s\\n" "${listener}"
+    fi
+
+    # Act accordingly based on whichever listener we are given
+    case "${listener}" in
+        systemd)
+            INSTALL_SYSTEMD="install-systemd"
+            UNINSTALL_SYSTEMD="uninstall-systemd" ;;
+        xinetd)
+            INSTALL_XINETD="install-xinetd"
+            UNINSTALL_XINETD="uninstall-xinetd"
+            XINETD_CONF="/etc/xinetd.d/gophernicus" ;;
+        inetd)
+            INSTALL_INETD="install-inetd"
+            INETD_CONF="/etc/inetd.conf"
+            printf "checking for update-inetd... "
+            if ! UPDATE_INETD="$(command -v update-inetd)"; then
+                printf "not found\\n"
+                INSTALL_INETD_MANUAL="install-inetd-manual"
+                UNINSTALL_INETD_UPDATE="uninstall-inetd-manual"
+            else
+                printf "%s\\n" "${UPDATE_INETD}"
+                INSTALL_INETD_UPDATE="install-inetd-update"
+                UNINSTALL_INETD_UPDATE="uninstall-inetd-update"
+            fi
+            ;;
+        mac) INSTALL_OSX="install-osx" UNINSTALL_OSX="uninstall-osx" ;;
+        haiku) INSTALL_HAIKU="install-haiku" UNINSTALL_HAIKU="uninstall-haiku" ;;
+        *) printf "The listener %s is not offically supported; continuing anyway.\\n" "${listener}" ;;
+    esac
+done
+
+# Try to detect hostname
+printf "checking current hostname... "
+if [ "${HOSTNAME}" = "autodetect" ]; then
+    HOSTNAME="$(hostname)"
+    # If no hostname then we couldn't autodetect
+    if [ $? != 0 ] || [ -z "${HOSTNAME}" ]; then
+        printf "unable to detect hostname\\n"
+        exit 1
+    fi
+fi
+printf "%s\\n" "${HOSTNAME}"
+
+# Use libwrap when it is avaliable
+printf "checking for libwrap... "
+cat > conftest.c <<EOF
+#include <tcpd.h>
+int main() {}
+EOF
+if ${CC} -o conftest -lwrap conftest.c 2>/dev/null; then
+    LIBWRAP="-DHAVE_LIBWRAP -lwrap"
+    printf "yes"
+else
+    LIBWRAP=
+    printf "no, but program will still work"
+fi
+printf "\\n"
+
+# Check and use SHM if avaliable
+printf "checking for ipcrm (SHM management)... "
+if ! IPCRM="$(command -v ipcrm)"; then
+    printf "not found"
+else
+    printf "%s" "${IPCRM}"
+    CLEAN_SHM="clean-shm"
+fi
+printf "\\n"
+
+# Trying to autodetect make
+printf "checking for make... "
+if ! MAKE="$(command -v make)"; then
+    printf "not found, please pass MAKE=/path/to/make to make invocation"
+    MAKE="make"
+else
+    printf "%s" "${MAKE}"
+fi
+printf "\\n"
+
+# Don't replace an existing root
+printf "checking for existing gopher root... "
+if [ -d "${GOPHERROOT}" ] || [ -f "${GOPHERROOT}/gophermap" ]; then
+    INSTALL_ROOT="install-root"
+    printf "yes"
+else
+    printf "no"
+fi
+printf "\\n"
+
+# Sub in values
+cp Makefile.in Makefile
+
+printf "creating Makefile... "
+sed -i -e "s:@CC@:${CC}:" Makefile
+sed -i -e "s:@HOSTCC@:${HOSTCC}:" Makefile
+sed -i -e "s:@LIBWRAP@:${LIBWRAP}:" Makefile
+sed -i -e "s:@INSTALL@:${INSTALL}:" Makefile
+sed -i -e "s:@MAKE@:${MAKE}:" Makefile
+
+sed -i -e "s:@PREFIX@:${PREFIX}:" Makefile
+sed -i -e "s:@BINDIR@:${BINDIR}:" Makefile
+sed -i -e "s:@SBINDIR@:${SBINDIR}:" Makefile
+sed -i -e "s:@DOCDIR@:${DOCDIR}:" Makefile
+sed -i -e "s:@MANDIR@:${MANDIR}:" Makefile
+sed -i -e "s:@MAN8DIR@:${MAN8DIR}:" Makefile
+
+sed -i -e "s:@IPCRM@:${IPCRM}:" Makefile
+sed -i -e "s:@CLEAN_SHM@:${CLEAN_SHM}:" Makefile
+
+sed -i -e "s:@SYSCONF@:${SYSCONFIG}:" Makefile
+sed -i -e "s:@DEFAULT@:${DEFAULTCONF}:" Makefile
+sed -i -e "s:@HOSTNAME@:${HOSTNAME}:" Makefile
+sed -i -e "s:@ROOT@:${GOPHERROOT}:" Makefile
+
+sed -i -e "s:@HAIKUSRV@:${HAIKUSRV}:" Makefile
+sed -i -e "s:@LAUNCHD@:${LAUNCHD}:" Makefile
+sed -i -e "s:@INSTALL_ROOT@:${INSTALL_ROOT}:" Makefile
+
+sed -i -e "s:@INSTALL_OSX@:${INSTALL_OSX}:" Makefile
+sed -i -e "s:@INSTALL_INETD_MANUAL@:${INSTALL_INETD_MANUAL}:" Makefile
+sed -i -e "s:@INSTALL_INETD_UPDATE@:${INSTALL_INETD_UPDATE}:" Makefile
+sed -i -e "s:@INSTALL_XINETD@:${INSTALL_XINETD}:" Makefile
+sed -i -e "s:@INSTALL_SYSTEMD@:${INSTALL_SYSTEMD}:" Makefile
+sed -i -e "s:@INSTALL_HAIKU@:${INSTALL_HAIKU}:" Makefile
+sed -i -e "s:@UNINSTALL_OSX@:${UNINSTALL_OSX}:" Makefile
+sed -i -e "s:@UNINSTALL_INETD_MANUAL@:${UNINSTALL_INETD_MANUAL}:" Makefile
+sed -i -e "s:@UNINSTALL_INETD_UPDATE@:${UNINSTALL_INETD_UPDATE}:" Makefile
+sed -i -e "s:@UNINSTALL_XINETD@:${UNINSTALL_XINETD}:" Makefile
+sed -i -e "s:@UNINSTALL_SYSTEMD@:${UNINSTALL_SYSTEMD}:" Makefile
+sed -i -e "s:@UNINSTALL_HAIKU@:${UNINSTALL_HAIKU}:" Makefile
+
+sed -i -e "s:@INETD_CONF@:${INETD_CONF}:" Makefile
+sed -i -e "s:@XINETD_CONF@:${XINETD_CONF}:" Makefile
+
+printf "done\\n"
+
+# Also sub in $HOSTNAME to the various init systems (whether or not we really
+# use them, its just easier)
+for f in gophernicus.env haiku_snippet org.gophernicus.server.plist \
+    gophernicus.xinetd; do
+    printf "creating init/${f}... "
+    sed -e "s:@HOSTNAME@:${HOSTNAME}:" "init/${f}.in" > "init/${f}"
+    printf "done\\n"
+done
+
+# Cleanup
+rm -f conftest conftest.c

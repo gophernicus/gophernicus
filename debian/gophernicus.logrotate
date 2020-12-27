@@ -1,7 +1,0 @@
-/var/log/gophernicus/server.log {
-	rotate 6
-	weekly
-	compress
-	missingok
-	notifempty
-}

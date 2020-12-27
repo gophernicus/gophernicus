@@ -23,7 +23,8 @@ addons:
     - debhelper
 
 script:
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then ./configure --listener=systemd,inetd,xinetd --hostname=travis; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ./configure --listener=mac --hostname=travis; fi
   - make
   - sudo make install
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then make deb ; fi
   - .travis/test.sh
