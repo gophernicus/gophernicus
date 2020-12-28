@@ -1,9 +1,7 @@
 # Gophernicus
 
-Latest stable release: Version 3.0.1
-
-NOTE: The master branch is rolling Development! DO NOT USE unless you want fiery dragons!
-(you probably want to `git checkout 3.0.1`)
+This release: Version DEVEL
+NOTE: The master branch is rolling Development! DO NOT USE unless you want fiery dragons! (you probably want to `git checkout 3.0.1`)
 
 *Copyright (c) 2009-2018 Kim Holviala*
 
