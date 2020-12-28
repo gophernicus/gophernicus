@@ -524,7 +524,19 @@ int main(int argc, char *argv[])
 	/* Handle command line arguments */
 	parse_args(&st, argc, argv);
 
+	/* Initalize logging */
 	log_init(st.opt_syslog, st.debug);
+
+	/* Convert relative gopher roots to absolute roots */
+	if (st.server_root[0] != '/') {
+		char cwd[512];
+		getcwd(cwd, sizeof(cwd));
+		if (cwd == NULL) {
+			die(&st, NULL, "unable to get current path");
+		}
+		snprintf(buf, sizeof(buf), "%s/%s", cwd, st.server_root);
+		sstrlcpy(st.server_root, buf);
+	}
 
 #ifdef __OpenBSD__
 	/* unveil(2) support.
