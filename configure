@@ -110,9 +110,9 @@ else
     # Check it has required features (*cough* macos)
     mkdir testconf
     touch testfile
-    ${INSTALL} -t testconf testfile || INSTALL=build-aux/install-sh
+    ${INSTALL} -t testconf testfile 2>&1 >/dev/null || INSTALL=build-aux/install-sh
     rm testconf/testfile
-    ${INSTALL} -T testfile testconf/testfile || INSTALL=build-aux/install-sh
+    ${INSTALL} -T testfile testconf/testfile 2>&1 >/dev/null || INSTALL=build-aux/install-sh
     rm -r testconf testfile
     printf "%s" "${INSTALL}"
 fi
