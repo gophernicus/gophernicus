@@ -1,7 +1,7 @@
 #!/bin/sh
 set -ex
 
-RELEASE=3.1rc1
+RELEASE=3.1
 
 # Create release branch
 git branch "v${RELEASE}"
