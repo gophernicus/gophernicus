@@ -10,10 +10,11 @@ usage() {
     printf "  --mandir=PREFIX/share/man   Prefix for manpages\\n"
     printf "  --man8dir=MANDIR/man8       Prefix for section 8 manpages\\n"
     printf "  --gopherroot=/var/gopher    Path to gopher root\\n"
-    printf "  --sysconfig=/etc/sysconfig  Path to sysconfig directory\\n\\n"
-    printf "  --default=/etc/default      Path to 'default' configuration directory\\n\\n"
+    printf "  --sysconfig=/etc/sysconfig  Path to sysconfig directory\\n"
+    printf "  --default=/etc/default      Path to 'default' configuration directory\\n"
     printf "  --launchd=/Library/LaunchDaemons                  Path to launchd for MacOS\\n"
-    printf "  --haikusrv=/boot/common/settings/network/services Path to services directory in Haiku\\n\\n"
+    printf "  --haikusrv=/boot/common/settings/network/services Path to services directory in Haiku\\n"
+    printf "  --systemd=/lib/systemd/system			Path to systemd directory when using systemd listener\\n"
     printf "  --os=autodetected        Your target OS, one of linux, mac, haiku, netbsd, openbsd or freebsd\\n"
     printf "  --listener=somelistener   Program to recieve and pass network requests; one or more of systemd, inetd, xinetd, comma-seperated, or autodetect, mac or haiku (parameter required, mac/haiku required on respective OSes)\\n"
     printf "  --hostname=autodetected  Desired hostname for gophernicus to identify as\\n"
@@ -37,7 +38,8 @@ while [ "$#" -gt 0 ] ; do
         os) OS="${value}"; shift ;;
         launchd) LAUNCHD="${value}"; shift ;;
         haikusrv) HAIKUSRV="${value}"; shift ;;
-        listener) LISTENER="${value}"; shift ;;
+        systemd) SYSTEMD="${value}"; shift ;;
+        listener) LISTENERS="${value}"; shift ;;
         hostname) HOSTNAME="${value}"; shift ;;
         help) usage; exit 0 ;;
         *) usage; exit 2 ;;
@@ -56,6 +58,7 @@ done
 : ${DEFAULTCONF:=/etc/default}
 : ${LAUNCHD:=/Library/LaunchDaemons}
 : ${HAIKUSRV:=/boot/common/settings/network/services}
+: ${SYSTEMD:=/lib/systemd/system}
 : ${CC:=cc}
 : ${HOSTCC:=${CC}}
 : ${CFLAGS:=-O2}
@@ -118,7 +121,13 @@ else
 fi
 printf "\\n"
 
-listeners="$(echo ${LISTENER} | tr ',' ' ')"
+listeners="$(echo ${LISTENERS} | tr ',' ' ')"
+if [ -z "${listeners}" ]; then
+    printf "checking for listener... "
+    printf "not given\\n"
+    exit 1
+fi
+
 for listener in ${listeners}; do
     # Check for listener validity and autodetect if required
     # Checks that take place:
@@ -142,33 +151,30 @@ for listener in ${listeners}; do
         # OS-specific listeners
         case "${OS}" in
             mac)
-                LISTENER=mac
+                listener=mac
                 printf "mac\\n"
                 break ;;
             haiku)
-                LISTENER=haiku
+                listener=haiku
                 printf "haiku\\n"
                 break ;;
         esac
 
         if [ -d "/lib/systemd/system" ] ; then
-            LISTENER=systemd
+            listener=systemd
             printf "systemd\\n"
-            break
         fi
 
         printf "checking for inetd... "
-        if command -v update-inetd; then
-            LISTENER=inetd
+        if command -v update-inetd && [ "${listener}" = "autodetect" ]; then
+            listener=inetd
             printf "inetd\\n"
-            break
         fi
 
         printf "checking for xinetd... "
-        if XINETD="$(command -v xinetd)"; then
-            LISTENER=xinetd
+        if XINETD="$(command -v xinetd)" && [ "${listener}" = "autodetect" ]; then
+            listener=xinetd
             printf "xinetd\\n"
-            break
         fi
 
         # Ensure we detected something
@@ -299,6 +305,7 @@ sed -i -e "s:@ROOT@:${GOPHERROOT}:" Makefile
 
 sed -i -e "s:@HAIKUSRV@:${HAIKUSRV}:" Makefile
 sed -i -e "s:@LAUNCHD@:${LAUNCHD}:" Makefile
+sed -i -e "s:@SYSTEMD@:${SYSTEMD}:" Makefile
 sed -i -e "s:@INSTALL_ROOT@:${INSTALL_ROOT}:" Makefile
 
 sed -i -e "s:@INSTALL_OSX@:${INSTALL_OSX}:" Makefile
@@ -327,6 +334,13 @@ for f in gophernicus.env haiku_snippet org.gophernicus.server.plist \
     sed -e "s:@HOSTNAME@:${HOSTNAME}:" "init/${f}.in" > "init/${f}"
     printf "done\\n"
 done
+
+# And generate gophernicus@.service
+printf "creating init/gophernicus@.service... "
+sed -e "s:@DEFAULT@:${DEFAULTCONF}:" \
+    -e "s:@SYSCONFIG@:${SYSCONFIG}:" \
+    'init/gophernicus@.service.in' > 'init/gophernicus@.service'
+printf "done\\n"
 
 # Cleanup
 rm -f conftest conftest.c
