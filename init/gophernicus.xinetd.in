@@ -5,7 +5,7 @@ service gopher
 	socket_type	= stream
 	wait		= no
 	user		= nobody
-	server		= /usr/sbin/gophernicus
+	server		= @BINARY@
 	server_args	= -r/var/gopher -h@HOSTNAME@
 	disable		= no
 }

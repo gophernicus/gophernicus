@@ -3,3 +3,4 @@ org.gophernicus.server.plist
 gophernicus.xinetd
 inetlin
 gophernicus.env
+gophernicus@.service

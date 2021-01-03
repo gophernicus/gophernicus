@@ -1,0 +1,10 @@
+[Unit]
+Description=Gophernicus gopher server
+
+[Service]
+EnvironmentFile=-@DEFAULT@/gophernicus
+EnvironmentFile=-@SYSCONFIG@/gophernicus
+ExecStart=@BINARY@ $OPTIONS
+SuccessExitStatus=1
+StandardInput=socket
+User=nobody
