@@ -196,11 +196,13 @@ for listener in ${listeners}; do
     case "${listener}" in
         systemd)
             INSTALL_SYSTEMD="install-systemd"
-            UNINSTALL_SYSTEMD="uninstall-systemd" ;;
+            UNINSTALL_SYSTEMD="uninstall-systemd"
+            INSTALL_MSG_SYSTEMD='$(MAKE) install-msg-systemd' ;;
         xinetd)
             INSTALL_XINETD="install-xinetd"
             UNINSTALL_XINETD="uninstall-xinetd"
-            XINETD_CONF="/etc/xinetd.d/gophernicus" ;;
+            XINETD_CONF="/etc/xinetd.d/gophernicus"
+            INSTALL_MSG_XINETD='$(MAKE) install-msg-xinetd' ;;
         inetd)
             INSTALL_INETD="install-inetd"
             INETD_CONF="/etc/inetd.conf"
@@ -214,9 +216,16 @@ for listener in ${listeners}; do
                 INSTALL_INETD_UPDATE="install-inetd-update"
                 UNINSTALL_INETD_UPDATE="uninstall-inetd-update"
             fi
+            INSTALL_MSG_INETD='$(MAKE) install-msg-inetd'
             ;;
-        mac) INSTALL_OSX="install-osx" UNINSTALL_OSX="uninstall-osx" ;;
-        haiku) INSTALL_HAIKU="install-haiku" UNINSTALL_HAIKU="uninstall-haiku" ;;
+        mac)
+            INSTALL_OSX="install-osx"
+            UNINSTALL_OSX="uninstall-osx"
+            INSTALL_MSG_OSX='$(MAKE) install-msg-osx' ;;
+        haiku)
+            INSTALL_HAIKU="install-haiku"
+            UNINSTALL_HAIKU="uninstall-haiku"
+            INSTALL_MSG_HAIKU='$(MAKE) install-msg-haiku' ;;
         *) printf "The listener %s is not offically supported; continuing anyway.\\n" "${listener}" ;;
     esac
 done
@@ -314,6 +323,11 @@ sed -i -e "s:@INSTALL_INETD_UPDATE@:${INSTALL_INETD_UPDATE}:" Makefile
 sed -i -e "s:@INSTALL_XINETD@:${INSTALL_XINETD}:" Makefile
 sed -i -e "s:@INSTALL_SYSTEMD@:${INSTALL_SYSTEMD}:" Makefile
 sed -i -e "s:@INSTALL_HAIKU@:${INSTALL_HAIKU}:" Makefile
+sed -i -e "s:@INSTALL_MSG_INETD@:${INSTALL_MSG_INETD}:" Makefile
+sed -i -e "s:@INSTALL_MSG_XINETD@:${INSTALL_MSG_XINETD}:" Makefile
+sed -i -e "s:@INSTALL_MSG_SYSTEMD@:${INSTALL_MSG_SYSTEMD}:" Makefile
+sed -i -e "s:@INSTALL_MSG_OSX@:${INSTALL_MSG_OSX}:" Makefile
+sed -i -e "s:@INSTALL_MSG_HAIKU@:${INSTALL_MSG_HAIKU}:" Makefile
 sed -i -e "s:@UNINSTALL_OSX@:${UNINSTALL_OSX}:" Makefile
 sed -i -e "s:@UNINSTALL_INETD_MANUAL@:${UNINSTALL_INETD_MANUAL}:" Makefile
 sed -i -e "s:@UNINSTALL_INETD_UPDATE@:${UNINSTALL_INETD_UPDATE}:" Makefile

@@ -81,17 +81,60 @@ clean-shm:
 install: src/$(BINARY) @CLEAN_SHM@ install-man @INSTALL_ROOT@ @INSTALL_OSX@ @INSTALL_HAIKU@ @INSTALL_SYSTEMD@ @INSTALL_XINETD@ @INSTALL_INETD_MANUAL@ @INSTALL_INETD_UPDATE@
 	$(INSTALL) -d -m 755 $(DESTDIR)$(SBINDIR)
 	$(INSTALL) -s -m 755 -t $(DESTDIR)$(SBINDIR) src/$(BINARY)
-	@echo
-	@echo "======================================================================"
-	@echo
-	@echo "If there were no errors shown above,"
-	@echo "Gophernicus has now been succesfully installed. To try it out, launch"
-	@echo "your favorite gopher browser and navigate to your gopher root."
-	@echo
-	@echo "Gopher URL...: gopher://$$(hostname)/"
-	@echo
-	@echo "======================================================================"
-	@echo
+	@$(MAKE) -s install-msg
+
+install-msg:
+	echo
+	echo "======================================================================"
+	echo
+	echo "If there were no errors shown above,"
+	echo "Gophernicus has now been succesfully installed."
+	echo
+	@INSTALL_MSG_INETD@
+	@INSTALL_MSG_XINETD@
+	@INSTALL_MSG_SYSTEMD@
+	@INSTALL_MSG_OSX@
+	@INSTALL_MSG_HAIKU@
+	$(MAKE) install-msg-final
+
+install-msg-inetd:
+	echo "Please restart the inetd daemon to allow your gopher root to be"
+	echo "accessed."
+	echo "On systemd distributions:"
+	echo "    systemctl restart inetd"
+	echo
+
+install-msg-xinetd:
+	echo "Please restart the xinetd daemon to allow your gopher root to be"
+	echo "accessed."
+	echo "On systemd distributions:"
+	echo "    systemctl restart xinetd"
+	echo "You can configure arguments, including the hostname, in $(INETD)."
+	echo
+
+install-msg-systemd:
+	echo "Please enable and start gophernicus.socket using the commands:"
+	echo "    systemctl enable gophernicus.socket"
+	echo "    systemctl start gophernicus.socket"
+	echo "to allow your gopher root to be accessed."
+	echo "You can configure arguments, including the hostname, in"
+	echo "$(DEFAULT)/$(NAME) or $(SYSCONF)/$(NAME)."
+	echo
+
+install-msg-osx:
+	echo "Please reboot your computer to allow your gopher root to be accessed."
+	echo "You can configure arguments, including the hostname, in $(LAUNCHD)."
+	echo
+
+install-msg-haiku:
+	echo "Please reboot your computer to allow your gopher root to be accessed."
+	echo "You can configure arguments, including the hostname, in $(HAIKU_SRV)"
+	echo "under the gophernicus section."
+	echo
+
+install-msg-final:
+	echo "======================================================================"
+	echo
 
 install-man:
 	$(INSTALL) -d -m 755 $(DESTDIR)$(MAN8DIR)
