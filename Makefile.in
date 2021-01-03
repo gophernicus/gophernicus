@@ -1,7 +1,7 @@
 NAME     = gophernicus
 PACKAGE  = $(NAME)
 BINARY   = $(NAME)
-VERSION  = 3.1
+VERSION  = 3.1.1
 CODENAME = Dungeon Edition
 
 SOURCES = src/$(NAME).c src/file.c src/menu.c src/string.c src/platform.c src/session.c src/options.c src/log.c

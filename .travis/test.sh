@@ -14,6 +14,6 @@ if ! cmp .travis/test.answer test.output ; then
     exit 1
 fi
 
-if ! gophernicus -v | grep -q 'Gophernicus/3.1 "Dungeon Edition"' ; then
+if ! gophernicus -v | grep -q 'Gophernicus/3.1.1 "Dungeon Edition"' ; then
     exit 1
 fi
