@@ -6,12 +6,12 @@ standard POSIX syscalls so that it should work pretty much on
 any \*nix system.
 
 Please make sure that you checkout to the correct version you want.
-Currently, you most likely want version 3.1.
+Currently, you most likely want version 3.1.1.
 
 To compile and install run:
 
 ```
-$ git clone -b 3.1 https://github.com/gophernicus/gophernicus.git
+$ git clone -b 3.1.1 https://github.com/gophernicus/gophernicus.git
 $ cd gophernicus
 $ ./configure --listener=somelistener
 $ make
