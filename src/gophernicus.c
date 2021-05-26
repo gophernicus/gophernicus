@@ -529,8 +529,8 @@ int main(int argc, char *argv[])
 
 	/* Convert relative gopher roots to absolute roots */
 	if (st.server_root[0] != '/') {
-		char cwd[512];
-		getcwd(cwd, sizeof(cwd));
+		char cwd_buf[512];
+		const char *cwd = getcwd(cwd_buf, sizeof(cwd_buf));
 		if (cwd == NULL) {
 			die(&st, NULL, "unable to get current path");
 		}
