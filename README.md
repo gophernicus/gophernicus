@@ -16,7 +16,7 @@ daemon. It is licensed under the BSD license.
 
 Developers can be reached at gophernicus AT gophernicus DOT org.
 
-Our IRC channel is on irc.freenode.net #gophernicus.
+Our IRC channel is on irc.libera.chat #gophernicus.
 
 You most likely want to subscribe to the gophernicus mailing list at
 https://lists.tildeverse.org/postorius/lists/gophernicus.lists.tildeverse.org/,
