@@ -66,21 +66,17 @@ Changes the server hostname shown on the output menu.
 The default is the fully qualified domain name of the machine.
 .It Fl p Ar port
 Changes the server port shown on the output menu.
-The default is
-.Pa 70 .
+The default is 70.
 .It Fl T Ar port
 Changes the SSL/TLS port.
-The default is
-.Pa 0
-(disabled).
+The default is 0 (disabled).
 .It Fl r Ar directory
 Set the document root of the server.
 The default is
 .Pa /var/gopher .
 .It Fl t Ar type
 Set the default gopher filetype.
-The default is
-.Pa 0 .
+The default is 0.
 .It Fl g Ar mapfile
 Set the gophermap file name.
 The default is
@@ -96,19 +92,18 @@ The default is
 .It Fl u Ar directory
 Set the name of the personal gopherspace directory.
 Each user can deploy a personal gopherspace by creating a directory
-.Pa directory
+.Ar directory
 in their home directory.
 The default is
 .Pa public_gopher .
 .It Fl l Ar file
 Log to
-.Pa file
+.Ar file
 in Apache-compatible combined format.
 Disabled by default.
 .It Fl w Ar width
 Set default page width.
-The default is
-.Pa 67 .
+The default is 67.
 .It Fl o Ar charset
 Select the output charset.
 It can be one of
@@ -120,17 +115,13 @@ The default is
 .Ar UTF-8 .
 .It Fl s Ar seconds
 Session timeout in seconds.
-The default is
-.Pa 1800 .
+The default is 1800.
 .It Fl i Ar hits
 Maximum hits until throttling.
-The default is
-.Pa 4069 .
+The default is 4069.
 .It Fl k Ar kilobytes
 Maximum transfer size in KiB until throttling.
-The default is
-.Pa 4194304
-(4 GiB).
+The default is 4194304 (4 GiB).
 .It Fl f Ar directory
 Set directory where output filters are found.
 Disabled by default.
