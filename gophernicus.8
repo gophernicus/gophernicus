@@ -1,5 +1,5 @@
 .Dd April 13, 2020
-.Dt GOPHERNICUS 1
+.Dt GOPHERNICUS 8
 .Os
 .Sh NAME
 .Nm gophernicus
@@ -47,11 +47,12 @@
 .Op Fl \&?
 .Sh DESCRIPTION
 .Nm
-is a gopher server. It serves almost compliant RFC 1436, with small
-changes to make it more modern.
+is a gopher server.
+It serves almost compliant RFC 1436, with small changes to make it more
+modern.
 .Nm
-supports userdirs, executable gophermaps, CGI, and virtual hosting (in the
-limits of the RFC).
+supports userdirs, executable gophermaps, CGI, and virtual hosting
+.Pq in the limits of the RFC .
 .Pp
 .Nm
 can log to
@@ -102,13 +103,15 @@ The default is
 .It Fl l Ar file
 Log to
 .Pa file
-in Apache-compatible combined format. Disabled by default.
+in Apache-compatible combined format.
+Disabled by default.
 .It Fl w Ar width
 Set default page width.
 The default is
 .Pa 67 .
 .It Fl o Ar charset
-Select the output charset. It can be
+Select the output charset.
+It can be one of
 .Ar UTF-8 ,
 .Ar US-ASCII ,
 or
@@ -156,7 +159,8 @@ Set the email of the administrator to appear in
 .It Fl U Ar paths
 Set a colon-separated list of extra
 .Xr unveil 2
-paths (only for OpenBSD).
+paths
+.Pq only for Ox .
 .It Fl nv
 Disable virtual hosting.
 .It Fl nl
@@ -225,7 +229,7 @@ mostly conforms to
 .Lk https://tools.ietf.org/html/rfc1436 "RFC 1436"
 .Sh AUTHORS
 .An -nosplit
-.An Kim Holviala.
+.An Kim Holviala
 wrote the original implementation (2009\(en2018).
 .Pp
 .An fosslinux
@@ -249,7 +253,7 @@ Copyright \(co
 2009\(en2018.
 .Pp
 Copyright \(co
-.An Nm gophernicus Ns \& developers
+.An gophernicus developers
 2019.
 .Pp
 Licensed to you under the terms of the BSD 2-clause license.
