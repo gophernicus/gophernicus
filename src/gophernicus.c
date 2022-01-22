@@ -248,7 +248,7 @@ static void selector_to_path(state *st)
 
 		/* Check ~public_gopher access rights */
 		if (stat(st->req_realpath, &file) == ERROR)
-			die(st, ERR_NOTFOUND, NULL);
+			die(st, st->req_selector, ERR_NOTFOUND);
 		if ((file.st_mode & S_IROTH) == 0)
 			die(st, ERR_ACCESS, "~/public_gopher not world-readable");
 		if (file.st_uid != pwd->pw_uid)
@@ -270,7 +270,8 @@ static void selector_to_path(state *st)
 		if (stat(st->req_realpath, &file) == OK) return;
 
 		/* Loop through all vhosts looking for the selector */
-		if ((dp = opendir(st->server_root)) == NULL) die(st, ERR_NOTFOUND, NULL);
+		if ((dp = opendir(st->server_root)) == NULL)
+			die(st, st->req_selector, ERR_NOTFOUND);
 		while ((dir = readdir(dp))) {
 
 			/* Skip .hidden dirs and . & .. */
@@ -532,7 +533,7 @@ int main(int argc, char *argv[])
 		char cwd_buf[512];
 		const char *cwd = getcwd(cwd_buf, sizeof(cwd_buf));
 		if (cwd == NULL) {
-			die(&st, NULL, "unable to get current path");
+			die(&st, "getcwd", "unable to get current path");
 		}
 		snprintf(buf, sizeof(buf), "%s/%s", cwd, st.server_root);
 		sstrlcpy(st.server_root, buf);
@@ -546,12 +547,12 @@ int main(int argc, char *argv[])
 	 */
 	if (st.opt_exec) {
 		if (st.extra_unveil_paths != NULL) {
-			die(&st, NULL, "-U and executable maps cannot co-exist");
+			die(&st, "flags", "-U and executable maps cannot co-exist");
 		}
 		log_debug("executable gophermaps are enabled, no unveil(2)");
 	} else {
 		if (unveil(st.server_root, "r") == -1)
-			die(&st, NULL, "unveil");
+			die(&st, "unveil", st.server_root);
 
 		/*
 		 * If we want personal gopherspaces, then we have to unveil(2) the user
@@ -562,7 +563,7 @@ int main(int argc, char *argv[])
 		if (st.opt_personal_spaces) {
 			log_debug("unveiling /etc/pwd.db");
 			if (unveil("/etc/pwd.db", "r") == -1)
-				die(&st, NULL, "unveil");
+				die(&st, "unveil", "/etc/pwd.db");
 		}
 
 		/* Any extra unveil paths that the user has specified */
@@ -574,11 +575,11 @@ int main(int argc, char *argv[])
 
 			log_debug("unveiling extra path: %s\n", extra_unveil);
 			if (unveil(extra_unveil, "r") == -1)
-				die(&st, NULL, "unveil");
+				die(&st, "unveil", extra_unveil);
 		}
 
 		if (unveil(NULL, NULL) == -1)
-			die(&st, NULL, "unveil");
+			die(&st, "unveil", "locking unveil");
 	}
 
 	/* pledge(2) support */
@@ -603,7 +604,7 @@ int main(int argc, char *argv[])
 		}
 
 		if (pledge(pledges, NULL) == -1)
-			die(&st, NULL, "pledge");
+			die(&st, "pledge", pledges);
 	}
 #endif
 
@@ -808,7 +809,7 @@ get_selector:
 		}
 
 		/* Requested file not found - die() */
-		die(&st, ERR_NOTFOUND, NULL);
+		die(&st, st.req_selector, ERR_NOTFOUND);
 	}
 
 	/* Fetch request filesize from stat() */
@@ -837,7 +838,7 @@ get_selector:
 	if ((file.st_mode & S_IFMT) != S_IFDIR) c = dirname(buf);
 	else c = buf;
 
-	if (chdir(c) == ERROR) die(&st, ERR_ACCESS, NULL);
+	if (chdir(c) == ERROR) die(&st, ERR_ACCESS, "");
 
 	/* Keep count of hits and data transfer */
 #ifdef HAVE_SHMEM
