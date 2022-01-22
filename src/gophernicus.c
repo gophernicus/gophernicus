@@ -587,14 +587,12 @@ int main(int argc, char *argv[])
 		/* pledge(2) never allows shared memory */
 		log_debug("shared-memory enabled, can't pledge(2)");
 	} else {
-		strlcpy(pledges,
-				"stdio rpath inet sendfd recvfd proc",
-				sizeof(pledges));
+		strlcpy(pledges, "stdio rpath", sizeof(pledges));
 
 		/* Executable maps shell-out using popen(3) */
 		if (st.opt_exec) {
-			strlcat(pledges, " exec", sizeof(pledges));
-			log_debug("executable gophermaps enabled, adding `exec' to pledge(2)");
+			strlcat(pledges, " proc exec", sizeof(pledges));
+			log_debug("executable gophermaps enabled, adding `proc exec' to pledge(2)");
 		}
 
 		/* Personal spaces require getpwnam(3) and getpwent(3) */
