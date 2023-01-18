@@ -178,7 +178,7 @@ directories and you're (kind of) up and running.
 
 There is a serious issue with virtual hosting.
 
-As stated previously, RFC1436 dosen't support virtual hosting. Clients won't
+As stated previously, RFC1436 doesn't support virtual hosting. Clients won't
 like it.
 
 How the virtual hosting works, is that it loops through the vhosts looking for
