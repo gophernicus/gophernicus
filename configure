@@ -16,7 +16,7 @@ usage() {
     printf "  --haikusrv=/boot/common/settings/network/services Path to services directory in Haiku\\n"
     printf "  --systemd=/lib/systemd/system			Path to systemd directory when using systemd listener\\n"
     printf "  --os=autodetected        Your target OS, one of linux, mac, haiku, netbsd, openbsd or freebsd\\n"
-    printf "  --listener=somelistener   Program to recieve and pass network requests; one or more of systemd, inetd, xinetd, comma-seperated, or autodetect, mac or haiku (parameter required, mac/haiku required on respective OSes)\\n"
+    printf "  --listener=somelistener   Program to receive and pass network requests; one or more of systemd, inetd, xinetd, comma-seperated, or autodetect, mac or haiku (parameter required, mac/haiku required on respective OSes)\\n"
     printf "  --hostname=autodetected  Desired hostname for gophernicus to identify as\\n"
 }
 
