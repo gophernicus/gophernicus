@@ -123,5 +123,5 @@ distribution? Thanks! Please see issue #50 to help. Some tips:
 - You probably want to support as many listeners as possible.
   We allow this through the use of a comma seperated list to
   `--listener`.
-- The default gopher root is `/var/gopher`; many disributions
+- The default gopher root is `/var/gopher`; many distributions
   prefer `/srv`.
