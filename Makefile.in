@@ -142,7 +142,7 @@ install-man:
 
 install-root:
 	$(INSTALL) -d -m 755 $(DESTDIR)$(ROOT)
-	$(INSTALL) -m 644 $(MAP).sample $(DESTDIR)$(ROOT)/gophermap
+	[ ! -f $(DESTDIR)$(ROOT)/gophermap ] && $(INSTALL) -m 644 $(MAP).sample $(DESTDIR)$(ROOT)/gophermap
 
 install-inetd-update: install-root
 	update-inetd --add "$$(sed -e "s:@BINARY_PATH@:$(SBINDIR)/$(BINARY):g" -e "s/@OPTIONS@/$(INETOPT)/g" init/inetlin.in)"
