@@ -377,7 +377,7 @@ static void run_cgi(state *st, char *script, char *arg)
 	}
 
 	/* Didn't work - die */
-	die(st, ERR_ACCESS, NULL);
+	die(st, ERR_ACCESS, "");
 }
 
 
