@@ -236,7 +236,7 @@ if [ "${HOSTNAME}" = "autodetect" ]; then
 fi
 printf "%s\\n" "${HOSTNAME}"
 
-# Use libwrap when it is avaliable
+# Use libwrap when it is available
 printf "checking for libwrap... "
 cat > conftest.c <<EOF
 #include <tcpd.h>
@@ -251,7 +251,7 @@ else
 fi
 printf "\\n"
 
-# Check and use SHM if avaliable
+# Check and use SHM if available
 printf "checking for ipcrm (SHM management)... "
 if ! IPCRM="$(command -v ipcrm)"; then
     printf "not found"

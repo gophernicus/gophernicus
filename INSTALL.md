@@ -32,7 +32,7 @@ Important configure arguments include:
     config files.
   - mac, to be used on Mac OSX machines.
   - haiku, to be used on Haiku machines.
-  - autodetect, which looks at what you have avaliable
+  - autodetect, which looks at what you have available
     (unrecommended, please manually specify where possible).
 - `--hostname`. This is by default attempted to be autodetected
   by the configure script, using the command `hostname`. It is
