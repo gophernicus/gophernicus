@@ -264,7 +264,7 @@ char gopher_filetype(state *st, char *file, char magic)
 		sstrncmp(buf, "GIF87a") == MATCH) return TYPE_GIF;
 
 	/* JPEG images */
-	if (sstrncmp(buf, "\377\330\377\340") == MATCH) return TYPE_IMAGE;
+	if (sstrncmp(buf, "\377\330\377") == MATCH) return TYPE_IMAGE;
 
 	/* PNG images */
 	if (sstrncmp(buf, "\211PNG") == MATCH) return TYPE_IMAGE;
