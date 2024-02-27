@@ -27,9 +27,7 @@ void log_init(int enable, int debug)
 
 	_enable = enable;
 
-	openlog(PROGNAME,
-	        LOG_PID | (debug ? LOG_PERROR : 0),
-	        LOG_DAEMON);
+	openlog(PROGNAME, LOG_PID, LOG_DAEMON);
 
 	setlogmask(_LOG_UPTO(debug ? LOG_DEBUG : LOG_INFO));
 }
