@@ -446,6 +446,7 @@ void info(state *st, char *str, char type);
 void footer(state *st);
 void die(state *st, const char *message, const char *description);
 void log_combined(state *st, int status);
+void html_encode(const char *unsafe, char *dest, int bufsize);
 
 /* file.c */
 void send_binary_file(state *st);

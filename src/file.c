@@ -107,10 +107,13 @@ void send_text_file(state *st)
  */
 void url_redirect(state *st)
 {
-	char dest[BUFSIZE];
+	char unsafe[BUFSIZE];
 
 	/* Basic security checking */
-	sstrlcpy(dest, st->req_selector + 4);
+	sstrlcpy(unsafe, st->req_selector + 4);
+
+	char dest[BUFSIZE];
+	html_encode(unsafe, dest, BUFSIZE);
 
 	if (sstrncmp(dest, "http://") != MATCH &&
 		sstrncmp(dest, "https://") != MATCH &&
