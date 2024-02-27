@@ -22,7 +22,7 @@ Important configure arguments include:
 
 - `--listener`. This is the only required argument. You must
   choose a listener that passes network requests to
-  gophernicus, as gophernicus dosen't do this by itself. The
+  gophernicus, as gophernicus doesn't do this by itself. The
   options are:
   - systemd, a common init system on many Linux distributions
     that can do this without an external program.
