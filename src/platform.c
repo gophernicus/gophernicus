@@ -230,6 +230,14 @@ void platform(state *st)
 		}
 	}
 
+	/* Alpine Linux version should be in /etc/alpine-release */
+	if (!*release && (fp = fopen("/etc/alpine-release", "r"))) {
+		sstrlcpy(sysname, "Alpine Linux");
+		if (fgets (release, sizeof(release), fp) != NULL)
+			if ((c = strchr(release, '/'))) *c = '\0';
+		fclose(fp);
+	}
+		
 	/* OK, nothing worked - let's try /etc/issue for sysname */
 	if (!*sysname && (fp = fopen("/etc/issue", "r"))) {
 		if (fgets(sysname, sizeof(sysname), fp) != NULL) {
