@@ -84,15 +84,17 @@ void footer(state *st)
 	}
 
 	/* Create horizontal line */
-	strrepeat(line, '_', st->out_width);
+	snprintf(line, sizeof(line), LINE_FORMAT);
 
-	/* Create right-aligned footer message */
-	snprintf(buf, sizeof(buf), FOOTER_FORMAT, st->server_platform);
-	snprintf(msg, sizeof(msg), "%*s", st->out_width - 1, buf);
+	/* Create center-aligned footer message */
+	snprintf(buf, sizeof(buf), FOOTER_FORMAT);
+	snprintf(msg, sizeof(msg), "%*s", st->out_width + 1 / 2, buf);
 
 	/* Menu footer? */
 	if (st->req_filetype == TYPE_MENU || st->req_filetype == TYPE_QUERY) {
+		info(st, EMPTY, TYPE_INFO);
 		info(st, line, TYPE_INFO);
+		info(st, EMPTY, TYPE_INFO);
 		info(st, msg, TYPE_INFO);
 		printf("." CRLF);
 	}

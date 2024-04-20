@@ -485,6 +485,7 @@ void gopher_menu(state *st)
 	sdirent dir[MAX_SDIRENT];
 	struct tm *ltime;
 	struct stat file;
+	char line[BUFSIZE];
 	char buf[BUFSIZE];
 	char pathname[BUFSIZE];
 	char displayname[BUFSIZE];
@@ -527,7 +528,10 @@ void gopher_menu(state *st)
 				if (fgets(buf, sizeof(buf), fp) == NULL) strclear(buf);
 				chomp(buf);
 
+				snprintf(line, sizeof(line), LINE_FORMAT);
 				info(st, buf, TYPE_TITLE);
+				info(st, EMPTY, TYPE_INFO);
+				info(st, line, TYPE_INFO);
 				info(st, EMPTY, TYPE_INFO);
 				fclose(fp);
 			}
@@ -549,7 +553,10 @@ void gopher_menu(state *st)
 
 			/* Output menu title */
 			snprintf(buf, sizeof(buf), HEADER_FORMAT, displayname);
+			snprintf(line, sizeof(line), LINE_FORMAT);
 			info(st, buf, TYPE_TITLE);
+			info(st, EMPTY, TYPE_INFO);
+			info(st, line, TYPE_INFO);
 			info(st, EMPTY, TYPE_INFO);
 		}
 	}
