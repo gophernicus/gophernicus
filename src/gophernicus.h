@@ -251,8 +251,9 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define SERVER_SOFTWARE_FULL SERVER_SOFTWARE "/" VERSION " (%s)"
 #define PROGNAME             "gophernicus"
 
-#define HEADER_FORMAT    "[%s]"
-#define FOOTER_FORMAT    "Gophered by Gophernicus/" VERSION " on %s"
+#define HEADER_FORMAT    "UMBRELLA%s"
+#define FOOTER_FORMAT    "UELS V0.1 • UMBRELLA CORP • OUR BUSINESS IS LIFE ITSELF..."
+#define LINE_FORMAT    "•-----------------------------------------------------------------•"
 
 #define UNITS        "KB", "MB", "GB", "TB", "PB", NULL
 #define DATE_FORMAT    "%Y-%b-%d %H:%M"    /* See man 3 strftime */
