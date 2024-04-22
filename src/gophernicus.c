@@ -88,7 +88,7 @@ void footer(state *st)
 
 	/* Create center-aligned footer message */
 	snprintf(buf, sizeof(buf), FOOTER_FORMAT);
-	snprintf(msg, sizeof(msg), "%*s", st->out_width + 1 / 2, buf);
+	snprintf(msg, sizeof(msg), "%*s", FOOTER_MAX_WIDTH + 1 / 2, buf);
 
 	/* Menu footer? */
 	if (st->req_filetype == TYPE_MENU || st->req_filetype == TYPE_QUERY) {

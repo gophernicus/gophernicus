@@ -213,7 +213,7 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define DEFAULT_TAG		"gophertag"
 #define DEFAULT_CGI		"/cgi-bin/"
 #define DEFAULT_USERDIR		"public_gopher"
-#define DEFAULT_WIDTH       67
+#define DEFAULT_WIDTH       200
 #define DEFAULT_CHARSET		UTF_8
 #define MIN_WIDTH		33
 #define MAX_WIDTH		200
@@ -252,7 +252,8 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define PROGNAME             "gophernicus"
 
 #define HEADER_FORMAT    "UMBRELLA%s"
-#define FOOTER_FORMAT    "UELS V0.1 • UMBRELLA CORP • OUR BUSINESS IS LIFE ITSELF..."
+#define FOOTER_FORMAT    "UELS V1.0 • UMBRELLA CORP • OUR BUSINESS IS LIFE ITSELF..."
+#define FOOTER_MAX_WIDTH    67
 #define LINE_FORMAT    "•-----------------------------------------------------------------•"
 
 #define UNITS        "KB", "MB", "GB", "TB", "PB", NULL
