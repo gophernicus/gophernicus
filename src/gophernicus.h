@@ -251,8 +251,8 @@ size_t strlcat(char *dst, const char *src, size_t siz);
 #define SERVER_SOFTWARE_FULL SERVER_SOFTWARE "/" VERSION " (%s)"
 #define PROGNAME             "gophernicus"
 
-#define HEADER_FORMAT    "UMBRELLA%s"
-#define FOOTER_FORMAT    "UELS V1.0 • UMBRELLA CORP • OUR BUSINESS IS LIFE ITSELF..."
+#define HEADER_FORMAT    "%s"
+#define FOOTER_FORMAT    "UELS V1.1 • UMBRELLA CORP • OUR BUSINESS IS LIFE ITSELF..."
 #define FOOTER_MAX_WIDTH    67
 #define LINE_FORMAT    "•-----------------------------------------------------------------•"
 
