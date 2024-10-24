@@ -127,6 +127,7 @@ void html_encode(const char *unsafe, char *dest, int bufsize)
 			i += 1;
 		}
 	}
+	dest[j] = '\0';
 }
 
 /*
