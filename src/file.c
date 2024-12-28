@@ -117,6 +117,7 @@ void url_redirect(state *st)
 
 	if (sstrncmp(dest, "http://") != MATCH &&
 		sstrncmp(dest, "https://") != MATCH &&
+		sstrncmp(dest, "gemini://") != MATCH &&
 		sstrncmp(dest, "ftp://") != MATCH &&
 		sstrncmp(dest, "irc://") != MATCH &&
 		sstrncmp(dest, "mailto:") != MATCH)
