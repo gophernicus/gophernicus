@@ -113,7 +113,7 @@ void parse_args(state *st, int argc, char *argv[])
 			case 'r': sstrlcpy(st->server_root, optarg); break;
 			case 't': st->default_filetype = *optarg; break;
 			case 'g': sstrlcpy(st->map_file, optarg); break;
-			case 'a': sstrlcpy(st->map_file, optarg); break;
+			case 'a': sstrlcpy(st->tag_file, optarg); break;
 			case 'c': sstrlcpy(st->cgi_file, optarg); break;
 			case 'u': sstrlcpy(st->user_dir, optarg);  break;
 			case 'm': /* obsolete, replaced by -l */
