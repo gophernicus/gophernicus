@@ -64,6 +64,9 @@ done
 : ${CFLAGS:=-O2}
 : ${HOSTNAME:=autodetect}
 
+rm -f config.h
+touch config.h
+
 # Check for a compiler that actually works
 printf "checking for working compiler... "
 cat > conftest.c <<EOF
@@ -243,11 +246,27 @@ cat > conftest.c <<EOF
 int main() {}
 EOF
 if ${CC} -o conftest -lwrap conftest.c 2>/dev/null; then
-    LIBWRAP="-DHAVE_LIBWRAP -lwrap"
+    LIBWRAP="-lwrap"
+    echo "#define HAVE_LIBWARP " >> config.h
     printf "yes"
 else
     LIBWRAP=
     printf "no, but program will still work"
+fi
+printf "\\n"
+
+# Checking for passwd support
+printf "checking for passwd support... "
+cat > conftest.c <<EOF
+#include <pwd.h>
+int main() {}
+EOF
+
+if ${CC} -o conftest conftest.c 2>/dev/null; then
+    echo "#define HAVE_PASSWD " >> config.h
+    printf "yes"
+else
+    printf "no"
 fi
 printf "\\n"
 

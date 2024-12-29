@@ -53,7 +53,7 @@
 /* Defaults should fit standard POSIX systems */
 #define HAVE_IPv4        /* IPv4 should work anywhere */
 #define HAVE_IPv6        /* Requires modern POSIX */
-#define HAVE_PASSWD        /* For systems with passwd-like userdb */
+/* #define HAVE_PASSWD        autodetected, For systems with passwd-like userdb */
 #define PASSWD_MIN_UID 100    /* Minimum allowed UID for ~userdirs */
 #define HAVE_LOCALES        /* setlocale() and friends */
 #define HAVE_SHMEM        /* Shared memory support */
@@ -62,6 +62,8 @@
 #undef  HAVE_STRLCPY        /* strlcpy() from OpenBSD */
 #undef  HAVE_SENDFILE        /* sendfile() in Linux & others */
 /* #undef  HAVE_LIBWRAP           autodetected, don't enable here */
+
+#include "config.h"
 
 /* Linux */
 #ifdef __linux
