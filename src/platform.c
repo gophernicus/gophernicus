@@ -50,6 +50,8 @@ void platform(state *st)
 	char release[64];
 	char machine[64];
 	char *c;
+	int sysname_set = FALSE;
+	int release_set = FALSE;
 
 	/* Fetch system information */
 	uname(&name);
@@ -66,6 +68,7 @@ void platform(state *st)
 	snprintf(release, sizeof(release), "%s.%s",
 		name.version,
 		name.release);
+	release_set = TRUE;
 
 	/* Get CPU type */
 	if ((fp = popen("/usr/sbin/getsystype -i", "r"))) {
@@ -91,11 +94,13 @@ void platform(state *st)
 
 	/* Hardcode OS name */
 	sstrlcpy(sysname, "MacOSX");
+	sysname_set = TRUE;
 
 	/* Get OS X version */
 	if ((fp = popen("/usr/bin/sw_vers -productVersion", "r"))) {
 		if (fgets(release, sizeof(release), fp) == NULL) strclear(release);
 		pclose(fp);
+		release_set = TRUE;
 	}
 
 	/* Get hardware name */
@@ -168,43 +173,46 @@ void platform(state *st)
 	}
 
 	/* Identify Gentoo */
-	if (!*sysname && (fp = fopen("/etc/gentoo-release", "r"))) {
-		if (fgets(sysname, sizeof(sysname), fp) != NULL) {
-			if ((c = strstr(sysname, "release "))) sstrlcpy(release, c + 8);
-			if ((c = strchr(release, ' '))) *c = '\0';
-			if ((c = strchr(sysname, ' '))) *c = '\0';
-		}
+	if (!sysname_set && (fp = fopen("/etc/gentoo-release", "r"))) {
 		fclose(fp);
+		sstrlcpy(sysname, "Gentoo");
+		sysname_set = TRUE;
+		release_set = TRUE;
 	}
 
 	/* Identify RedHat */
-	if (!*sysname && (fp = fopen("/etc/redhat-release", "r"))) {
+	if (!sysname_set && (fp = fopen("/etc/redhat-release", "r"))) {
 		if (fgets(sysname, sizeof(sysname), fp) != NULL) {
 			if ((c = strstr(sysname, "release "))) sstrlcpy(release, c + 8);
 			if ((c = strchr(release, ' '))) *c = '\0';
 			if ((c = strchr(sysname, ' '))) *c = '\0';
 
 			if (strcmp(sysname, "Red") == MATCH) sstrlcpy(sysname, "RedHat");
+			sysname_set = TRUE;
+			release_set = TRUE;
 		}
 		fclose(fp);
 	}
 
 	/* Identify Slackware */
-	if (!*sysname && (fp = fopen("/etc/slackware-version", "r"))) {
+	if (!sysname_set && (fp = fopen("/etc/slackware-version", "r"))) {
 		if (fgets(sysname, sizeof(sysname), fp) != NULL) {
 
 			if ((c = strchr(sysname, ' '))) {
 				sstrlcpy(release, c + 1);
+				release_set = TRUE;
 				*c = '\0';
 			}
 
 			if ((c = strchr(sysname, '-'))) *c = '\0';
+			sysname_set = TRUE;
 		}
+
 		fclose(fp);
 	}
 
 	/* Identify CRUX */
-	if (!*sysname && stat("/usr/bin/crux", &file) == OK && (file.st_mode & S_IXOTH)) {
+	if (!sysname_set && stat("/usr/bin/crux", &file) == OK && (file.st_mode & S_IXOTH)) {
 
 		sstrlcpy(sysname, "CRUX");
 
@@ -213,44 +221,52 @@ void platform(state *st)
 				(c = strchr(buf, ' ')) &&
 				(c = strchr(c + 1, ' '))) sstrlcpy(release, c + 1);
 			pclose(fp);
+			sysname_set = TRUE;
+			release_set = TRUE;
 		}
 	}
 
 	/* Uh-oh.... how about a standard Linux with lsb_release? */
 	if (stat("/usr/bin/lsb_release", &file) == OK && (file.st_mode & S_IXOTH)) {
 
-		if (!*sysname && (fp = popen("/usr/bin/lsb_release -i -s", "r"))) {
+		if (!sysname_set && (fp = popen("/usr/bin/lsb_release -i -s", "r"))) {
 			if (fgets(sysname, sizeof(sysname), fp) == NULL) strclear(sysname);
+			sysname_set = TRUE;
 			pclose(fp);
 		}
 
-		if (!*release && (fp = popen("/usr/bin/lsb_release -r -s", "r"))) {
+		if (!release_set && (fp = popen("/usr/bin/lsb_release -r -s", "r"))) {
 			if (fgets(release, sizeof(release), fp) == NULL) strclear(release);
+			release_set = TRUE;
 			pclose(fp);
 		}
 	}
 
 	/* Alpine Linux version should be in /etc/alpine-release */
-	if (!*release && (fp = fopen("/etc/alpine-release", "r"))) {
+	if (!release_set && (fp = fopen("/etc/alpine-release", "r"))) {
 		sstrlcpy(sysname, "Alpine Linux");
 		if (fgets (release, sizeof(release), fp) != NULL)
 			if ((c = strchr(release, '/'))) *c = '\0';
+		sysname_set = TRUE;
+		release_set = TRUE;
 		fclose(fp);
 	}
 		
 	/* OK, nothing worked - let's try /etc/issue for sysname */
-	if (!*sysname && (fp = fopen("/etc/issue", "r"))) {
+	if (!sysname_set && (fp = fopen("/etc/issue", "r"))) {
 		if (fgets(sysname, sizeof(sysname), fp) != NULL) {
 			if ((c = strchr(sysname, ' '))) *c = '\0';
 			if ((c = strchr(sysname, '\\'))) *c = '\0';
+			sysname_set = TRUE;
 		}
 		fclose(fp);
 	}
 
 	/* Debian version should be in /etc/debian_version */
-	if (!*release && (fp = fopen("/etc/debian_version", "r"))) {
+	if (!release_set && (fp = fopen("/etc/debian_version", "r"))) {
 		if (fgets (release, sizeof(release), fp) != NULL)
 			if ((c = strchr(release, '/'))) *c = '\0';
+		release_set = TRUE;
 		fclose(fp);
 	}
 #endif
@@ -263,8 +279,8 @@ void platform(state *st)
 #endif
 
 	/* Fill in the blanks using uname() data */
-	if (!*sysname) sstrlcpy(sysname, name.sysname);
-	if (!*release) sstrlcpy(release, name.release);
+	if (!sysname_set) sstrlcpy(sysname, name.sysname);
+	if (!release_set) sstrlcpy(release, name.release);
 	if (!*machine) sstrlcpy(machine, name.machine);
 
 	/* I always liked weird Perl-only functions */
@@ -278,13 +294,15 @@ void platform(state *st)
 	if ((c = strchr(release, '/'))) *c = '\0';
 
 	/* Create a nicely formatted platform string */
-	snprintf(st->server_platform, sizeof(st->server_platform), "%s/%s %s",
+	snprintf(st->server_platform, sizeof(st->server_platform), "%s%s%s %s",
 			 sysname,
 #if defined(__OpenBSD__) || defined(__FreeBSD__) || defined(__NetBSD__)
+			 "/",
 			 machine,
 			 release);
 #else
 			 release,
+			 *release ? "/" : "",
 			 machine);
 #endif
 
