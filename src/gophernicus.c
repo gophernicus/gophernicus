@@ -497,6 +497,7 @@ static void init_state(state *st)
 	st->opt_exec = TRUE;
 	st->opt_personal_spaces = TRUE;
 	st->opt_http_requests = TRUE;
+	st->opt_plus_menu = TRUE;
 	st->debug = FALSE;
 
 	/* Load default suffix -> filetype mappings */
@@ -726,7 +727,7 @@ get_selector:
 	}
 
 	/* Handle gopher+ root requests (UMN gopher client is seriously borken) */
-	if (sstrncmp(selector, "\t$") == MATCH) {
+	if (sstrncmp(selector, "\t$") == MATCH && st.opt_plus_menu == TRUE) {
 		printf("+-1" CRLF);
 		printf("+INFO: 1Main menu\t\t%s\t%i" CRLF,
 			st.server_host,

@@ -70,6 +70,7 @@ are made.
     -np           Disable HAproxy proxy protocol
     -nx           Disable execution of gophermaps and scripts
     -nu           Disable personal gopherspaces
+    -ng           Disable Gopher Plus default menu
 
     -d            Debug output in syslog and /server-status
     -v            Display version number and build date
