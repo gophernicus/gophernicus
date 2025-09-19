@@ -132,7 +132,7 @@ static void userlist(state *st)
 		if (dir.st_uid != pwd->pw_uid) continue;
 
 		/* Found one */
-		strcpy(users[i].user, pwd->pw_name);
+		strlcpy(users[i].user, pwd->pw_name, sizeof(users[i].user));strcpy(users[i].user, pwd->pw_name);
 		users[i].mtime = dir.st_mtime;
 		i++;
 	}
@@ -158,6 +158,8 @@ static void userlist(state *st)
 
 			printf("1%-*.*s   %s        -  \t/~%s/\t%s\t%i" CRLF,
 			    width, width, buf, timestr, users[i].user,
+
+
 			    st->server_host, st->server_port);
 		}
 		else {
