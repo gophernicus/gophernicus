@@ -19,11 +19,11 @@ jobs:
       - name: Install prerequisite packages
         run: |
           sudo apt-get --quiet=2 update
-          sudo apt-get --quiet=2 install build-essential
+          sudo apt-get --quiet=2 install build-essential bmake
 
       - name: Checkout gophernicus sources
         uses: actions/checkout@v3
 
       - run: ./configure
-      - run: make
+      - run: bmake
       - run: .travis/test.sh
