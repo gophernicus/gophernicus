@@ -67,6 +67,10 @@ src/files.h: src/bin2c
 	./src/bin2c -0 -n README README.options > $@
 	./src/bin2c -0 LICENSE >> $@
 	./src/bin2c -n ERROR_GIF error.gif >> $@
+# Check cases
+
+check:
+	@sh .travis/test.sh
 
 # Clean cases
 
