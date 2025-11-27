@@ -1,0 +1,29 @@
+name: GitHub CI
+
+on:
+  push:
+    # test this branch and staged PRs based on this branch code
+    branches: [ "main", "auto" ]
+
+  pull_request:
+    # test PRs targeting this branch code
+    branches: [ "main" ]
+
+jobs:
+
+  functionality-tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install prerequisite packages
+        run: |
+          sudo apt-get --quiet=2 update
+          sudo apt-get --quiet=2 install build-essential
+
+      - name: Checkout gophernicus sources
+        uses: actions/checkout@v3
+
+      - run: ./configure
+      - run: make
+      - run: .travis/test.sh
