@@ -305,8 +305,8 @@ char gopher_filetype(state *st, char *file, char magic)
 	/* matroska/webm */
 	if (sstrncmp(buf, "\032\105\337\243") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
 	/* MPEG1 and MPEG2 containers */ 
-	if (memcmp(buf, "\0\0\1\xBA", 8) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
-	if (memcmp(buf, "\0\0\1\xBA", 8) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+	if (memcmp(buf, "\0\0\1\xBA", 4) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+	if (memcmp(buf, "\0\0\1\xBA", 4) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
 	/* MP4 container 20, 24, 32, 64 bit; matches many video/audio types */
 	if (memcmp(buf, "\0\0\0\x14\x66\x74\x79\x70", 8) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
 	if (memcmp(buf, "\0\0\0\x18\x66\x74\x79\x70", 8) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
