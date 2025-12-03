@@ -289,6 +289,25 @@ char gopher_filetype(state *st, char *file, char magic)
 	if (sstrncmp(buf, "\037\235\220") == MATCH ||
 		sstrncmp(buf, "\037\213\010") == MATCH) return TYPE_GZIP;
 
+	/* Some audio formats */
+	/* FLAC */
+	if (sstrncmp(buf, "fLaC") == MATCH) return TYPE_SOUND;
+	/* MIDI */
+	if (sstrncmp(buf, "MThd") == MATCH) return TYPE_SOUND;
+	/* MP3s with ID3v2 header */
+	if (sstrncmp(buf, "ID3") == MATCH) return TYPE_SOUND;
+	/* MP3s without header */
+	if (sstrncmp(buf, "\377\373") == MATCH) return TYPE_SOUND;
+	if (sstrncmp(buf, "\377\363") == MATCH) return TYPE_SOUND;
+	if (sstrncmp(buf, "\377\362") == MATCH) return TYPE_SOUND;
+
+	/* Some video formats */
+	/* matroska */
+	if (sstrncmp(buf, "\032\105\337\243") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+	/* mpeg1 and mpeg2 video */
+	if (sstrncmp(buf, "\001\272") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+	if (sstrncmp(buf, "\001\263") == MATCH) return TYPE_GOPHERPLUS_MOVIE;	
+	
 	/* Unknown content - binary or text? */
 	if (memchr(buf, '\0', i)) return TYPE_BINARY;
 	return st->default_filetype;
