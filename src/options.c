@@ -158,6 +158,7 @@ void parse_args(state *st, int argc, char *argv[])
 				if (*optarg == 'x') { st->opt_exec = FALSE; break; }
 				if (*optarg == 'u') { st->opt_personal_spaces = FALSE; break; }
 				if (*optarg == 'H') { st->opt_http_requests = FALSE; break; }
+				if (*optarg == 'D') { st->opt_dotfile = TRUE; break; }
 				break;
 
 			case 'd': st->debug = TRUE; break;
