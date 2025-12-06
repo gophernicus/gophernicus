@@ -373,6 +373,7 @@ typedef struct {
     char opt_exec;
     char opt_personal_spaces;
     char opt_http_requests;
+	char opt_dotfile;
     char debug;
 } state;
 
