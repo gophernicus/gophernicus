@@ -586,8 +586,16 @@ void gopher_menu(state *st)
 		snprintf(pathname, sizeof(pathname), "%s/%s",
 			st->req_realpath, dir[i].name);
 
-		/* Skip dotfiles and non world-readables */
-		if (dir[i].name[0] == '.') continue;
+		/* Skip dotfiles */
+		if (!st->opt_dotfile) {
+			if (dir[i].name[0] == '.') continue; }
+		/* Unless the user wants them; but don't generate menu entries for the literal */
+		/* "." and ".." files/directories; they are not useful in this context */
+		else {
+			if (strcmp(dir[i].name, ".\0") == MATCH ) { continue; }
+			if (strcmp(dir[i].name, "..\0") == MATCH ) { continue; }
+		}
+		/* Skip non world-readables */
 		if ((dir[i].mode & S_IROTH) == 0) continue;
 
 		/* Skip gophermaps and tags (but not dirs) */
