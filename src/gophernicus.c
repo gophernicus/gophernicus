@@ -497,6 +497,7 @@ static void init_state(state *st)
 	st->opt_exec = TRUE;
 	st->opt_personal_spaces = TRUE;
 	st->opt_http_requests = TRUE;
+	st->opt_dotfile = FALSE;
 	st->debug = FALSE;
 
 	/* Load default suffix -> filetype mappings */
@@ -798,9 +799,11 @@ get_selector:
 	/* Remove encodings from selector */
 	strndecode(st.req_selector, st.req_selector, sizeof(st.req_selector));
 
-	/* Deny requests for Slashdot and /../ hackers */
-	if (strstr(st.req_selector, "/."))
-		die(&st, ERR_ACCESS, "Refusing to serve out dotfiles");
+	/* Deny requests for /../ hackers, deny dotfiles by default */
+	if (!st.opt_dotfile && strstr(st.req_selector, "/.")) {
+		die(&st, ERR_ACCESS, "Refusing to serve out dotfiles"); }
+	if (st.opt_dotfile && strstr(st.req_selector, "/..")) {
+		die(&st, ERR_ACCESS, "Refusing directory traversal"); }
 
 	/* Handle /server-status requests */
 #ifdef HAVE_SHMEM
