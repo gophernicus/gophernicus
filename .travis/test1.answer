@@ -1,0 +1,12 @@
+iA		null.host	1
+iLine		null.host	1
+iRight		null.host	1
+iHere		null.host	1
+iFor		null.host	1
+iTests		null.host	1
+0file	/file	test.invalid	70
+0file	file	localhost	70
+0file	file	localhost	70
+0file		localhost	70
+0file	file		70
+.
