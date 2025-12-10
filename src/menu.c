@@ -289,6 +289,30 @@ char gopher_filetype(state *st, char *file, char magic)
 	if (sstrncmp(buf, "\037\235\220") == MATCH ||
 		sstrncmp(buf, "\037\213\010") == MATCH) return TYPE_GZIP;
 
+	/* Some audio formats */
+	/* FLAC */
+	if (sstrncmp(buf, "fLaC") == MATCH) return TYPE_SOUND;
+	/* MIDI */
+	if (sstrncmp(buf, "MThd") == MATCH) return TYPE_SOUND;
+	/* MP3s with ID3v2 header */
+	if (sstrncmp(buf, "ID3") == MATCH) return TYPE_SOUND;
+	/* MP3s without header */
+	if (sstrncmp(buf, "\377\373") == MATCH) return TYPE_SOUND;
+	if (sstrncmp(buf, "\377\363") == MATCH) return TYPE_SOUND;
+	if (sstrncmp(buf, "\377\362") == MATCH) return TYPE_SOUND;
+
+	/* Some video formats */
+	/* matroska/webm */
+	if (sstrncmp(buf, "\032\105\337\243") == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+	/* MPEG1 and MPEG2 containers */ 
+	if (memcmp(buf, "\0\0\1\xBA", 4) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+	if (memcmp(buf, "\0\0\1\xBA", 4) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+	/* MP4 container 20, 24, 32, 64 bit; matches many video/audio types */
+	if (memcmp(buf, "\0\0\0\x14\x66\x74\x79\x70", 8) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+	if (memcmp(buf, "\0\0\0\x18\x66\x74\x79\x70", 8) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+	if (memcmp(buf, "\0\0\0\x20\x66\x74\x79\x70", 8) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+	if (memcmp(buf, "\0\0\0\x40\x66\x74\x79\x70", 8) == MATCH) return TYPE_GOPHERPLUS_MOVIE;
+	
 	/* Unknown content - binary or text? */
 	if (memchr(buf, '\0', i)) return TYPE_BINARY;
 	return st->default_filetype;
