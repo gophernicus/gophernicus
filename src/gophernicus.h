@@ -63,7 +63,7 @@
 #undef  HAVE_SENDFILE        /* sendfile() in Linux & others */
 /* #undef  HAVE_LIBWRAP           autodetected, don't enable here */
 
-#include "config.h"
+#include "../config.h"
 
 /* Linux */
 #ifdef __linux
@@ -373,6 +373,7 @@ typedef struct {
     char opt_exec;
     char opt_personal_spaces;
     char opt_http_requests;
+    char opt_plus_menu;
     char debug;
 } state;
 
