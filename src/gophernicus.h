@@ -63,7 +63,7 @@
 #undef  HAVE_SENDFILE        /* sendfile() in Linux & others */
 /* #undef  HAVE_LIBWRAP           autodetected, don't enable here */
 
-#include "../config.h"
+#include "config.h"
 
 /* Linux */
 #ifdef __linux
