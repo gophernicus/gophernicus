@@ -64,8 +64,8 @@ done
 : ${CFLAGS:=-O2}
 : ${HOSTNAME:=autodetect}
 
-rm -f config.h
-touch config.h
+rm -f src/config.h
+touch src/config.h
 
 # Check for a compiler that actually works
 printf "checking for working compiler... "
@@ -247,7 +247,7 @@ int main() {}
 EOF
 if ${CC} -o conftest -lwrap conftest.c 2>/dev/null; then
     LIBWRAP="-lwrap"
-    echo "#define HAVE_LIBWARP " >> config.h
+    echo "#define HAVE_LIBWARP " >> src/config.h
     printf "yes"
 else
     LIBWRAP=
@@ -263,7 +263,7 @@ int main() {}
 EOF
 
 if ${CC} -o conftest conftest.c 2>/dev/null; then
-    echo "#define HAVE_PASSWD " >> config.h
+    echo "#define HAVE_PASSWD " >> src/config.h
     printf "yes"
 else
     printf "no"
